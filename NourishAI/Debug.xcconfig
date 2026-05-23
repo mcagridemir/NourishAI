@@ -1,0 +1,11 @@
+//
+//  Debug.xcconfig
+//  NourishAI
+//
+//  Created by cagri.demir on 23.05.2026.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://developer.apple.com/documentation/xcode/adding-a-build-configuration-file-to-your-project
+
+CLAUDE_API_KEY = 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
