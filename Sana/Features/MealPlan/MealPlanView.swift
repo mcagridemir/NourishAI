@@ -16,24 +16,36 @@ struct MealPlanView: View {
         NavigationStack {
             Group {
                 if vm.isGenerating {
-                    GeneratingPlanView()
+                    SanaLoadingView(
+                        message: "Building your meal plan…",
+                        subtitle: "Sana is personalising 3 days of meals around your goals"
+                    )
+                } else if let error = vm.error, vm.currentPlan == nil {
+                    SanaErrorView(message: error, retryLabel: "Try again") {
+                        HapticService.startAction()
+                        Task { await vm.generatePlan() }
+                    }
                 } else if let plan = vm.currentPlan {
                     WeekPlanView(plan: plan, vm: vm)
                         .id(plan.id)   // reset @State when a new plan is generated
                 } else {
-                    EmptyPlanView(onGenerate: { Task { await vm.generatePlan() } })
+                    EmptyPlanView(onGenerate: { HapticService.startAction(); Task { await vm.generatePlan() } })
                 }
             }
             .background(SanaTheme.Color.background)
             .navigationTitle("Meal plan")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                if vm.currentPlan != nil {
+                if vm.currentPlan != nil && !vm.isGenerating {
                     ToolbarItem(placement: .topBarTrailing) {
-                        Button { Task { await vm.generatePlan() } } label: {
+                        Button {
+                            HapticService.startAction()
+                            Task { await vm.generatePlan() }
+                        } label: {
                             Label("Regenerate", systemImage: "arrow.clockwise")
                         }
                         .foregroundStyle(SanaTheme.Color.primary)
+                        .accessibilityLabel("Regenerate meal plan")
                     }
                 }
             }
@@ -87,7 +99,10 @@ private struct WeekPlanView: View {
 private struct DayTab: View {
     let day: MealPlanDay; let isSelected: Bool; let action: () -> Void
     var body: some View {
-        Button(action: action) {
+        Button {
+            HapticService.selection()
+            action()
+        } label: {
             VStack(spacing: 3) {
                 Text(day.dayName.prefix(3))
                     .font(SanaTheme.Font.caption(11))
@@ -165,13 +180,16 @@ private struct PlannedMealCard: View {
                 HStack(spacing: 12) {
                     // Replace button
                     Button {
+                        HapticService.selection()
                         showingReplace = true
                     } label: {
                         Image(systemName: "arrow.triangle.2.circlepath")
                             .font(.system(size: 14, weight: .medium))
                             .foregroundStyle(.secondary)
                     }
+                    .accessibilityLabel("Replace \(meal.name)")
                     Button {
+                        HapticService.toggle()
                         withAnimation(SanaTheme.Animation.snappy) { isExpanded.toggle() }
                     } label: {
                         Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
@@ -284,6 +302,7 @@ private struct ReplaceMealSheet: View {
                             .font(SanaTheme.Font.caption()).foregroundStyle(.secondary)
                         FlowLayout(items: quickPrefs) { pref in
                             Button {
+                                HapticService.selection()
                                 preference = pref
                                 isFocused = false
                             } label: {
@@ -349,28 +368,19 @@ private struct ReplaceMealSheet: View {
 private struct EmptyPlanView: View {
     let onGenerate: () -> Void
     var body: some View {
-        VStack(spacing: 24) {
-            Image(systemName: "calendar.badge.plus")
-                .font(.system(size: 60)).foregroundStyle(SanaTheme.Color.primaryLight)
-            Text("No meal plan yet").font(SanaTheme.Font.headline(22))
-            Text("Generate a personalised 3-day meal plan tailored to your goals, preferences, and nutritional needs.")
-                .font(SanaTheme.Font.body()).foregroundStyle(.secondary)
-                .multilineTextAlignment(.center).padding(.horizontal)
-            Button("Generate my plan", action: onGenerate)
-                .buttonStyle(NourishButtonStyle()).padding(.horizontal, 40)
-        }
-    }
-}
-
-private struct GeneratingPlanView: View {
-    var body: some View {
-        VStack(spacing: 20) {
-            ProgressView().scaleEffect(1.5).tint(SanaTheme.Color.primary)
-            Text("Building your meal plan…")
-                .font(SanaTheme.Font.headline()).foregroundStyle(SanaTheme.Color.primary)
-            Text("Claude is personalising 3 days of meals for you")
-                .font(SanaTheme.Font.body(14)).foregroundStyle(.secondary)
-        }
+        SanaEmptyView(
+            icon: "calendar.badge.plus",
+            title: "No meal plan yet",
+            subtitle: "Get a personalised 3-day plan built around your calorie target, dietary style, and allergies.",
+            features: [
+                "Breakfast, lunch, dinner + snacks",
+                "Prep times and ingredient lists",
+                "One-tap to log any meal",
+                "Swap any meal you don't like"
+            ],
+            actionLabel: "Generate my plan",
+            action: onGenerate
+        )
     }
 }
 

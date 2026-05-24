@@ -18,6 +18,16 @@ struct CoachView: View {
             VStack(spacing: 0) {
                 messagesScrollView
 
+                // Error banner
+                if let errorMsg = vm.error {
+                    ErrorBanner(message: errorMsg, retry: nil) {
+                        HapticService.dismiss()
+                        vm.error = nil
+                    }
+                    .padding(.horizontal, SanaTheme.Spacing.lg)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+                }
+
                 // Pending plan offer banner
                 if let _ = vm.pendingPlanResponse {
                     pendingPlanCard
@@ -28,13 +38,20 @@ struct CoachView: View {
                     HStack(spacing: 10) {
                         Image(systemName: "calendar.badge.checkmark")
                             .foregroundStyle(SanaTheme.Color.primary)
+                            .accessibilityHidden(true)  // decorative
                         Text(banner)
                             .font(SanaTheme.Font.caption(13))
                             .foregroundStyle(.primary)
                         Spacer()
-                        Button { vm.savedPlanBanner = nil } label: {
-                            Image(systemName: "xmark").font(.caption).foregroundStyle(.secondary)
+                        Button { HapticService.dismiss(); vm.savedPlanBanner = nil } label: {
+                            Image(systemName: "xmark")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                                // Expand tap area to 44×44 without changing layout
+                                .frame(width: 44, height: 44)
+                                .contentShape(Rectangle())
                         }
+                        .accessibilityLabel("Dismiss")
                     }
                     .padding(.horizontal, 16).padding(.vertical, 10)
                     .background(SanaTheme.Color.primaryLight)
@@ -75,10 +92,14 @@ struct CoachView: View {
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button { vm.clearHistory() } label: {
+                    Button {
+                        HapticService.destructive()
+                        vm.clearHistory()
+                    } label: {
                         Image(systemName: "square.and.pencil")
                     }
                     .foregroundStyle(SanaTheme.Color.primary)
+                    .accessibilityLabel("New conversation")
                 }
             }
             .animation(SanaTheme.Animation.smooth, value: vm.savedPlanBanner != nil)
@@ -95,6 +116,7 @@ struct CoachView: View {
                     Image(systemName: "calendar.badge.plus")
                         .foregroundStyle(SanaTheme.Color.primary)
                         .font(.system(size: 14, weight: .semibold))
+                        .accessibilityHidden(true)
                     Text("Meal plan ready")
                         .font(SanaTheme.Font.headline(13))
                 }
@@ -104,7 +126,7 @@ struct CoachView: View {
             }
             Spacer()
             HStack(spacing: 8) {
-                Button("Dismiss") { vm.dismissPendingPlan() }
+                Button("Dismiss") { HapticService.dismiss(); vm.dismissPendingPlan() }
                     .font(SanaTheme.Font.caption(12))
                     .foregroundStyle(.secondary)
                 Button {
@@ -180,6 +202,7 @@ struct CoachView: View {
             }
             .disabled(!vm.canSend && !vm.isStreaming)
             .animation(SanaTheme.Animation.snappy, value: vm.isStreaming)
+            .accessibilityLabel(vm.isStreaming ? "Stop response" : "Send message")
         }
         .padding(.horizontal, SanaTheme.Spacing.lg)
         .padding(.vertical, 10)
@@ -312,12 +335,13 @@ private struct WelcomeBubble: View {
                         Image(systemName: "chevron.right")
                             .font(.system(size: 11, weight: .semibold))
                             .foregroundStyle(.secondary)
+                            .accessibilityHidden(true)
                     }
                     .padding(12)
                     .background(SanaTheme.Color.surface)
                     .clipShape(RoundedRectangle(cornerRadius: SanaTheme.Radius.md))
                     .overlay(RoundedRectangle(cornerRadius: SanaTheme.Radius.md).stroke(Color.primary.opacity(0.06), lineWidth: 0.5))
-                    .onTapGesture { onSelectSuggestion(s) }
+                    .onTapGesture { HapticService.selection(); onSelectSuggestion(s) }
                 }
             }
         }

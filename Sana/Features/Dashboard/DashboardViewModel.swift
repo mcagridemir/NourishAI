@@ -8,6 +8,7 @@ final class DashboardViewModel: ObservableObject {
 
     @Published var weeklyInsight: String?
     @Published var isLoadingInsights = false
+    @Published var insightError: String?
 
     private let user: User
 
@@ -49,12 +50,19 @@ final class DashboardViewModel: ObservableObject {
         guard weeklyInsight == nil else { return }
         guard !user.detectedDeficiencies.isEmpty || todayMeals.count >= 3 else { return }
         isLoadingInsights = true
+        insightError = nil
         defer { isLoadingInsights = false }
         do {
             weeklyInsight = try await ClaudeService.shared.generateWeeklyInsights(context: user.nutritionContext)
         } catch {
-            // Fail silently
+            insightError = error.localizedDescription
         }
+    }
+
+    func retryInsights() async {
+        weeklyInsight = nil
+        insightError = nil
+        await loadInsights()
     }
 
     private func fireGoalNudge() {

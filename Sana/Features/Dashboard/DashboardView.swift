@@ -79,6 +79,7 @@ struct DashboardView: View {
                     .padding(.horizontal, 8).padding(.vertical, 4)
                     .background(Color.orange.opacity(0.12))
                     .clipShape(Capsule())
+                    .accessibilityLabel("\(user.currentStreak) day logging streak")
                 }
                 NavigationLink(destination: ProfileView(user: user)) {
                     Circle()
@@ -90,6 +91,7 @@ struct DashboardView: View {
                                 .foregroundStyle(SanaTheme.Color.primary)
                         )
                 }
+                .accessibilityLabel("Open profile")
             }
         }
         .padding(.horizontal, SanaTheme.Spacing.lg)
@@ -100,7 +102,7 @@ struct DashboardView: View {
     // MARK: Hero Card — dark background, ring + macro bars
 
     private var heroDailySummaryCard: some View {
-        Button { showingGoals = true } label: {
+        Button { HapticService.impact(.light); showingGoals = true } label: {
             ZStack(alignment: .topTrailing) {
                 // Subtle radial accent top-right
                 Circle()
@@ -218,13 +220,29 @@ struct DashboardView: View {
 
     // MARK: AI Insight
 
+    @ViewBuilder
     private var aiInsightSection: some View {
-        Group {
-            if let insight = vm.weeklyInsight {
-                AIInsightCard(insight: insight)
-                    .padding(.horizontal, SanaTheme.Spacing.lg)
-                    .padding(.bottom, SanaTheme.Spacing.lg)
+        if vm.isLoadingInsights {
+            HStack(spacing: 12) {
+                ProgressView().tint(SanaTheme.Color.primary)
+                Text("Generating your weekly insight…")
+                    .font(SanaTheme.Font.body(14))
+                    .foregroundStyle(.secondary)
             }
+            .padding()
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(SanaTheme.Color.surface)
+            .clipShape(RoundedRectangle(cornerRadius: SanaTheme.Radius.lg))
+            .padding(.horizontal, SanaTheme.Spacing.lg)
+            .padding(.bottom, SanaTheme.Spacing.lg)
+        } else if let errorMsg = vm.insightError {
+            ErrorBanner(message: errorMsg, retry: { Task { await vm.retryInsights() } })
+                .padding(.horizontal, SanaTheme.Spacing.lg)
+                .padding(.bottom, SanaTheme.Spacing.lg)
+        } else if let insight = vm.weeklyInsight {
+            AIInsightCard(insight: insight)
+                .padding(.horizontal, SanaTheme.Spacing.lg)
+                .padding(.bottom, SanaTheme.Spacing.lg)
         }
     }
 
@@ -278,6 +296,7 @@ struct DashboardView: View {
                         Image(systemName: "applelogo")
                             .font(.system(size: 13, weight: .semibold))
                             .foregroundStyle(.primary)
+                            .accessibilityHidden(true)
                         Text("Apple Health")
                             .font(SanaTheme.Font.headline(13))
                         Spacer()
@@ -327,7 +346,7 @@ struct DashboardView: View {
     // MARK: Premium Nudge
 
     private var premiumNudge: some View {
-        Button { showingPaywall = true } label: {
+        Button { HapticService.impact(.light); showingPaywall = true } label: {
             HStack(spacing: 14) {
                 RoundedRectangle(cornerRadius: 14)
                     .fill(SanaTheme.Color.accent)
@@ -345,6 +364,7 @@ struct DashboardView: View {
                 Image(systemName: "chevron.right")
                     .font(.system(size: 14, weight: .semibold))
                     .foregroundStyle(.secondary)
+                    .accessibilityHidden(true)
             }
             .padding(SanaTheme.Spacing.lg)
             .background(SanaTheme.Color.elevated)
@@ -399,6 +419,8 @@ private struct HeroStatRow: View {
                     .foregroundStyle(Color.white.opacity(0.5))
             }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(label): \(value) \(unit)")
     }
 }
 
@@ -409,6 +431,7 @@ private struct DarkMacroBar: View {
     let color: Color
 
     private var progress: Double { min(1, value / max(1, target)) }
+    private var pct: Int { Int(progress * 100) }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
@@ -436,6 +459,8 @@ private struct DarkMacroBar: View {
             .frame(height: 4)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(label): \(Int(value)) of \(Int(target)) grams, \(pct)%")
     }
 }
 
@@ -447,7 +472,10 @@ private struct QuickActionCard: View {
     let action: () -> Void
 
     var body: some View {
-        Button(action: action) {
+        Button {
+            HapticService.impact(.light)
+            action()
+        } label: {
             HStack(spacing: 12) {
                 RoundedRectangle(cornerRadius: 14)
                     .fill(color)
@@ -471,6 +499,8 @@ private struct QuickActionCard: View {
             .overlay(RoundedRectangle(cornerRadius: SanaTheme.Radius.lg).stroke(Color.primary.opacity(0.06), lineWidth: 0.5))
         }
         .buttonStyle(.plain)
+        .accessibilityLabel(label)
+        .accessibilityHint(sub)
     }
 }
 
@@ -539,6 +569,8 @@ private struct HealthMetricCell: View {
             }
         }
         .frame(maxWidth: .infinity)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(label): \(value) \(unit)")
     }
 }
 
@@ -548,6 +580,7 @@ private struct EmptyMealsPrompt: View {
             Image(systemName: "fork.knife.circle")
                 .font(.system(size: 36))
                 .foregroundStyle(SanaTheme.Color.primaryLight)
+                .accessibilityHidden(true)
             Text("No meals logged yet")
                 .font(SanaTheme.Font.headline())
                 .foregroundStyle(.secondary)
@@ -598,5 +631,12 @@ private struct MealRowView: View {
             HealthScoreBadge(score: meal.healthScore, size: 42)
         }
         .padding(.vertical, 2)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(
+            "\(meal.mealType.rawValue), \(meal.mealName), " +
+            "\(meal.calories) calories, " +
+            "protein \(Int(meal.protein))g, carbs \(Int(meal.carbohydrates))g, fat \(Int(meal.fat))g, " +
+            "health score \(meal.healthScore)"
+        )
     }
 }

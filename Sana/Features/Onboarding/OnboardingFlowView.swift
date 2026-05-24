@@ -62,6 +62,7 @@ struct OnboardingFlowView: View {
                     .keyboardType(.emailAddress).autocapitalization(.none)
             }
         } next: {
+            HapticService.stepForward()
             step = 1
         } nextEnabled: { !name.isEmpty && email.contains("@") }
     }
@@ -87,7 +88,7 @@ struct OnboardingFlowView: View {
                 }
                 .pickerStyle(.wheel).frame(height: 100).clipped()
             }
-        } next: { step = 2 } nextEnabled: { true }
+        } next: { HapticService.stepForward(); step = 2 } nextEnabled: { true }
     }
 
     private var goalStep: some View {
@@ -97,7 +98,7 @@ struct OnboardingFlowView: View {
                     SelectionRow(label: g.rawValue, isSelected: goal == g) { goal = g }
                 }
             }
-        } next: { step = 3 } nextEnabled: { true }
+        } next: { HapticService.stepForward(); step = 3 } nextEnabled: { true }
     }
 
     private var dietStep: some View {
@@ -107,7 +108,7 @@ struct OnboardingFlowView: View {
                     SelectionTile(label: d.rawValue, isSelected: dietStyle == d) { dietStyle = d }
                 }
             }
-        } next: { step = 4 } nextEnabled: { true }
+        } next: { HapticService.stepForward(); step = 4 } nextEnabled: { true }
     }
 
     private var allergyStep: some View {
@@ -120,8 +121,9 @@ struct OnboardingFlowView: View {
                 }
             }
         } next: {
-                    createUser()
-                } nextEnabled: { true }
+            HapticService.notification(.success)
+            createUser()
+        } nextEnabled: { true }
     }
 
     // MARK: - Create user
@@ -176,7 +178,10 @@ struct OnboardingStep<Content: View>: View {
 struct SelectionRow: View {
     let label: String; let isSelected: Bool; let action: () -> Void
     var body: some View {
-        Button(action: action) {
+        Button {
+            HapticService.selection()
+            action()
+        } label: {
             HStack {
                 Text(label).font(SanaTheme.Font.body()).foregroundStyle(.primary)
                 Spacer()
@@ -195,7 +200,10 @@ struct SelectionRow: View {
 struct SelectionTile: View {
     let label: String; let isSelected: Bool; let action: () -> Void
     var body: some View {
-        Button(action: action) {
+        Button {
+            HapticService.selection()
+            action()
+        } label: {
             Text(label).font(SanaTheme.Font.body(14)).foregroundStyle(isSelected ? SanaTheme.Color.primary : .primary)
                 .frame(maxWidth: .infinity).padding(.vertical, 14)
                 .background(isSelected ? SanaTheme.Color.primaryLight : SanaTheme.Color.surface)

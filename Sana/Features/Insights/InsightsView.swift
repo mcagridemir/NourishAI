@@ -78,18 +78,21 @@ struct InsightsView: View {
                             Image(systemName: "calendar")
                                 .foregroundStyle(SanaTheme.Color.primary)
                         }
+                        .accessibilityLabel("Food diary")
                         Button {
                             showingWeeklyReport = true
                         } label: {
                             Image(systemName: "doc.text.magnifyingglass")
                                 .foregroundStyle(SanaTheme.Color.primary)
                         }
+                        .accessibilityLabel("Weekly report")
                         Button {
                             renderShareCard()
                         } label: {
                             Image(systemName: "square.and.arrow.up")
                                 .foregroundStyle(SanaTheme.Color.primary)
                         }
+                        .accessibilityLabel("Share insights")
                     }
                 }
             }
@@ -208,8 +211,10 @@ struct InsightsView: View {
     private func legendDot(color: Color, label: String) -> some View {
         HStack(spacing: 4) {
             Circle().fill(color).frame(width: 8, height: 8)
+                .accessibilityHidden(true)
             Text(label).font(SanaTheme.Font.caption(11))
         }
+        .accessibilityElement(children: .combine)
     }
 
     private var macroBreakdownChart: some View {
@@ -335,6 +340,7 @@ struct InsightsView: View {
                     Image(systemName: "chart.line.uptrend.xyaxis")
                         .font(.system(size: 32))
                         .foregroundStyle(SanaTheme.Color.primaryLight)
+                        .accessibilityHidden(true)
                     Text("Log your weight to see your trend")
                         .font(SanaTheme.Font.body(13))
                         .foregroundStyle(.secondary)
@@ -370,6 +376,7 @@ private struct StatCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Image(systemName: icon).foregroundStyle(color)
+                .accessibilityHidden(true)
             HStack(alignment: .firstTextBaseline, spacing: 2) {
                 Text(value).font(SanaTheme.Font.numeric).foregroundStyle(.primary)
                 Text(unit).font(SanaTheme.Font.caption()).foregroundStyle(.secondary)
@@ -380,5 +387,7 @@ private struct StatCard: View {
         .padding()
         .background(color.opacity(0.07))
         .clipShape(RoundedRectangle(cornerRadius: SanaTheme.Radius.md))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(label): \(value)\(unit.isEmpty ? "" : " \(unit)")")
     }
 }

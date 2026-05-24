@@ -128,24 +128,41 @@ struct LoadingCard: View {
 
 struct ErrorBanner: View {
     let message: String
-    let retry: (() -> Void)?
+    var retry: (() -> Void)? = nil
+    var dismiss: (() -> Void)? = nil
 
     var body: some View {
-        HStack {
+        HStack(spacing: 10) {
             Image(systemName: "exclamationmark.triangle.fill")
                 .foregroundStyle(.orange)
+                .accessibilityHidden(true)
             Text(message)
                 .font(SanaTheme.Font.body(14))
                 .foregroundStyle(.primary)
-            Spacer()
+                .fixedSize(horizontal: false, vertical: true)
+            Spacer(minLength: 8)
             if let retry {
                 Button("Retry", action: retry)
                     .font(SanaTheme.Font.caption())
                     .foregroundStyle(SanaTheme.Color.primary)
             }
+            if let dismiss {
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "xmark")
+                        .font(.caption2.weight(.semibold))
+                        .foregroundStyle(.secondary)
+                        .frame(width: 44, height: 44)
+                        .contentShape(Rectangle())
+                }
+                .accessibilityLabel("Dismiss error")
+            }
         }
-        .padding()
-        .background(Color.orange.opacity(0.1))
+        .padding(.horizontal, SanaTheme.Spacing.lg)
+        .padding(.vertical, SanaTheme.Spacing.sm)
+        .background(Color.orange.opacity(0.10))
         .clipShape(RoundedRectangle(cornerRadius: SanaTheme.Radius.md))
+        .accessibilityElement(children: .combine)
     }
 }

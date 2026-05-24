@@ -1,5 +1,6 @@
 // Sana — SanaTheme.swift
 import SwiftUI
+internal import UIKit
 
 enum SanaTheme {
 
@@ -39,13 +40,47 @@ enum SanaTheme {
     }
 
     // MARK: - Typography
+    //
+    // All fonts are wrapped in UIFontMetrics so they honour the user's
+    // preferred text-size setting (Dynamic Type / Accessibility → Larger Text).
+    // The base sizes are the design-spec values at the default (Large) size.
     enum Font {
-        static func title(_ size: CGFloat = 28) -> SwiftUI.Font { .system(size: size, weight: .bold, design: .rounded) }
-        static func headline(_ size: CGFloat = 17) -> SwiftUI.Font { .system(size: size, weight: .semibold, design: .rounded) }
-        static func body(_ size: CGFloat = 15) -> SwiftUI.Font { .system(size: size, weight: .regular, design: .default) }
-        static func caption(_ size: CGFloat = 12) -> SwiftUI.Font { .system(size: size, weight: .medium, design: .default) }
-        static func mono(_ size: CGFloat = 14) -> SwiftUI.Font { .system(size: size, weight: .regular, design: .monospaced) }
+        static func title(_ size: CGFloat = 28) -> SwiftUI.Font {
+            scaled(size, weight: .bold, design: .rounded, relativeTo: .largeTitle)
+        }
+        static func headline(_ size: CGFloat = 17) -> SwiftUI.Font {
+            scaled(size, weight: .semibold, design: .rounded, relativeTo: .headline)
+        }
+        static func body(_ size: CGFloat = 15) -> SwiftUI.Font {
+            scaled(size, weight: .regular, design: .default, relativeTo: .body)
+        }
+        static func caption(_ size: CGFloat = 12) -> SwiftUI.Font {
+            scaled(size, weight: .medium, design: .default, relativeTo: .caption1)
+        }
+        static func mono(_ size: CGFloat = 14) -> SwiftUI.Font {
+            scaled(size, weight: .regular, design: .monospaced, relativeTo: .body)
+        }
+        // numeric uses the built-in semantic style — already Dynamic Type aware
         static let numeric = SwiftUI.Font.system(.title2, design: .rounded, weight: .bold)
+
+        // MARK: Private helper
+        private static func scaled(
+            _ size: CGFloat,
+            weight: UIFont.Weight,
+            design: UIFontDescriptor.SystemDesign,
+            relativeTo style: UIFont.TextStyle
+        ) -> SwiftUI.Font {
+            // Build a descriptor at the default (Large) size, apply design + weight
+            let base = UIFontDescriptor.preferredFontDescriptor(withTextStyle: style)
+            let designed = base.withDesign(design) ?? base
+            let weighted = designed.addingAttributes([
+                .traits: [UIFontDescriptor.TraitKey.weight: weight]
+            ])
+            let uiFont = UIFont(descriptor: weighted, size: size)
+            // Wrap in UIFontMetrics so it scales with the user's text-size preference
+            let scaled = UIFontMetrics(forTextStyle: style).scaledFont(for: uiFont)
+            return SwiftUI.Font(scaled)
+        }
     }
 
     // MARK: - Spacing
