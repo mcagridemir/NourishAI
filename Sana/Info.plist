@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>com.cagri.Sana.widgetRefresh</string>
+	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.cagri.Sana</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>sana</string>
+			</array>
+		</dict>
+	</array>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.healthcare-fitness</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Sana uses your camera to photograph and analyse your meals.</string>
+	<key>NSHealthShareUsageDescription</key>
+	<string>Sana reads your activity and sleep data to personalise your nutrition advice.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>Sana logs your meals to Apple Health to keep your nutrition data in sync.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Sana uses the microphone to let you log meals by voice.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Sana accesses your photos to analyse meal images.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Sana uses speech recognition to transcribe your spoken meal names.</string>
+	<key>NSSupportsLiveActivities</key>
+	<true/>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+	</dict>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
+	<key>UILaunchScreen</key>
+	<dict/>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+</dict>
+</plist>

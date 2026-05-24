@@ -1,0 +1,318 @@
+/* Sana — English strings (base) */
+
+// MARK: - Tab Bar
+"Home" = "Home";
+"Log Meal" = "Log Meal";
+"Coach" = "Coach";
+"Meal Plan" = "Meal Plan";
+"Insights" = "Insights";
+
+// MARK: - Common Actions
+"Cancel" = "Cancel";
+"Save" = "Save";
+"Done" = "Done";
+"Add" = "Add";
+"Edit" = "Edit";
+"Delete" = "Delete";
+"Retry" = "Retry";
+"Continue" = "Continue";
+"Restore" = "Restore";
+"Discard" = "Discard";
+"Try again" = "Try again";
+"Log" = "Log";
+"See all" = "See all";
+"Back" = "Back";
+"Loading…" = "Loading…";
+
+// MARK: - Greetings
+"Good morning," = "Good morning,";
+"Good afternoon," = "Good afternoon,";
+"Good evening," = "Good evening,";
+"Hey," = "Hey,";
+
+// MARK: - Meal Types
+"Breakfast" = "Breakfast";
+"Lunch" = "Lunch";
+"Dinner" = "Dinner";
+"Snack" = "Snack";
+"Drink" = "Drink";
+
+// MARK: - Macro Types
+"Calories" = "Calories";
+"Protein" = "Protein";
+"Carbs" = "Carbs";
+"Fat" = "Fat";
+"Fiber" = "Fiber";
+
+// MARK: - Dashboard
+"Macros today" = "Macros today";
+"Tap for details" = "Tap for details";
+"Base goal" = "Base goal";
+"Eaten" = "Eaten";
+"Remaining" = "Remaining";
+"Exercise bonus (+50%)" = "Exercise bonus (+50%)";
+"Today's meals" = "Today's meals";
+"No meals logged yet" = "No meals logged yet";
+"Tap + to log your first meal" = "Tap + to log your first meal";
+"Weekly insight" = "Weekly insight";
+"day streak" = "day streak";
+
+// MARK: - Daily Score Card
+"Daily Score" = "Daily Score";
+"Excellent" = "Excellent";
+"Great" = "Great";
+"Good" = "Good";
+"Fair" = "Fair";
+"Needs Work" = "Needs Work";
+"Hydration" = "Hydration";
+"Meal quality" = "Meal quality";
+"Activity" = "Activity";
+
+// MARK: - Calorie Forecast
+"Today's Forecast" = "Today's Forecast";
+"On track" = "On track";
+"Over budget" = "Over budget";
+"Under budget" = "Under budget";
+"Predicted left" = "Predicted left";
+"Target" = "Target";
+"kcal predicted" = "kcal predicted";
+
+// MARK: - Smart Suggestion
+"Next Meal Idea" = "Next Meal Idea";
+"See ingredients" = "See ingredients";
+"Show less" = "Show less";
+"Quick recipe" = "Quick recipe";
+
+// MARK: - Supplement Dashboard Card
+"Supplements" = "Supplements";
+"All taken today 🎉" = "All taken today 🎉";
+"Time to take your supplements" = "Time to take your supplements";
+"All supplements taken today!" = "All supplements taken today!";
+
+// MARK: - Meal Log
+"Log meal" = "Log meal";
+"Manual entry" = "Manual entry";
+"Take a photo" = "Take a photo";
+"Point at your meal for instant nutrition analysis" = "Point at your meal for instant nutrition analysis";
+"Library" = "Library";
+"Barcode" = "Barcode";
+"Search food" = "Search food";
+"Recipe AI" = "Recipe AI";
+"Voice log" = "Voice log";
+"Scan label" = "Scan label";
+"Quick re-log" = "Quick re-log";
+"Save meal" = "Save meal";
+"Retake photo" = "Retake photo";
+
+// MARK: - Analysis Result
+"Nutrition" = "Nutrition";
+"Tips" = "Tips";
+"Low confidence" = "Low confidence";
+"Adjust values" = "Adjust values";
+"Confidence" = "Confidence";
+"Sugar" = "Sugar";
+"Sodium" = "Sodium";
+"Insights" = "Insights";
+
+// MARK: - Insights
+"7 days" = "7 days";
+"30 days" = "30 days";
+"Avg calories" = "Avg calories";
+"Meals logged" = "Meals logged";
+"Avg health score" = "Avg health score";
+"Avg protein" = "Avg protein";
+"Daily calories" = "Daily calories";
+"Calorie balance" = "Calorie balance";
+"Surplus" = "Surplus";
+"Deficit" = "Deficit";
+"Positive = ate more than target · Negative = deficit" = "Positive = ate more than target · Negative = deficit";
+"Macro average" = "Macro average";
+"Health score trend" = "Health score trend";
+"Weight" = "Weight";
+"Current" = "Current";
+"Total change" = "Total change";
+"Detected deficiencies" = "Detected deficiencies";
+"Below target" = "Below target";
+"Week on week" = "Week on week";
+"This week" = "This week";
+"Last week" = "Last week";
+"Hydration trend" = "Hydration trend";
+"Sleep & Nutrition" = "Sleep & Nutrition";
+"goal reached" = "goal reached";
+"Avg/day" = "Avg/day";
+"Today" = "Today";
+"Good" = "Good";
+"Fair" = "Fair";
+"Poor" = "Poor";
+"No data" = "No data";
+"Breakdown by meal" = "Breakdown by meal";
+"Meals today" = "Meals today";
+
+// MARK: - Profile
+"Profile" = "Profile";
+"Progress" = "Progress";
+"Achievements" = "Achievements";
+"Body metrics" = "Body metrics";
+"Settings" = "Settings";
+"Notification preferences" = "Notification preferences";
+"App theme" = "App theme";
+"Allergies & restrictions" = "Allergies & restrictions";
+"Export meal data (CSV)" = "Export meal data (CSV)";
+
+// MARK: - Supplements
+"Add Supplement" = "Add Supplement";
+"Edit Supplement" = "Edit Supplement";
+"Archived" = "Archived";
+"No supplements yet" = "No supplements yet";
+"Name" = "Name";
+"Dosage" = "Dosage";
+"Schedule" = "Schedule";
+"Frequency" = "Frequency";
+"Time of day" = "Time of day";
+"Notes (optional)" = "Notes (optional)";
+"Notes" = "Notes";
+"Add supplement" = "Add supplement";
+"Delete supplement" = "Delete supplement";
+"Active" = "Active";
+"Colour" = "Colour";
+"Morning" = "Morning";
+"Afternoon" = "Afternoon";
+"Evening" = "Evening";
+"With meals" = "With meals";
+"Before bed" = "Before bed";
+"Daily" = "Daily";
+"Twice daily" = "Twice daily";
+"3x daily" = "3x daily";
+"Weekly" = "Weekly";
+"As needed" = "As needed";
+
+// MARK: - Nutrition Label Scanner
+"Nutrition Label" = "Nutrition Label";
+"Point at a Nutrition Facts label" = "Point at a Nutrition Facts label";
+"Claude reads the entire panel in seconds" = "Claude reads the entire panel in seconds";
+"Good lighting improves accuracy" = "Good lighting improves accuracy";
+"Include the full label in frame" = "Include the full label in frame";
+"Hold steady for sharpest scan" = "Hold steady for sharpest scan";
+"Scan label with camera" = "Scan label with camera";
+"Choose from photo library" = "Choose from photo library";
+"Reading nutrition label…" = "Reading nutrition label…";
+"Label read successfully" = "Label read successfully";
+"How much did you eat?" = "How much did you eat?";
+"Nutrition (scaled)" = "Nutrition (scaled)";
+"Log this meal" = "Log this meal";
+"Scan again" = "Scan again";
+"Couldn't read label" = "Couldn't read label";
+
+// MARK: - What's New
+"What's new in Sana" = "What's new in Sana";
+"Version" = "Version";
+
+// MARK: - Body Metrics
+"Body Metrics" = "Body Metrics";
+
+// MARK: - Water Tracker
+"Fully hydrated!" = "Fully hydrated!";
+
+// MARK: - Weight
+"Log your weight to see your trend" = "Log your weight to see your trend";
+
+// MARK: - Fasting
+"Start Fast" = "Start Fast";
+"Stop Fast" = "Stop Fast";
+"Fasting" = "Fasting";
+"Not Fasting" = "Not Fasting";
+
+// MARK: - Coach
+"Send" = "Send";
+
+// MARK: - Meal Plan
+"Generate plan" = "Generate plan";
+"Log now" = "Log now";
+"Mark as eaten" = "Mark as eaten";
+
+// MARK: - Recipe
+"Generate Recipe" = "Generate Recipe";
+"Serving size" = "Serving size";
+
+// MARK: - Onboarding
+"Get started" = "Get started";
+"Next" = "Next";
+
+// MARK: - Range pickers
+"7 days" = "7 days";
+"30 days" = "30 days";
+"7d" = "7d";
+"30d" = "30d";
+"90d" = "90d";
+
+// MARK: - Format strings
+"No %@ logged today" = "No %@ logged today";
+"%@ today" = "%@ today";
+
+// MARK: - Profile (extended)
+"Language" = "Language";
+
+// MARK: - Sleep & Nutrition card insights
+"Connect Apple Health to see how your sleep affects eating habits." = "Connect Apple Health to see how your sleep affects eating habits.";
+"Great sleep! Well-rested nights are linked to better food choices and reduced cravings." = "Great sleep! Well-rested nights are linked to better food choices and reduced cravings.";
+"Slightly under 7 hours. Mild sleep debt can increase appetite by ~15%. Stay mindful of snacking." = "Slightly under 7 hours. Mild sleep debt can increase appetite by ~15%. Stay mindful of snacking.";
+"Less than 5 hours detected. Poor sleep raises ghrelin (hunger hormone) — aim for nutrient-dense meals today." = "Less than 5 hours detected. Poor sleep raises ghrelin (hunger hormone) — aim for nutrient-dense meals today.";
+
+// MARK: - Meal Plan (extended)
+"Nutrition coach" = "Nutrition coach";
+"Regenerate" = "Regenerate";
+"Generate my plan" = "Generate my plan";
+"No meal plan yet" = "No meal plan yet";
+"Generate a personalised 3-day meal plan tailored to your goals, preferences, and nutritional needs." = "Generate a personalised 3-day meal plan tailored to your goals, preferences, and nutritional needs.";
+"Building your meal plan…" = "Building your meal plan…";
+"Claude is personalising 3 days of meals for you" = "Claude is personalising 3 days of meals for you";
+"Ingredients" = "Ingredients";
+"Recipe" = "Recipe";
+
+// MARK: - Change Meal (Replace)
+"Change Meal" = "Change Meal";
+"Replacing" = "Replacing";
+"What would you prefer? (optional)" = "What would you prefer? (optional)";
+"e.g. something lighter, no dairy…" = "e.g. something lighter, no dairy…";
+"Quick picks" = "Quick picks";
+"Something lighter" = "Something lighter";
+"Higher protein" = "Higher protein";
+"Vegan option" = "Vegan option";
+"No cooking needed" = "No cooking needed";
+"Something different" = "Something different";
+"Finding a replacement…" = "Finding a replacement…";
+"Replace with something new" = "Replace with something new";
+
+// MARK: - Coach Plan Card
+"Meal plan ready" = "Meal plan ready";
+"I've built a personalised weekly plan. Save it to Meal Plan?" = "I've built a personalised weekly plan. Save it to Meal Plan?";
+"Dismiss" = "Dismiss";
+"Meal plan saved! Switch to the Meal Plan tab to view it. 🗓" = "Meal plan saved! Switch to the Meal Plan tab to view it. 🗓";
+
+// MARK: - Coach Suggestions
+"Create a meal plan for me this week" = "Create a meal plan for me this week";
+"What should I eat to hit my protein goal today?" = "What should I eat to hit my protein goal today?";
+"Am I missing any key nutrients this week?" = "Am I missing any key nutrients this week?";
+"How can I reduce my sugar intake?" = "How can I reduce my sugar intake?";
+
+// MARK: - Ingredient Analysis
+"Claude is extracting macros, serving sizes, and ingredient list" = "Claude is extracting macros, serving sizes, and ingredient list";
+"× serving" = "× serving";
+"Contains concerning ingredients" = "Contains concerning ingredients";
+"Some ingredients to watch" = "Some ingredients to watch";
+"Clean ingredient list" = "Clean ingredient list";
+"High concern" = "High concern";
+"Watch" = "Watch";
+"Hide full list" = "Hide full list";
+"Show all %d ingredients" = "Show all %d ingredients";
+
+// Ingredient explanations (used via NSLocalizedString in IngredientHealthEngine)
+"High in saturated fat; linked to cardiovascular risk and environmental concerns." = "High in saturated fat; linked to cardiovascular risk and environmental concerns.";
+"Contains trans fats, which raise LDL cholesterol." = "Contains trans fats, which raise LDL cholesterol.";
+"Rapidly spikes blood sugar; associated with obesity and metabolic syndrome." = "Rapidly spikes blood sugar; associated with obesity and metabolic syndrome.";
+"Concentrated sugar source; contributes to excess calorie intake." = "Concentrated sugar source; contributes to excess calorie intake.";
+"Preservatives in processed meats linked to increased cancer risk." = "Preservatives in processed meats linked to increased cancer risk.";
+"Controversial additive; may cause digestive inflammation in some people." = "Controversial additive; may cause digestive inflammation in some people.";
+"Synthetic antioxidant preservatives; possible carcinogen at high doses." = "Synthetic antioxidant preservatives; possible carcinogen at high doses.";
+"Synthetic flavour/colour with no nutritional benefit." = "Synthetic flavour/colour with no nutritional benefit.";
+"Artificial sweetener; some studies link them to altered gut microbiome." = "Artificial sweetener; some studies link them to altered gut microbiome.";

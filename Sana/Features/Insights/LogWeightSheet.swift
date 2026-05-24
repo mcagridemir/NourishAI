@@ -1,0 +1,129 @@
+// Sana — LogWeightSheet.swift
+import SwiftUI
+import SwiftData
+
+struct LogWeightSheet: View {
+
+    @Bindable var user: User
+    @Environment(\.dismiss) private var dismiss
+    @State private var weightKg: Double
+
+    init(user: User) {
+        self.user = user
+        _weightKg = State(initialValue: user.latestWeightKg)
+    }
+
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: SanaTheme.Spacing.xl) {
+                Spacer()
+
+                weightDisplay
+                controls
+                changeIndicator
+
+                Spacer()
+
+                Button("Save") { save() }
+                    .buttonStyle(NourishButtonStyle())
+                    .padding(.bottom, SanaTheme.Spacing.lg)
+            }
+            .padding(.horizontal, SanaTheme.Spacing.md)
+            .background(SanaTheme.Color.background)
+            .navigationTitle("Log weight")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Cancel") { dismiss() }.foregroundStyle(.secondary)
+                }
+            }
+        }
+    }
+
+    // MARK: - Sub-views
+
+    private var weightDisplay: some View {
+        VStack(spacing: 4) {
+            Text(String(format: "%.1f", weightKg))
+                .font(.system(size: 72, weight: .bold, design: .rounded))
+                .foregroundStyle(SanaTheme.Color.primary)
+                .contentTransition(.numericText())
+                .animation(SanaTheme.Animation.smooth, value: weightKg)
+            Text("kg")
+                .font(SanaTheme.Font.headline(20))
+                .foregroundStyle(.secondary)
+        }
+    }
+
+    private var controls: some View {
+        VStack(spacing: SanaTheme.Spacing.md) {
+            HStack(spacing: SanaTheme.Spacing.lg) {
+                Button {
+                    HapticService.impact(.light)
+                    weightKg = max(30, weightKg - 0.1)
+                } label: {
+                    Image(systemName: "minus.circle.fill")
+                        .font(.system(size: 44))
+                        .foregroundStyle(SanaTheme.Color.primaryLight)
+                }
+                Spacer()
+                Button {
+                    HapticService.impact(.light)
+                    weightKg = min(300, weightKg + 0.1)
+                } label: {
+                    Image(systemName: "plus.circle.fill")
+                        .font(.system(size: 44))
+                        .foregroundStyle(SanaTheme.Color.primary)
+                }
+            }
+
+            Slider(value: $weightKg, in: max(30, weightKg - 30)...min(300, weightKg + 30), step: 0.1)
+                .tint(SanaTheme.Color.primary)
+        }
+        .padding()
+        .nourishCard()
+    }
+
+    @ViewBuilder
+    private var changeIndicator: some View {
+        let diff = weightKg - user.latestWeightKg
+        if abs(diff) >= 0.1 {
+            HStack(spacing: 6) {
+                Image(systemName: diff < 0 ? "arrow.down.circle.fill" : "arrow.up.circle.fill")
+                    .foregroundStyle(diff < 0 ? SanaTheme.Color.primary : .orange)
+                Text("\(diff < 0 ? "" : "+")\(String(format: "%.1f", diff)) kg from last entry")
+                    .font(SanaTheme.Font.caption())
+                    .foregroundStyle(.secondary)
+            }
+        }
+    }
+
+    // MARK: - Save
+
+    private func save() {
+        HapticService.notification(.success)
+        let entry = WeightEntry(weightKg: weightKg)
+        entry.user = user
+        user.weightEntries.append(entry)
+        user.weightKg = weightKg
+        Task { try? await HealthKitService.shared.writeWeight(kg: weightKg) }
+        dismiss()
+    }
+}
+
+private struct LogWeightPreview: View {
+    let container: ModelContainer
+    let user: User
+    init() {
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let c = try! ModelContainer(for: User.self, configurations: config)
+        let u = User(name: "Preview", email: "preview@test.com")
+        c.mainContext.insert(u)
+        container = c; user = u
+    }
+    var body: some View {
+        LogWeightSheet(user: user).modelContainer(container)
+    }
+}
+
+#Preview { LogWeightPreview() }

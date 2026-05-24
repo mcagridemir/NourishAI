@@ -27,7 +27,10 @@ fastlane/test_output
 
 # Secrets / config
 *.xcconfig
-!NourishAI/Debug.xcconfig
+!Sana/Debug.xcconfig
+
+# API key helper script output — never commit actual key values
+Scripts/generate_api_key.py.out
 
 # macOS
 .DS_Store

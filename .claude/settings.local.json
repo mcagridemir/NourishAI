@@ -1,7 +1,26 @@
 {
   "permissions": {
     "allow": [
-      "Bash(xcodebuild -scheme NourishAI -destination 'platform=iOS Simulator,id=2B7D4748-D625-4B23-B553-C13B01715329' -quiet build)"
+      "Bash(xcodebuild -scheme NourishAI -destination 'platform=iOS Simulator,id=2B7D4748-D625-4B23-B553-C13B01715329' -quiet build)",
+      "Bash(grep -oE '\"[^\"]{2,}\"')",
+      "Bash(xcodebuild -scheme NourishAI -destination 'platform=iOS Simulator,id=2B7D4748-D625-4B23-B553-C13B01715329' build)",
+      "Bash(swift -e ' *)",
+      "Bash(sed -i '' 's/Text\\(\"NourishAI\"\\)/Text\\(\"Sana\"\\)/g' /Users/cagri.demir/iOSProjects/NourishAI/NourishAI/Features/Dashboard/DashboardView.swift)",
+      "Bash(sed -i '' 's/.navigationTitle\\(\"NourishAI\"\\)/.navigationTitle\\(\"Sana\"\\)/g' /Users/cagri.demir/iOSProjects/NourishAI/NourishAI/App/MainTabView.swift)",
+      "Bash(sed -i '' 's/I'\\\\''m your NourishAI coach./I'\\\\''m your Sana coach./g' /Users/cagri.demir/iOSProjects/NourishAI/NourishAI/Features/Coach/CoachView.swift)",
+      "Bash(sed -i '' 's/Text\\(\"NourishAI\"\\)/Text\\(\"Sana\"\\)/g' /Users/cagri.demir/iOSProjects/NourishAI/NourishAI/Core/Components/NutritionShareCard.swift)",
+      "Bash(sed -i '' 's/Tracked with NourishAI/Tracked with Sana/g' /Users/cagri.demir/iOSProjects/NourishAI/NourishAI/Core/Components/NutritionShareCard.swift)",
+      "Bash(sed -i '' 's/What'\\\\''s new in NourishAI/What'\\\\''s new in Sana/g' /Users/cagri.demir/iOSProjects/NourishAI/NourishAI/en.lproj/Localizable.strings)",
+      "Bash(sed -i '' 's|/\\\\* NourishAI — English|/* Sana — English|g' /Users/cagri.demir/iOSProjects/NourishAI/NourishAI/en.lproj/Localizable.strings)",
+      "Bash(sed -i '' 's/NourishAI'\\\\''daki Yenilikler/Sana'\\\\''daki Yenilikler/g' /Users/cagri.demir/iOSProjects/NourishAI/NourishAI/tr.lproj/Localizable.strings)",
+      "Bash(sed -i '' 's|/\\\\* NourishAI — |/* Sana — |g' /Users/cagri.demir/iOSProjects/NourishAI/NourishAI/tr.lproj/Localizable.strings)",
+      "Bash(sed -i '' 's/CFBundleDisplayName = \"NourishAI\"/CFBundleDisplayName = \"Sana\"/g' /Users/cagri.demir/iOSProjects/NourishAI/NourishAI/en.lproj/InfoPlist.strings)",
+      "Bash(cp -R /Users/cagri.demir/Downloads/NourishAI-2/logo/AppIcon.appiconset/light /Users/cagri.demir/iOSProjects/NourishAI/Sana/Assets.xcassets/AppIcon.appiconset/light)",
+      "Bash(cp -R /Users/cagri.demir/Downloads/NourishAI-2/logo/AppIcon.appiconset/dark /Users/cagri.demir/iOSProjects/NourishAI/Sana/Assets.xcassets/AppIcon.appiconset/dark)",
+      "Bash(cp -R /Users/cagri.demir/Downloads/NourishAI-2/logo/AppIcon.appiconset/tinted /Users/cagri.demir/iOSProjects/NourishAI/Sana/Assets.xcassets/AppIcon.appiconset/tinted)",
+      "Bash(DEST=\"/Users/cagri.demir/iOSProjects/NourishAI/SanaWatch Watch App/Assets.xcassets/AppIcon.appiconset\" *)",
+      "Bash(xargs -I{} basename {})",
+      "Bash(xargs -I{} basename {} .colorset)"
     ]
   }
 }

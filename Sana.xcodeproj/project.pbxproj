@@ -1,0 +1,1170 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8583E1162FC21B6D006ACF1B /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8583E1152FC21B6D006ACF1B /* WidgetKit.framework */; };
+		8583E1182FC21B6D006ACF1B /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8583E1172FC21B6D006ACF1B /* SwiftUI.framework */; };
+		8583E1252FC21B6E006ACF1B /* SanaWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 8583E1132FC21B6D006ACF1B /* SanaWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8583E0382FC1E604006ACF1B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8583E0222FC1E602006ACF1B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8583E0292FC1E602006ACF1B;
+			remoteInfo = Sana;
+		};
+		8583E0422FC1E604006ACF1B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8583E0222FC1E602006ACF1B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8583E0292FC1E602006ACF1B;
+			remoteInfo = Sana;
+		};
+		8583E1232FC21B6E006ACF1B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8583E0222FC1E602006ACF1B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8583E1122FC21B6D006ACF1B;
+			remoteInfo = SanaWidgetExtension;
+		};
+		858C6A522FC255C30069778F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8583E0222FC1E602006ACF1B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 858C6A442FC255C30069778F;
+			remoteInfo = "SanaWatch Watch App";
+		};
+		858C6A5C2FC255C30069778F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8583E0222FC1E602006ACF1B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 858C6A442FC255C30069778F;
+			remoteInfo = "SanaWatch Watch App";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8583E12A2FC21B6E006ACF1B /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				8583E1252FC21B6E006ACF1B /* SanaWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		8583E02A2FC1E602006ACF1B /* Sana.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sana.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8583E0372FC1E604006ACF1B /* SanaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SanaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8583E0412FC1E604006ACF1B /* SanaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SanaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8583E1132FC21B6D006ACF1B /* SanaWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SanaWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		8583E1152FC21B6D006ACF1B /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		8583E1172FC21B6D006ACF1B /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		8583E13E2FC24FA5006ACF1B /* SanaWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SanaWidgetExtension.entitlements; sourceTree = "<group>"; };
+		858C6A452FC255C30069778F /* SanaWatch Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SanaWatch Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		858C6A512FC255C30069778F /* SanaWatch Watch AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SanaWatch Watch AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		858C6A5B2FC255C30069778F /* SanaWatch Watch AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SanaWatch Watch AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		8583E02C2FC1E602006ACF1B /* Sana */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Sana;
+			sourceTree = "<group>";
+		};
+		8583E03A2FC1E604006ACF1B /* SanaTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = SanaTests;
+			sourceTree = "<group>";
+		};
+		8583E0442FC1E604006ACF1B /* SanaUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = SanaUITests;
+			sourceTree = "<group>";
+		};
+		8583E1192FC21B6D006ACF1B /* SanaWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = SanaWidget;
+			sourceTree = "<group>";
+		};
+		858C6A462FC255C30069778F /* SanaWatch Watch App */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "SanaWatch Watch App";
+			sourceTree = "<group>";
+		};
+		858C6A542FC255C30069778F /* SanaWatch Watch AppTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "SanaWatch Watch AppTests";
+			sourceTree = "<group>";
+		};
+		858C6A5E2FC255C30069778F /* SanaWatch Watch AppUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "SanaWatch Watch AppUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8583E0272FC1E602006ACF1B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8583E0342FC1E604006ACF1B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8583E03E2FC1E604006ACF1B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8583E1102FC21B6D006ACF1B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8583E1182FC21B6D006ACF1B /* SwiftUI.framework in Frameworks */,
+				8583E1162FC21B6D006ACF1B /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		858C6A422FC255C30069778F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		858C6A4E2FC255C30069778F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		858C6A582FC255C30069778F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8583E0212FC1E602006ACF1B = {
+			isa = PBXGroup;
+			children = (
+				8583E13E2FC24FA5006ACF1B /* SanaWidgetExtension.entitlements */,
+				8583E02C2FC1E602006ACF1B /* Sana */,
+				8583E03A2FC1E604006ACF1B /* SanaTests */,
+				8583E0442FC1E604006ACF1B /* SanaUITests */,
+				8583E1192FC21B6D006ACF1B /* SanaWidget */,
+				858C6A462FC255C30069778F /* SanaWatch Watch App */,
+				858C6A542FC255C30069778F /* SanaWatch Watch AppTests */,
+				858C6A5E2FC255C30069778F /* SanaWatch Watch AppUITests */,
+				8583E1142FC21B6D006ACF1B /* Frameworks */,
+				8583E02B2FC1E602006ACF1B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		8583E02B2FC1E602006ACF1B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8583E02A2FC1E602006ACF1B /* Sana.app */,
+				8583E0372FC1E604006ACF1B /* SanaTests.xctest */,
+				8583E0412FC1E604006ACF1B /* SanaUITests.xctest */,
+				8583E1132FC21B6D006ACF1B /* SanaWidgetExtension.appex */,
+				858C6A452FC255C30069778F /* SanaWatch Watch App.app */,
+				858C6A512FC255C30069778F /* SanaWatch Watch AppTests.xctest */,
+				858C6A5B2FC255C30069778F /* SanaWatch Watch AppUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8583E1142FC21B6D006ACF1B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8583E1152FC21B6D006ACF1B /* WidgetKit.framework */,
+				8583E1172FC21B6D006ACF1B /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8583E0292FC1E602006ACF1B /* Sana */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8583E04B2FC1E604006ACF1B /* Build configuration list for PBXNativeTarget "Sana" */;
+			buildPhases = (
+				8583E0262FC1E602006ACF1B /* Sources */,
+				8583E0272FC1E602006ACF1B /* Frameworks */,
+				8583E0282FC1E602006ACF1B /* Resources */,
+				8583E12A2FC21B6E006ACF1B /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8583E1242FC21B6E006ACF1B /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				8583E02C2FC1E602006ACF1B /* Sana */,
+			);
+			name = Sana;
+			packageProductDependencies = (
+			);
+			productName = Sana;
+			productReference = 8583E02A2FC1E602006ACF1B /* Sana.app */;
+			productType = "com.apple.product-type.application";
+		};
+		8583E0362FC1E604006ACF1B /* SanaTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8583E04E2FC1E604006ACF1B /* Build configuration list for PBXNativeTarget "SanaTests" */;
+			buildPhases = (
+				8583E0332FC1E604006ACF1B /* Sources */,
+				8583E0342FC1E604006ACF1B /* Frameworks */,
+				8583E0352FC1E604006ACF1B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8583E0392FC1E604006ACF1B /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				8583E03A2FC1E604006ACF1B /* SanaTests */,
+			);
+			name = SanaTests;
+			packageProductDependencies = (
+			);
+			productName = SanaTests;
+			productReference = 8583E0372FC1E604006ACF1B /* SanaTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		8583E0402FC1E604006ACF1B /* SanaUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8583E0512FC1E604006ACF1B /* Build configuration list for PBXNativeTarget "SanaUITests" */;
+			buildPhases = (
+				8583E03D2FC1E604006ACF1B /* Sources */,
+				8583E03E2FC1E604006ACF1B /* Frameworks */,
+				8583E03F2FC1E604006ACF1B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8583E0432FC1E604006ACF1B /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				8583E0442FC1E604006ACF1B /* SanaUITests */,
+			);
+			name = SanaUITests;
+			packageProductDependencies = (
+			);
+			productName = SanaUITests;
+			productReference = 8583E0412FC1E604006ACF1B /* SanaUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		8583E1122FC21B6D006ACF1B /* SanaWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8583E1262FC21B6E006ACF1B /* Build configuration list for PBXNativeTarget "SanaWidgetExtension" */;
+			buildPhases = (
+				8583E10F2FC21B6D006ACF1B /* Sources */,
+				8583E1102FC21B6D006ACF1B /* Frameworks */,
+				8583E1112FC21B6D006ACF1B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				8583E1192FC21B6D006ACF1B /* SanaWidget */,
+			);
+			name = SanaWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = SanaWidgetExtension;
+			productReference = 8583E1132FC21B6D006ACF1B /* SanaWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		858C6A442FC255C30069778F /* SanaWatch Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 858C6A632FC255C30069778F /* Build configuration list for PBXNativeTarget "SanaWatch Watch App" */;
+			buildPhases = (
+				858C6A412FC255C30069778F /* Sources */,
+				858C6A422FC255C30069778F /* Frameworks */,
+				858C6A432FC255C30069778F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				858C6A462FC255C30069778F /* SanaWatch Watch App */,
+			);
+			name = "SanaWatch Watch App";
+			packageProductDependencies = (
+			);
+			productName = "SanaWatch Watch App";
+			productReference = 858C6A452FC255C30069778F /* SanaWatch Watch App.app */;
+			productType = "com.apple.product-type.application";
+		};
+		858C6A502FC255C30069778F /* SanaWatch Watch AppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 858C6A662FC255C30069778F /* Build configuration list for PBXNativeTarget "SanaWatch Watch AppTests" */;
+			buildPhases = (
+				858C6A4D2FC255C30069778F /* Sources */,
+				858C6A4E2FC255C30069778F /* Frameworks */,
+				858C6A4F2FC255C30069778F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				858C6A532FC255C30069778F /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				858C6A542FC255C30069778F /* SanaWatch Watch AppTests */,
+			);
+			name = "SanaWatch Watch AppTests";
+			packageProductDependencies = (
+			);
+			productName = "SanaWatch Watch AppTests";
+			productReference = 858C6A512FC255C30069778F /* SanaWatch Watch AppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		858C6A5A2FC255C30069778F /* SanaWatch Watch AppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 858C6A692FC255C30069778F /* Build configuration list for PBXNativeTarget "SanaWatch Watch AppUITests" */;
+			buildPhases = (
+				858C6A572FC255C30069778F /* Sources */,
+				858C6A582FC255C30069778F /* Frameworks */,
+				858C6A592FC255C30069778F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				858C6A5D2FC255C30069778F /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				858C6A5E2FC255C30069778F /* SanaWatch Watch AppUITests */,
+			);
+			name = "SanaWatch Watch AppUITests";
+			packageProductDependencies = (
+			);
+			productName = "SanaWatch Watch AppUITests";
+			productReference = 858C6A5B2FC255C30069778F /* SanaWatch Watch AppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8583E0222FC1E602006ACF1B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2620;
+				LastUpgradeCheck = 2620;
+				TargetAttributes = {
+					8583E0292FC1E602006ACF1B = {
+						CreatedOnToolsVersion = 26.2;
+					};
+					8583E0362FC1E604006ACF1B = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = 8583E0292FC1E602006ACF1B;
+					};
+					8583E0402FC1E604006ACF1B = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = 8583E0292FC1E602006ACF1B;
+					};
+					8583E1122FC21B6D006ACF1B = {
+						CreatedOnToolsVersion = 26.2;
+					};
+					858C6A442FC255C30069778F = {
+						CreatedOnToolsVersion = 26.2;
+					};
+					858C6A502FC255C30069778F = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = 858C6A442FC255C30069778F;
+					};
+					858C6A5A2FC255C30069778F = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = 858C6A442FC255C30069778F;
+					};
+				};
+			};
+			buildConfigurationList = 8583E0252FC1E602006ACF1B /* Build configuration list for PBXProject "Sana" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				tr,
+			);
+			mainGroup = 8583E0212FC1E602006ACF1B;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 8583E02B2FC1E602006ACF1B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8583E0292FC1E602006ACF1B /* Sana */,
+				8583E0362FC1E604006ACF1B /* SanaTests */,
+				8583E0402FC1E604006ACF1B /* SanaUITests */,
+				8583E1122FC21B6D006ACF1B /* SanaWidgetExtension */,
+				858C6A442FC255C30069778F /* SanaWatch Watch App */,
+				858C6A502FC255C30069778F /* SanaWatch Watch AppTests */,
+				858C6A5A2FC255C30069778F /* SanaWatch Watch AppUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8583E0282FC1E602006ACF1B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8583E0352FC1E604006ACF1B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8583E03F2FC1E604006ACF1B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8583E1112FC21B6D006ACF1B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		858C6A432FC255C30069778F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		858C6A4F2FC255C30069778F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		858C6A592FC255C30069778F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8583E0262FC1E602006ACF1B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8583E0332FC1E604006ACF1B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8583E03D2FC1E604006ACF1B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8583E10F2FC21B6D006ACF1B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		858C6A412FC255C30069778F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		858C6A4D2FC255C30069778F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		858C6A572FC255C30069778F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8583E0392FC1E604006ACF1B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8583E0292FC1E602006ACF1B /* Sana */;
+			targetProxy = 8583E0382FC1E604006ACF1B /* PBXContainerItemProxy */;
+		};
+		8583E0432FC1E604006ACF1B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8583E0292FC1E602006ACF1B /* Sana */;
+			targetProxy = 8583E0422FC1E604006ACF1B /* PBXContainerItemProxy */;
+		};
+		8583E1242FC21B6E006ACF1B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8583E1122FC21B6D006ACF1B /* SanaWidgetExtension */;
+			targetProxy = 8583E1232FC21B6E006ACF1B /* PBXContainerItemProxy */;
+		};
+		858C6A532FC255C30069778F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 858C6A442FC255C30069778F /* SanaWatch Watch App */;
+			targetProxy = 858C6A522FC255C30069778F /* PBXContainerItemProxy */;
+		};
+		858C6A5D2FC255C30069778F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 858C6A442FC255C30069778F /* SanaWatch Watch App */;
+			targetProxy = 858C6A5C2FC255C30069778F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		8583E0492FC1E604006ACF1B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 8583E02C2FC1E602006ACF1B /* Sana */;
+			baseConfigurationReferenceRelativePath = Debug.xcconfig;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = NHFBU2GC6N;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		8583E04A2FC1E604006ACF1B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = NHFBU2GC6N;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8583E04C2FC1E604006ACF1B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 8583E02C2FC1E602006ACF1B /* Sana */;
+			baseConfigurationReferenceRelativePath = Debug.xcconfig;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Sana/Sana.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NHFBU2GC6N;
+				ENABLE_PREVIEWS = YES;
+				EXCLUDED_SOURCE_FILE_NAMES = Info.plist;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Sana/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Sana uses your camera to photograph and analyse your meals.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Sana reads your activity and sleep data to personalise your nutrition advice.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Sana logs your meals to Apple Health to keep your nutrition data in sync.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Sana accesses your photos to analyse meal images.";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cagri.Sana;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8583E04D2FC1E604006ACF1B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Sana/Sana.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NHFBU2GC6N;
+				ENABLE_PREVIEWS = YES;
+				EXCLUDED_SOURCE_FILE_NAMES = Info.plist;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Sana/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Sana uses your camera to photograph and analyse your meals.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Sana reads your activity and sleep data to personalise your nutrition advice.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Sana logs your meals to Apple Health to keep your nutrition data in sync.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Sana accesses your photos to analyse meal images.";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cagri.Sana;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		8583E04F2FC1E604006ACF1B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 8583E02C2FC1E602006ACF1B /* Sana */;
+			baseConfigurationReferenceRelativePath = Debug.xcconfig;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NHFBU2GC6N;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cagri.SanaTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Sana.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Sana";
+			};
+			name = Debug;
+		};
+		8583E0502FC1E604006ACF1B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NHFBU2GC6N;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cagri.SanaTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Sana.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Sana";
+			};
+			name = Release;
+		};
+		8583E0522FC1E604006ACF1B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 8583E02C2FC1E602006ACF1B /* Sana */;
+			baseConfigurationReferenceRelativePath = Debug.xcconfig;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NHFBU2GC6N;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cagri.SanaUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Sana;
+			};
+			name = Debug;
+		};
+		8583E0532FC1E604006ACF1B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NHFBU2GC6N;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cagri.SanaUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Sana;
+			};
+			name = Release;
+		};
+		8583E1272FC21B6E006ACF1B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = SanaWidgetExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NHFBU2GC6N;
+				EXCLUDED_SOURCE_FILE_NAMES = Info.plist;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = SanaWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SanaWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cagri.Sana.SanaWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8583E1282FC21B6E006ACF1B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = SanaWidgetExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NHFBU2GC6N;
+				EXCLUDED_SOURCE_FILE_NAMES = Info.plist;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = SanaWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SanaWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cagri.Sana.SanaWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		858C6A642FC255C30069778F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "SanaWatch Watch App/SanaWatch Watch App.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NHFBU2GC6N;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = SanaWatch;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = .watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Debug;
+		};
+		858C6A652FC255C30069778F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "SanaWatch Watch App/SanaWatch Watch App.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NHFBU2GC6N;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = SanaWatch;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = .watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Release;
+		};
+		858C6A672FC255C30069778F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NHFBU2GC6N;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.cagri.SanaWatch-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SanaWatch Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SanaWatch Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Debug;
+		};
+		858C6A682FC255C30069778F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NHFBU2GC6N;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.cagri.SanaWatch-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SanaWatch Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SanaWatch Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Release;
+		};
+		858C6A6A2FC255C30069778F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NHFBU2GC6N;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.cagri.SanaWatch-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "SanaWatch Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Debug;
+		};
+		858C6A6B2FC255C30069778F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NHFBU2GC6N;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.cagri.SanaWatch-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "SanaWatch Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8583E0252FC1E602006ACF1B /* Build configuration list for PBXProject "Sana" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8583E0492FC1E604006ACF1B /* Debug */,
+				8583E04A2FC1E604006ACF1B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8583E04B2FC1E604006ACF1B /* Build configuration list for PBXNativeTarget "Sana" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8583E04C2FC1E604006ACF1B /* Debug */,
+				8583E04D2FC1E604006ACF1B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8583E04E2FC1E604006ACF1B /* Build configuration list for PBXNativeTarget "SanaTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8583E04F2FC1E604006ACF1B /* Debug */,
+				8583E0502FC1E604006ACF1B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8583E0512FC1E604006ACF1B /* Build configuration list for PBXNativeTarget "SanaUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8583E0522FC1E604006ACF1B /* Debug */,
+				8583E0532FC1E604006ACF1B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8583E1262FC21B6E006ACF1B /* Build configuration list for PBXNativeTarget "SanaWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8583E1272FC21B6E006ACF1B /* Debug */,
+				8583E1282FC21B6E006ACF1B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		858C6A632FC255C30069778F /* Build configuration list for PBXNativeTarget "SanaWatch Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				858C6A642FC255C30069778F /* Debug */,
+				858C6A652FC255C30069778F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		858C6A662FC255C30069778F /* Build configuration list for PBXNativeTarget "SanaWatch Watch AppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				858C6A672FC255C30069778F /* Debug */,
+				858C6A682FC255C30069778F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		858C6A692FC255C30069778F /* Build configuration list for PBXNativeTarget "SanaWatch Watch AppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				858C6A6A2FC255C30069778F /* Debug */,
+				858C6A6B2FC255C30069778F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8583E0222FC1E602006ACF1B /* Project object */;
+}
