@@ -2,7 +2,28 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>com.cagri.NourishAI.widgetRefresh</string>
+	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.cagri.NourishAI</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>nourishai</string>
+			</array>
+		</dict>
+	</array>
 	<key>CLAUDE_API_KEY</key>
 	<string>$(CLAUDE_API_KEY)</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>NourishAI uses the microphone to let you log meals by voice.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>NourishAI uses speech recognition to transcribe your spoken meal names.</string>
+	<key>NSSupportsLiveActivities</key>
+	<true/>
 </dict>
 </plist>

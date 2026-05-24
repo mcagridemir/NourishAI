@@ -6,6 +6,14 @@ struct ProfileView: View {
     @EnvironmentObject private var subscription: SubscriptionService
     @State private var showingPaywall = false
     @State private var showingNotifSettings = false
+    @State private var showingEditProfile = false
+    @State private var showingLogWeight = false
+    @State private var exportURL: URL?
+    @State private var showingExport = false
+    @State private var showingAchievements = false
+    @State private var showingBodyMetrics = false
+    @State private var showingThemePicker = false
+    @State private var showingSupplements = false
 
     var body: some View {
         List {
@@ -30,7 +38,30 @@ struct ProfileView: View {
             // Physical stats
             Section("Physical profile") {
                 ProfileRow(label: "Height", value: "\(Int(user.heightCm)) cm")
-                ProfileRow(label: "Weight", value: "\(String(format: "%.1f", user.weightKg)) kg")
+                HStack {
+                    Text("Weight").foregroundStyle(.secondary)
+                    Spacer()
+                    Text("\(String(format: "%.1f", user.latestWeightKg)) kg")
+                    Button {
+                        HapticService.selection()
+                        showingLogWeight = true
+                    } label: {
+                        Image(systemName: "plus.circle.fill")
+                            .foregroundStyle(NourishTheme.Color.primary)
+                    }
+                    .buttonStyle(.plain)
+                }
+                if let change = user.weightChangeSinceStart {
+                    HStack {
+                        Spacer()
+                        Label(
+                            "\(change < 0 ? "" : "+")\(String(format: "%.1f", change)) kg total",
+                            systemImage: change < 0 ? "arrow.down.circle.fill" : "arrow.up.circle.fill"
+                        )
+                        .font(NourishTheme.Font.caption())
+                        .foregroundStyle(change < 0 ? NourishTheme.Color.primary : .orange)
+                    }
+                }
                 ProfileRow(label: "BMI", value: String(format: "%.1f", user.bmi))
                 ProfileRow(label: "Activity level", value: user.activityLevel.rawValue)
             }
@@ -58,18 +89,82 @@ struct ProfileView: View {
                 }
             }
 
+            // Achievements & metrics
+            Section("Progress") {
+                Button { showingAchievements = true } label: {
+                    HStack {
+                        Label("Achievements", systemImage: "trophy.fill").foregroundStyle(.primary)
+                        Spacer()
+                        let count = Achievement.all.filter { $0.checkUnlocked(user) }.count
+                        Text("\(count)/\(Achievement.all.count)")
+                            .font(NourishTheme.Font.caption())
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                Button { showingBodyMetrics = true } label: {
+                    Label("Body metrics", systemImage: "figure.stand").foregroundStyle(.primary)
+                }
+                Button { showingSupplements = true } label: {
+                    Label("Supplements", systemImage: "pill.fill").foregroundStyle(.primary)
+                }
+            }
+
             // Settings
             Section("Settings") {
                 Button { showingNotifSettings = true } label: {
                     Label("Notification preferences", systemImage: "bell").foregroundStyle(.primary)
                 }
+                Button { showingThemePicker = true } label: {
+                    HStack {
+                        Label("App theme", systemImage: "paintpalette.fill").foregroundStyle(.primary)
+                        Spacer()
+                        Circle()
+                            .fill(ThemeManager.shared.primaryColor)
+                            .frame(width: 18, height: 18)
+                    }
+                }
                 NavigationLink(destination: AllergiesEditView(user: user)) {
                     Label("Allergies & restrictions", systemImage: "exclamationmark.shield")
+                }
+                Button {
+                    if let url = ExportService.csvURL(for: user) {
+                        exportURL = url
+                        showingExport = true
+                    }
+                } label: {
+                    Label("Export meal data (CSV)", systemImage: "square.and.arrow.up")
+                        .foregroundStyle(.primary)
                 }
             }
         }
         .navigationTitle("Profile")
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Edit") { showingEditProfile = true }
+                    .foregroundStyle(NourishTheme.Color.primary)
+            }
+        }
         .sheet(isPresented: $showingPaywall) { PaywallView().environmentObject(subscription) }
+        .sheet(isPresented: $showingNotifSettings) { NotificationSettingsView() }
+        .sheet(isPresented: $showingEditProfile) { EditProfileView(user: user) }
+        .sheet(isPresented: $showingLogWeight) { LogWeightSheet(user: user) }
+        .sheet(isPresented: $showingExport) {
+            if let url = exportURL {
+                ShareSheet(items: [url])
+            }
+        }
+        .sheet(isPresented: $showingAchievements) {
+            AchievementsView(user: user)
+        }
+        .sheet(isPresented: $showingBodyMetrics) {
+            BodyMetricsView(user: user)
+        }
+        .sheet(isPresented: $showingThemePicker) {
+            ThemePickerView()
+        }
+        .sheet(isPresented: $showingSupplements) {
+            SupplementTrackerView()
+        }
     }
 }
 

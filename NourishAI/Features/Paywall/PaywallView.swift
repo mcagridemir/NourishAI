@@ -147,8 +147,10 @@ struct PaywallView: View {
               let product = subscription.products.first(where: { $0.id == id }) else { return }
         do {
             try await subscription.purchase(product)
+            HapticService.notification(.success)
             dismiss()
         } catch {
+            HapticService.notification(.error)
             self.error = error.localizedDescription
         }
     }

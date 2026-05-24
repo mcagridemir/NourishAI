@@ -28,6 +28,7 @@ struct CameraView: UIViewControllerRepresentable {
 
 struct ManualMealEntryView: View {
     let mealType: MealType
+    var prefillName: String = ""
     let onSave: (String, Int, Double, Double, Double) -> Void
     @Environment(\.dismiss) private var dismiss
     @State private var name = ""
@@ -51,6 +52,7 @@ struct ManualMealEntryView: View {
             }
             .navigationTitle("Manual entry")
             .navigationBarTitleDisplayMode(.inline)
+            .onAppear { if name.isEmpty { name = prefillName } }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) { Button("Cancel") { dismiss() } }
                 ToolbarItem(placement: .topBarTrailing) {

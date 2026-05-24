@@ -7,6 +7,10 @@ struct DashboardView: View {
     @Bindable var user: User
     @StateObject private var vm: DashboardViewModel
     @EnvironmentObject private var healthKit: HealthKitService
+    @AppStorage("celebrated.streaks") private var celebratedStreaks: String = ""
+    @State private var showingMilestone = false
+    @State private var showingGoals = false
+    @State private var showingMacroDetail: MacroType?
 
     init(user: User) {
         self.user = user
@@ -16,13 +20,20 @@ struct DashboardView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: NourishTheme.Spacing.lg) {
+                LazyVStack(spacing: NourishTheme.Spacing.lg) {
                     headerSection
+                    DailyScoreCard(user: user)
                     calorieRingSection
                     macroSection
+                    CaloriePredictionCard(user: user)
+                    waterTrackerSection
+                    fastingSection
                     healthMetricsSection
                     recentMealsSection
                     insightsBannerSection
+                    SupplementDashboardCard()
+                    SmartSuggestionCard(user: user)
+                    DailyTipCard()
                 }
                 .padding(.horizontal, NourishTheme.Spacing.md)
                 .padding(.bottom, 32)
@@ -50,6 +61,28 @@ struct DashboardView: View {
             }
         }
         .task { await vm.loadInsights() }
+        .task(id: user.currentStreak) { checkStreakMilestone() }
+        .sheet(isPresented: $showingGoals) { NutritionGoalsView(user: user) }
+        .sheet(item: $showingMacroDetail) { macro in MacroDetailView(user: user, macro: macro) }
+        .overlay {
+            if showingMilestone {
+                StreakMilestoneView(streak: user.currentStreak) {
+                    showingMilestone = false
+                }
+                .transition(.opacity)
+            }
+        }
+    }
+
+    private func checkStreakMilestone() {
+        let streak = user.currentStreak
+        guard StreakMilestoneView.milestone(for: streak) != nil else { return }
+        let key = "\(streak)"
+        guard !celebratedStreaks.components(separatedBy: ",").contains(key) else { return }
+        celebratedStreaks = (celebratedStreaks.isEmpty ? key : celebratedStreaks + "," + key)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+            withAnimation { showingMilestone = true }
+        }
     }
 
     // MARK: - Sections
@@ -64,33 +97,81 @@ struct DashboardView: View {
                     .font(NourishTheme.Font.title(26))
             }
             Spacer()
-            VStack(alignment: .trailing, spacing: 2) {
-                Text(Date.now.formatted(.dateTime.weekday(.wide)))
-                    .font(NourishTheme.Font.caption())
-                    .foregroundStyle(.secondary)
-                Text(Date.now.formatted(.dateTime.month().day()))
-                    .font(NourishTheme.Font.headline())
+            VStack(alignment: .trailing, spacing: 6) {
+                VStack(alignment: .trailing, spacing: 2) {
+                    Text(Date.now.formatted(.dateTime.weekday(.wide)))
+                        .font(NourishTheme.Font.caption())
+                        .foregroundStyle(.secondary)
+                    Text(Date.now.formatted(.dateTime.month().day()))
+                        .font(NourishTheme.Font.headline())
+                }
+                if user.currentStreak > 0 {
+                    HStack(spacing: 4) {
+                        Image(systemName: "flame.fill").foregroundStyle(.orange).font(.caption)
+                        Text("\(user.currentStreak) \(String(localized: "day streak"))")
+                            .font(NourishTheme.Font.caption(11))
+                            .foregroundStyle(.orange)
+                    }
+                    .padding(.horizontal, 8).padding(.vertical, 3)
+                    .background(Color.orange.opacity(0.12))
+                    .clipShape(Capsule())
+                }
             }
         }
         .padding(.top, 8)
     }
 
+    private var waterTrackerSection: some View {
+        WaterTrackerView(user: user)
+    }
+
+    private var fastingSection: some View {
+        FastingTrackerView()
+    }
+
+    /// Adjusted budget: base goal + 50% of active calories burned (conservative exercise compensation)
+    private var adjustedCalorieTarget: Int {
+        let bonus = Int(healthKit.todayActiveCalories * 0.5)
+        return user.dailyCalorieTarget + bonus
+    }
+
     private var calorieRingSection: some View {
-        HStack(alignment: .center, spacing: NourishTheme.Spacing.xl) {
-            MacroRingView(
-                calories: vm.todayCalories,
-                target: user.dailyCalorieTarget,
-                protein: vm.todayProtein,
-                carbs: vm.todayCarbs,
-                fat: vm.todayFat
-            )
-            VStack(alignment: .leading, spacing: 12) {
-                CalorieStat(label: "Goal",      value: "\(user.dailyCalorieTarget)", unit: "kcal")
-                CalorieStat(label: "Eaten",     value: "\(vm.todayCalories)", unit: "kcal", accent: true)
-                CalorieStat(label: "Remaining", value: "\(max(0, user.dailyCalorieTarget - vm.todayCalories))", unit: "kcal")
-                if healthKit.todayActiveCalories > 0 {
-                    CalorieStat(label: "Burned", value: "\(Int(healthKit.todayActiveCalories))", unit: "kcal")
+        VStack(spacing: 12) {
+            HStack(alignment: .center, spacing: NourishTheme.Spacing.xl) {
+                Button { showingGoals = true } label: {
+                    MacroRingView(
+                        calories: vm.todayCalories,
+                        target: adjustedCalorieTarget,
+                        protein: vm.todayProtein,
+                        carbs: vm.todayCarbs,
+                        fat: vm.todayFat
+                    )
                 }
+                .buttonStyle(.plain)
+                .accessibilityHint("Tap to view detailed goal breakdown")
+                VStack(alignment: .leading, spacing: 12) {
+                    CalorieStat(label: "Base goal",  value: "\(user.dailyCalorieTarget)", unit: "kcal")
+                    CalorieStat(label: "Eaten",      value: "\(vm.todayCalories)", unit: "kcal", accent: true)
+                    CalorieStat(label: "Remaining",  value: "\(max(0, adjustedCalorieTarget - vm.todayCalories))", unit: "kcal")
+                    if healthKit.todayActiveCalories > 50 {
+                        CalorieStat(label: "Exercise bonus (+50%)", value: "+\(Int(healthKit.todayActiveCalories * 0.5))", unit: "kcal")
+                    }
+                }
+            }
+
+            // Exercise adjustment banner
+            if healthKit.todayActiveCalories > 50 {
+                HStack(spacing: 8) {
+                    Image(systemName: "flame.fill").foregroundStyle(.orange).font(.system(size: 12))
+                    Text("Burned \(Int(healthKit.todayActiveCalories)) kcal · budget adjusted to \(adjustedCalorieTarget) kcal")
+                        .font(NourishTheme.Font.caption(12))
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                }
+                .padding(.horizontal, 8)
+                .padding(.vertical, 6)
+                .background(Color.orange.opacity(0.08))
+                .clipShape(RoundedRectangle(cornerRadius: NourishTheme.Radius.sm))
             }
         }
         .padding()
@@ -99,14 +180,22 @@ struct DashboardView: View {
 
     private var macroSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Macros today")
-                .font(NourishTheme.Font.headline())
-            MacroPillsView(
-                protein: vm.todayProtein,
-                carbs: vm.todayCarbs,
-                fat: vm.todayFat,
-                fiber: vm.todayFiber
-            )
+            HStack {
+                Text("Macros today").font(NourishTheme.Font.headline())
+                Spacer()
+                Text("Tap for details")
+                    .font(NourishTheme.Font.caption(10))
+                    .foregroundStyle(.secondary)
+            }
+            // Tappable macro pills
+            HStack(spacing: 12) {
+                ForEach([MacroType.protein, .carbs, .fat, .fiber], id: \.self) { macro in
+                    Button { showingMacroDetail = macro } label: {
+                        tappablePill(for: macro)
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
             MacroProgressBars(
                 protein: vm.todayProtein, proteinTarget: user.dailyProteinTarget,
                 carbs: vm.todayCarbs, carbsTarget: user.dailyCarbTarget,
@@ -115,6 +204,30 @@ struct DashboardView: View {
         }
         .padding()
         .nourishCard()
+    }
+
+    private func tappablePill(for macro: MacroType) -> some View {
+        let value: Double
+        switch macro {
+        case .protein: value = vm.todayProtein
+        case .carbs:   value = vm.todayCarbs
+        case .fat:     value = vm.todayFat
+        case .fiber:   value = vm.todayFiber
+        default:       value = 0
+        }
+        return VStack(spacing: 4) {
+            Text("\(Int(value))g")
+                .font(NourishTheme.Font.headline(14))
+                .foregroundStyle(macro.color)
+            Text(macro.rawValue)
+                .font(NourishTheme.Font.caption(11))
+                .foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 10)
+        .background(macro.color.opacity(0.1))
+        .clipShape(RoundedRectangle(cornerRadius: NourishTheme.Radius.md))
+        .accessibilityLabel("\(macro.rawValue): \(Int(value)) grams. Tap for breakdown.")
     }
 
     private var healthMetricsSection: some View {

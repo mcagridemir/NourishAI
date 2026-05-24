@@ -1,0 +1,8 @@
+/* InfoPlist.strings — Türkçe */
+CFBundleDisplayName = "NourishAI";
+NSCameraUsageDescription = "NourishAI, öğünlerinizi analiz etmek ve besin etiketlerini taramak için kamerayı kullanır.";
+NSMicrophoneUsageDescription = "NourishAI, öğünlerinizi sesle kaydetmeniz için mikrofonu kullanır.";
+NSSpeechRecognitionUsageDescription = "NourishAI, söylediğiniz öğün adlarını metne dönüştürmek için konuşma tanıma kullanır.";
+NSHealthShareUsageDescription = "NourishAI, beslenme içgörülerini kişiselleştirmek için adım, uyku ve nabız verilerinizi okur.";
+NSHealthUpdateUsageDescription = "NourishAI, öğünlerinizi, su tüketiminizi ve kilonuzu Apple Sağlık'a yazar.";
+NSPhotoLibraryUsageDescription = "NourishAI, kayıtlı öğün fotoğraflarınızı analiz edebilmeniz için fotoğraf kütüphanenize erişir.";

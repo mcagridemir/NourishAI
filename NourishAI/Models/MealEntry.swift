@@ -39,6 +39,10 @@ final class MealEntry {
 
     // Notes
     var userNotes: String
+    var userRating: Int    // 0 = unrated, 1-5 stars
+    var isFavourite: Bool
+    /// How the entry was created: "photo", "barcode", "manual", "relog", "recipe", "plan"
+    var logSource: String
 
     @Relationship(inverse: \User.mealEntries)
     var user: User?
@@ -101,6 +105,9 @@ final class MealEntry {
         self.confidence = analysis.confidence
         self.isManualEntry = false
         self.userNotes = ""
+        self.userRating = 0
+        self.isFavourite = false
+        self.logSource = photoData != nil ? "photo" : "ai"
     }
 
     init(manual name: String, calories: Int, protein: Double, carbs: Double, fat: Double, mealType: MealType) {
@@ -124,6 +131,63 @@ final class MealEntry {
         self.confidence = 1.0
         self.isManualEntry = true
         self.userNotes = ""
+        self.userRating = 0
+        self.isFavourite = false
+        self.logSource = "manual"
+    }
+
+    init(barcode product: ScaledProduct, mealType: MealType) {
+        self.id = UUID()
+        self.loggedAt = .now
+        self.mealType = mealType
+        self.photoData = nil
+        self.mealName = product.name
+        self.estimatedPortionSize = "\(Int(product.grams))g"
+        self.calories = product.calories
+        self.protein = product.protein
+        self.carbohydrates = product.carbs
+        self.fat = product.fat
+        self.fiber = product.fiber
+        self.sugar = product.sugar
+        self.sodium = product.sodiumMg
+        self.vitaminsJSON = "{}"
+        self.mineralsJSON = "{}"
+        self.healthScore = 60
+        self.aiInsights = []
+        self.aiSuggestions = []
+        self.confidence = 0.95
+        self.isManualEntry = false
+        self.userNotes = ""
+        self.userRating = 0
+        self.isFavourite = false
+        self.logSource = "barcode"
+    }
+
+    init(relogging source: MealEntry, mealType: MealType) {
+        self.id = UUID()
+        self.loggedAt = .now
+        self.mealType = mealType
+        self.photoData = source.photoData
+        self.mealName = source.mealName
+        self.estimatedPortionSize = source.estimatedPortionSize
+        self.calories = source.calories
+        self.protein = source.protein
+        self.carbohydrates = source.carbohydrates
+        self.fat = source.fat
+        self.fiber = source.fiber
+        self.sugar = source.sugar
+        self.sodium = source.sodium
+        self.vitaminsJSON = source.vitaminsJSON
+        self.mineralsJSON = source.mineralsJSON
+        self.healthScore = source.healthScore
+        self.aiInsights = source.aiInsights
+        self.aiSuggestions = source.aiSuggestions
+        self.confidence = source.confidence
+        self.isManualEntry = source.isManualEntry
+        self.userNotes = ""
+        self.userRating = 0
+        self.isFavourite = false
+        self.logSource = "relog"
     }
 }
 
@@ -133,6 +197,9 @@ enum MealType: String, Codable, CaseIterable {
     case dinner = "Dinner"
     case snack = "Snack"
     case drink = "Drink"
+
+    /// Localized display name — use this in UI instead of `rawValue`.
+    var localizedName: String { NSLocalizedString(rawValue, comment: "") }
 
     var icon: String {
         switch self {

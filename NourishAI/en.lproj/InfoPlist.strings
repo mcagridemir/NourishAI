@@ -1,0 +1,8 @@
+/* InfoPlist.strings — English */
+CFBundleDisplayName = "NourishAI";
+NSCameraUsageDescription = "NourishAI uses the camera to analyse your meals and scan nutrition labels.";
+NSMicrophoneUsageDescription = "NourishAI uses the microphone to let you log meals by voice.";
+NSSpeechRecognitionUsageDescription = "NourishAI uses speech recognition to transcribe your spoken meal names.";
+NSHealthShareUsageDescription = "NourishAI reads your steps, sleep, and heart rate to personalise nutrition insights.";
+NSHealthUpdateUsageDescription = "NourishAI writes your meals, water intake, and weight to Apple Health.";
+NSPhotoLibraryUsageDescription = "NourishAI accesses your photo library so you can analyse saved meal photos.";

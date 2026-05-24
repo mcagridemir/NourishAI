@@ -65,10 +65,10 @@ private struct WeekPlanView: View {
                 ScrollView {
                     VStack(spacing: NourishTheme.Spacing.md) {
                         DayCalorieSummary(day: day, target: vm.user.dailyCalorieTarget)
-                        if let meal = day.breakfastMeal { PlannedMealCard(meal: meal) }
-                        if let meal = day.lunchMeal     { PlannedMealCard(meal: meal) }
-                        if let meal = day.dinnerMeal    { PlannedMealCard(meal: meal) }
-                        ForEach(day.snackMeals) { PlannedMealCard(meal: $0) }
+                        if let meal = day.breakfastMeal { PlannedMealCard(meal: meal, vm: vm) { vm.logPlannedMeal(meal) } }
+                        if let meal = day.lunchMeal     { PlannedMealCard(meal: meal, vm: vm) { vm.logPlannedMeal(meal) } }
+                        if let meal = day.dinnerMeal    { PlannedMealCard(meal: meal, vm: vm) { vm.logPlannedMeal(meal) } }
+                        ForEach(day.snackMeals) { snack in PlannedMealCard(meal: snack, vm: vm) { vm.logPlannedMeal(snack) } }
                     }
                     .padding(NourishTheme.Spacing.md)
                 }
@@ -137,14 +137,18 @@ private struct CircleProgress: View {
 
 private struct PlannedMealCard: View {
     @Bindable var meal: PlannedMeal
+    @ObservedObject var vm: MealPlanViewModel
+    let onLog: () -> Void
     @State private var isExpanded = false
+    @State private var showingReplace = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
+            // Header row
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
-                    HStack {
-                        Text(meal.mealType.rawValue)
+                    HStack(spacing: 6) {
+                        Text(meal.mealType.localizedName)
                             .font(NourishTheme.Font.caption())
                             .foregroundStyle(NourishTheme.Color.primary)
                         if meal.isCompleted {
@@ -157,11 +161,21 @@ private struct PlannedMealCard: View {
                         .font(NourishTheme.Font.caption()).foregroundStyle(.secondary)
                 }
                 Spacer()
-                Button {
-                    withAnimation(NourishTheme.Animation.snappy) { isExpanded.toggle() }
-                } label: {
-                    Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
-                        .foregroundStyle(.secondary)
+                HStack(spacing: 12) {
+                    // Replace button
+                    Button {
+                        showingReplace = true
+                    } label: {
+                        Image(systemName: "arrow.triangle.2.circlepath")
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundStyle(.secondary)
+                    }
+                    Button {
+                        withAnimation(NourishTheme.Animation.snappy) { isExpanded.toggle() }
+                    } label: {
+                        Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
+                            .foregroundStyle(.secondary)
+                    }
                 }
             }
             .padding()
@@ -187,15 +201,147 @@ private struct PlannedMealCard: View {
                             .font(NourishTheme.Font.caption()).foregroundStyle(.secondary)
                         Text(meal.recipeSteps).font(NourishTheme.Font.body(13))
                     }
-                    Toggle("Mark as eaten", isOn: $meal.isCompleted)
-                        .font(NourishTheme.Font.body(14))
-                        .tint(NourishTheme.Color.primary)
+                    HStack {
+                        Toggle("Mark as eaten", isOn: $meal.isCompleted)
+                            .font(NourishTheme.Font.body(14))
+                            .tint(NourishTheme.Color.primary)
+                        Spacer()
+                        if !meal.isCompleted {
+                            Button { onLog() } label: {
+                                Label("Log now", systemImage: "plus.circle.fill")
+                                    .font(NourishTheme.Font.caption(13))
+                                    .foregroundStyle(NourishTheme.Color.primary)
+                            }
+                        }
+                    }
                 }
                 .padding()
             }
         }
         .nourishCard()
         .animation(NourishTheme.Animation.snappy, value: isExpanded)
+        .sheet(isPresented: $showingReplace) {
+            ReplaceMealSheet(meal: meal, vm: vm)
+        }
+    }
+}
+
+// MARK: - Replace Meal Sheet
+
+private struct ReplaceMealSheet: View {
+    let meal: PlannedMeal
+    @ObservedObject var vm: MealPlanViewModel
+    @Environment(\.dismiss) private var dismiss
+    @State private var preference = ""
+    @FocusState private var isFocused: Bool
+
+    private let quickPrefs = [
+        "Something lighter", "Higher protein", "Vegan option",
+        "No cooking needed", "Something different"
+    ]
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: NourishTheme.Spacing.lg) {
+
+                    // Current meal pill
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Replacing")
+                            .font(NourishTheme.Font.caption()).foregroundStyle(.secondary)
+                        HStack(spacing: 10) {
+                            Image(systemName: meal.mealType.icon)
+                                .foregroundStyle(NourishTheme.Color.primary)
+                            Text(meal.name)
+                                .font(NourishTheme.Font.headline())
+                            Spacer()
+                            Text("\(meal.calories) kcal")
+                                .font(NourishTheme.Font.caption())
+                                .foregroundStyle(.secondary)
+                        }
+                        .padding()
+                        .background(NourishTheme.Color.surface)
+                        .clipShape(RoundedRectangle(cornerRadius: NourishTheme.Radius.md))
+                    }
+
+                    // Preference text field
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("What would you prefer? (optional)")
+                            .font(NourishTheme.Font.caption()).foregroundStyle(.secondary)
+                        TextField("e.g. something lighter, no dairy…", text: $preference, axis: .vertical)
+                            .font(NourishTheme.Font.body())
+                            .lineLimit(1...3)
+                            .padding(12)
+                            .background(NourishTheme.Color.surface)
+                            .clipShape(RoundedRectangle(cornerRadius: NourishTheme.Radius.md))
+                            .focused($isFocused)
+                    }
+
+                    // Quick preference chips
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Quick picks")
+                            .font(NourishTheme.Font.caption()).foregroundStyle(.secondary)
+                        FlowLayout(items: quickPrefs) { pref in
+                            Button {
+                                preference = pref
+                                isFocused = false
+                            } label: {
+                                Text(pref)
+                                    .font(NourishTheme.Font.caption(12))
+                                    .padding(.horizontal, 12).padding(.vertical, 6)
+                                    .background(preference == pref
+                                        ? NourishTheme.Color.primary
+                                        : NourishTheme.Color.primaryLight)
+                                    .foregroundStyle(preference == pref ? .white : NourishTheme.Color.primary)
+                                    .clipShape(Capsule())
+                            }
+                        }
+                    }
+
+                    if let err = vm.error {
+                        Text(err)
+                            .font(NourishTheme.Font.caption())
+                            .foregroundStyle(.red)
+                            .padding()
+                            .background(Color.red.opacity(0.08))
+                            .clipShape(RoundedRectangle(cornerRadius: NourishTheme.Radius.sm))
+                    }
+
+                    // Replace button
+                    Button {
+                        isFocused = false
+                        Task {
+                            await vm.replaceMeal(meal, preference: preference)
+                            if vm.error == nil { dismiss() }
+                        }
+                    } label: {
+                        HStack {
+                            if vm.isReplacingMeal {
+                                ProgressView().tint(.white).scaleEffect(0.85)
+                                Text("Finding a replacement…")
+                            } else {
+                                Image(systemName: "arrow.triangle.2.circlepath")
+                                Text("Replace with something new")
+                            }
+                        }
+                        .font(NourishTheme.Font.headline())
+                        .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(NourishButtonStyle())
+                    .disabled(vm.isReplacingMeal)
+                }
+                .padding(NourishTheme.Spacing.md)
+            }
+            .background(NourishTheme.Color.background)
+            .navigationTitle("Change Meal")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Cancel") { dismiss() }
+                        .disabled(vm.isReplacingMeal)
+                }
+            }
+        }
     }
 }
 

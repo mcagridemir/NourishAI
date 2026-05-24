@@ -12,8 +12,21 @@ final class CoachViewModel: ObservableObject {
     @Published var streamingBuffer = ""
     @Published var error: String?
 
+    /// Non-nil when a meal plan was auto-saved from a coach conversation.
+    @Published var savedPlanBanner: String?
+    /// Non-nil when coach generated a plan the user hasn't confirmed saving yet.
+    @Published var pendingPlanResponse: MealPlanResponse?
+    @Published var isSavingPlan = false
+
     private let user: User
     private var streamTask: Task<Void, Never>?
+
+    // Keywords that signal the user wants a meal plan from the coach.
+    private let planKeywords = [
+        "meal plan", "weekly plan", "plan my week", "plan my meals",
+        "plan for the week", "make me a plan", "create a plan",
+        "yemek planı", "haftalık plan", "plan yap"
+    ]
 
     init(user: User) {
         self.user = user
@@ -32,6 +45,7 @@ final class CoachViewModel: ObservableObject {
         }
         let text = inputText.trimmingCharacters(in: .whitespacesAndNewlines)
         inputText = ""
+        HapticService.selection()
         let userMsg = ChatMessage(role: .user, content: text)
         userMsg.user = user
         messages.append(userMsg)
@@ -47,10 +61,17 @@ final class CoachViewModel: ObservableObject {
                     streamingBuffer += chunk
                 }
                 if !streamingBuffer.isEmpty {
+                    HapticService.impact(.light)
                     let assistantMsg = ChatMessage(role: .assistant, content: streamingBuffer)
                     assistantMsg.user = user
                     messages.append(assistantMsg)
                     user.chatMessages.append(assistantMsg)
+
+                    // Detect meal plan intent → generate structured plan in background
+                    let lower = text.lowercased()
+                    if planKeywords.contains(where: { lower.contains($0) }) {
+                        Task { await generateAndOfferPlan() }
+                    }
                 }
             } catch {
                 self.error = error.localizedDescription
@@ -61,10 +82,52 @@ final class CoachViewModel: ObservableObject {
         await streamTask?.value
     }
 
+    /// Generate a structured plan and store it as a pending offer.
+    private func generateAndOfferPlan() async {
+        guard pendingPlanResponse == nil else { return }
+        do {
+            let response = try await ClaudeService.shared.generateMealPlan(context: user.nutritionContext)
+            pendingPlanResponse = response
+        } catch {
+            // Silent — the chat text response is what matters; plan generation is bonus
+            print("⚠️ Background plan generation failed: \(error)")
+        }
+    }
+
+    /// Save the pending plan to the user's SwiftData model.
+    func confirmSavePlan() {
+        guard let response = pendingPlanResponse else { return }
+        isSavingPlan = true
+        let monday = Calendar.current.date(
+            from: Calendar.current.dateComponents([.yearForWeekOfYear, .weekOfYear], from: .now)
+        ) ?? .now
+        let plan = MealPlan(weekStartDate: monday, title: "Coach Plan")
+        plan.user = user
+        for dayResp in response.days {
+            let date = Calendar.current.date(byAdding: .day, value: dayResp.dayIndex, to: monday) ?? monday
+            let day  = MealPlanDay(date: date, dayIndex: dayResp.dayIndex)
+            day.breakfastMeal = PlannedMeal(from: dayResp.breakfast, mealType: .breakfast)
+            day.lunchMeal     = PlannedMeal(from: dayResp.lunch,     mealType: .lunch)
+            day.dinnerMeal    = PlannedMeal(from: dayResp.dinner,    mealType: .dinner)
+            day.snackMeals    = dayResp.snacks.map { PlannedMeal(from: $0, mealType: .snack) }
+            plan.days.append(day)
+        }
+        user.mealPlans.forEach { $0.isActive = false }
+        user.mealPlans.append(plan)
+        pendingPlanResponse = nil
+        isSavingPlan = false
+        HapticService.notification(.success)
+        savedPlanBanner = "Meal plan saved! Switch to the Meal Plan tab to view it. 🗓"
+    }
+
+    func dismissPendingPlan() { pendingPlanResponse = nil }
+
     func clearHistory() {
         messages.removeAll()
         inputText = ""
         streamTask?.cancel()
         isStreaming = false
+        pendingPlanResponse = nil
+        savedPlanBanner = nil
     }
 }

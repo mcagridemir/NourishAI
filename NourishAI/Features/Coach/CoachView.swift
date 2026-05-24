@@ -17,6 +17,30 @@ struct CoachView: View {
         NavigationStack {
             VStack(spacing: 0) {
                 messagesScrollView
+
+                // Pending plan offer banner
+                if let _ = vm.pendingPlanResponse {
+                    pendingPlanCard
+                }
+
+                // Saved plan confirmation toast
+                if let banner = vm.savedPlanBanner {
+                    HStack(spacing: 10) {
+                        Image(systemName: "calendar.badge.checkmark")
+                            .foregroundStyle(NourishTheme.Color.primary)
+                        Text(banner)
+                            .font(NourishTheme.Font.caption(13))
+                            .foregroundStyle(.primary)
+                        Spacer()
+                        Button { vm.savedPlanBanner = nil } label: {
+                            Image(systemName: "xmark").font(.caption).foregroundStyle(.secondary)
+                        }
+                    }
+                    .padding(.horizontal, 16).padding(.vertical, 10)
+                    .background(NourishTheme.Color.primaryLight)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+                }
+
                 Divider()
                 inputBar
             }
@@ -31,7 +55,51 @@ struct CoachView: View {
                     .foregroundStyle(NourishTheme.Color.primary)
                 }
             }
+            .animation(NourishTheme.Animation.smooth, value: vm.savedPlanBanner != nil)
+            .animation(NourishTheme.Animation.smooth, value: vm.pendingPlanResponse != nil)
         }
+    }
+
+    // MARK: - Pending plan card
+
+    private var pendingPlanCard: some View {
+        HStack(spacing: 12) {
+            VStack(alignment: .leading, spacing: 3) {
+                HStack(spacing: 6) {
+                    Image(systemName: "calendar.badge.plus")
+                        .foregroundStyle(NourishTheme.Color.primary)
+                        .font(.system(size: 14, weight: .semibold))
+                    Text("Meal plan ready")
+                        .font(NourishTheme.Font.headline(13))
+                }
+                Text("I've built a personalised weekly plan. Save it to Meal Plan?")
+                    .font(NourishTheme.Font.caption(12))
+                    .foregroundStyle(.secondary)
+            }
+            Spacer()
+            HStack(spacing: 8) {
+                Button("Dismiss") { vm.dismissPendingPlan() }
+                    .font(NourishTheme.Font.caption(12))
+                    .foregroundStyle(.secondary)
+                Button {
+                    vm.confirmSavePlan()
+                } label: {
+                    if vm.isSavingPlan {
+                        ProgressView().scaleEffect(0.75)
+                    } else {
+                        Text("Save")
+                            .font(NourishTheme.Font.caption(12))
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, 12).padding(.vertical, 5)
+                            .background(NourishTheme.Color.primary)
+                            .clipShape(Capsule())
+                    }
+                }
+                .disabled(vm.isSavingPlan)
+            }
+        }
+        .padding(.horizontal, 16).padding(.vertical, 10)
+        .background(NourishTheme.Color.primaryLight)
     }
 
     // MARK: - Messages
@@ -40,7 +108,11 @@ struct CoachView: View {
         ScrollViewReader { proxy in
             ScrollView {
                 LazyVStack(spacing: 12) {
-                    if vm.messages.isEmpty { WelcomeBubble(name: user.name.components(separatedBy: " ").first ?? user.name) }
+                    if vm.messages.isEmpty {
+                        WelcomeBubble(name: user.name.components(separatedBy: " ").first ?? user.name) { suggestion in
+                            vm.inputText = suggestion
+                        }
+                    }
                     ForEach(vm.messages) { message in
                         ChatBubble(message: message)
                             .id(message.id)
@@ -106,11 +178,13 @@ struct ChatBubble: View {
             }
 
             VStack(alignment: message.isUser ? .trailing : .leading, spacing: 4) {
-                HStack {
+                Group {
                     if isLive {
                         StreamingTextView(text: message.content, isStreaming: true)
+                    } else if message.isAssistant {
+                        MarkdownTextView(text: message.content)
                     } else {
-                        Text(try! AttributedString(markdown: message.content))
+                        Text(message.content)
                             .font(NourishTheme.Font.body())
                             .textSelection(.enabled)
                     }
@@ -152,10 +226,11 @@ struct BubbleShape: Shape {
 
 private struct WelcomeBubble: View {
     let name: String
+    let onSelectSuggestion: (String) -> Void
     let suggestions = [
+        "Create a meal plan for me this week",
         "What should I eat to hit my protein goal today?",
         "Am I missing any key nutrients this week?",
-        "Can you suggest a quick healthy dinner?",
         "How can I reduce my sugar intake?"
     ]
 
@@ -180,7 +255,7 @@ private struct WelcomeBubble: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .background(NourishTheme.Color.primaryLight)
                         .clipShape(RoundedRectangle(cornerRadius: NourishTheme.Radius.md))
-                        .onTapGesture { /* sets input */ }
+                        .onTapGesture { onSelectSuggestion(s) }
                 }
             }
         }

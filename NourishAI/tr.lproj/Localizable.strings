@@ -1,0 +1,250 @@
+/* NourishAI — Türkçe çeviriler */
+
+// MARK: - Sekme Çubuğu
+"Home" = "Ana Sayfa";
+"Log Meal" = "Öğün Ekle";
+"Coach" = "Koç";
+"Meal Plan" = "Yemek Planı";
+"Insights" = "İçgörüler";
+
+// MARK: - Ortak Eylemler
+"Cancel" = "İptal";
+"Save" = "Kaydet";
+"Done" = "Tamam";
+"Add" = "Ekle";
+"Edit" = "Düzenle";
+"Delete" = "Sil";
+"Retry" = "Tekrar Dene";
+"Continue" = "Devam";
+"Restore" = "Geri Yükle";
+"Discard" = "Vazgeç";
+"Try again" = "Tekrar Dene";
+"Log" = "Kaydet";
+"See all" = "Tümünü Gör";
+"Back" = "Geri";
+"Loading…" = "Yükleniyor…";
+
+// MARK: - Selamlamalar
+"Good morning," = "Günaydın,";
+"Good afternoon," = "İyi günler,";
+"Good evening," = "İyi akşamlar,";
+"Hey," = "Merhaba,";
+
+// MARK: - Öğün Türleri
+"Breakfast" = "Kahvaltı";
+"Lunch" = "Öğle Yemeği";
+"Dinner" = "Akşam Yemeği";
+"Snack" = "Atıştırmalık";
+"Drink" = "İçecek";
+
+// MARK: - Makro Türleri
+"Calories" = "Kalori";
+"Protein" = "Protein";
+"Carbs" = "Karbonhidrat";
+"Fat" = "Yağ";
+"Fiber" = "Lif";
+
+// MARK: - Ana Sayfa
+"Macros today" = "Bugünkü Makrolar";
+"Tap for details" = "Detaylar için dokun";
+"Base goal" = "Temel Hedef";
+"Eaten" = "Yenen";
+"Remaining" = "Kalan";
+"Exercise bonus (+50%)" = "Egzersiz Bonusu (+%50)";
+"Today's meals" = "Bugünkü Öğünler";
+"No meals logged yet" = "Henüz Öğün Eklenmedi";
+"Tap + to log your first meal" = "İlk öğününüzü eklemek için + tuşuna basın";
+"Weekly insight" = "Haftalık İçgörü";
+"day streak" = "günlük seri";
+
+// MARK: - Günlük Puan
+"Daily Score" = "Günlük Puan";
+"Excellent" = "Mükemmel";
+"Great" = "Harika";
+"Good" = "İyi";
+"Fair" = "Orta";
+"Needs Work" = "Geliştirilmeli";
+"Hydration" = "Hidrasyon";
+"Meal quality" = "Öğün Kalitesi";
+"Activity" = "Aktivite";
+
+// MARK: - Kalori Tahmini
+"Today's Forecast" = "Günlük Tahmin";
+"On track" = "Hedefe Uygun";
+"Over budget" = "Hedef Aşıldı";
+"Under budget" = "Hedefin Altında";
+"Predicted left" = "Tahmini Kalan";
+"Target" = "Hedef";
+"kcal predicted" = "kcal tahmin";
+
+// MARK: - Akıllı Öneri
+"Next Meal Idea" = "Sonraki Öğün Önerisi";
+"See ingredients" = "Malzemeleri Gör";
+"Show less" = "Daha Az Göster";
+"Quick recipe" = "Hızlı Tarif";
+
+// MARK: - Takviye Paneli
+"Supplements" = "Takviyeler";
+"All taken today 🎉" = "Bugün Hepsi Alındı 🎉";
+"Time to take your supplements" = "Takviyelerinizi Alma Zamanı";
+"All supplements taken today!" = "Bugün Tüm Takviyeler Alındı!";
+
+// MARK: - Öğün Kaydı
+"Log meal" = "Öğün Ekle";
+"Manual entry" = "Manuel Giriş";
+"Take a photo" = "Fotoğraf Çek";
+"Point at your meal for instant nutrition analysis" = "Anında besin analizi için yemeğinize doğrultun";
+"Library" = "Kütüphane";
+"Barcode" = "Barkod";
+"Search food" = "Besin Ara";
+"Recipe AI" = "Tarif Yapay Zekası";
+"Voice log" = "Sesli Kayıt";
+"Scan label" = "Etiket Tara";
+"Quick re-log" = "Hızlı Yeniden Kayıt";
+"Save meal" = "Öğünü Kaydet";
+"Retake photo" = "Tekrar Fotoğraf Çek";
+
+// MARK: - Analiz Sonucu
+"Nutrition" = "Besin Değerleri";
+"Tips" = "İpuçları";
+"Low confidence" = "Düşük Güven";
+"Adjust values" = "Değerleri Düzenle";
+"Confidence" = "Güven Düzeyi";
+"Sugar" = "Şeker";
+"Sodium" = "Sodyum";
+"Insights" = "İçgörüler";
+
+// MARK: - İçgörüler
+"7 days" = "7 Gün";
+"30 days" = "30 Gün";
+"Avg calories" = "Ort. Kalori";
+"Meals logged" = "Kaydedilen Öğün";
+"Avg health score" = "Ort. Sağlık Puanı";
+"Avg protein" = "Ort. Protein";
+"Daily calories" = "Günlük Kalori";
+"Calorie balance" = "Kalori Dengesi";
+"Surplus" = "Fazla";
+"Deficit" = "Eksik";
+"Positive = ate more than target · Negative = deficit" = "Pozitif = hedefi aştı · Negatif = eksik";
+"Macro average" = "Ortalama Makro";
+"Health score trend" = "Sağlık Puanı Trendi";
+"Weight" = "Ağırlık";
+"Current" = "Güncel";
+"Total change" = "Toplam Değişim";
+"Detected deficiencies" = "Tespit Edilen Eksiklikler";
+"Below target" = "Hedefin Altında";
+"Week on week" = "Haftalık Karşılaştırma";
+"This week" = "Bu Hafta";
+"Last week" = "Geçen Hafta";
+"Hydration trend" = "Hidrasyon Trendi";
+"Sleep & Nutrition" = "Uyku ve Beslenme";
+"goal reached" = "hedefe ulaşıldı";
+"Avg/day" = "Günlük Ort.";
+"Today" = "Bugün";
+"Good" = "İyi";
+"Fair" = "Orta";
+"Poor" = "Kötü";
+"No data" = "Veri Yok";
+"Breakdown by meal" = "Öğünlere Göre Dağılım";
+"Meals today" = "Bugünkü Öğünler";
+
+// MARK: - Profil
+"Profile" = "Profil";
+"Progress" = "İlerleme";
+"Achievements" = "Başarımlar";
+"Body metrics" = "Vücut Ölçüleri";
+"Settings" = "Ayarlar";
+"Notification preferences" = "Bildirim Tercihleri";
+"App theme" = "Uygulama Teması";
+"Allergies & restrictions" = "Alerji ve Kısıtlamalar";
+"Export meal data (CSV)" = "Öğün Verilerini Dışa Aktar (CSV)";
+
+// MARK: - Takviyeler
+"Add Supplement" = "Takviye Ekle";
+"Edit Supplement" = "Takviyeyi Düzenle";
+"Archived" = "Arşivlendi";
+"No supplements yet" = "Henüz Takviye Eklenmedi";
+"Name" = "İsim";
+"Dosage" = "Doz";
+"Schedule" = "Program";
+"Frequency" = "Sıklık";
+"Time of day" = "Günün Saati";
+"Notes (optional)" = "Notlar (İsteğe Bağlı)";
+"Notes" = "Notlar";
+"Add supplement" = "Takviye Ekle";
+"Delete supplement" = "Takviyeyi Sil";
+"Active" = "Aktif";
+"Colour" = "Renk";
+"Morning" = "Sabah";
+"Afternoon" = "Öğleden Sonra";
+"Evening" = "Akşam";
+"With meals" = "Yemekle Birlikte";
+"Before bed" = "Yatmadan Önce";
+"Daily" = "Her Gün";
+"Twice daily" = "Günde İki Kez";
+"3x daily" = "Günde Üç Kez";
+"Weekly" = "Haftalık";
+"As needed" = "Gerektiğinde";
+
+// MARK: - Besin Etiketi Tarayıcı
+"Nutrition Label" = "Besin Etiketi";
+"Point at a Nutrition Facts label" = "Besin Değerleri Etiketine Doğrultun";
+"Claude reads the entire panel in seconds" = "Claude tüm paneli saniyeler içinde okur";
+"Good lighting improves accuracy" = "İyi ışık doğruluğu artırır";
+"Include the full label in frame" = "Etiketin tamamını çerçeveye dahil edin";
+"Hold steady for sharpest scan" = "En net tarama için sabit tutun";
+"Scan label with camera" = "Kamerayla Etiket Tara";
+"Choose from photo library" = "Fotoğraf Kütüphanesinden Seç";
+"Reading nutrition label…" = "Besin etiketi okunuyor…";
+"Label read successfully" = "Etiket Başarıyla Okundu";
+"How much did you eat?" = "Ne Kadar Yediniz?";
+"Nutrition (scaled)" = "Besin Değerleri (Ölçeklenmiş)";
+"Log this meal" = "Bu Öğünü Kaydet";
+"Scan again" = "Tekrar Tara";
+"Couldn't read label" = "Etiket Okunamadı";
+
+// MARK: - Yenilikler
+"What's new in NourishAI" = "NourishAI'daki Yenilikler";
+"Version" = "Sürüm";
+
+// MARK: - Vücut Ölçüleri
+"Body Metrics" = "Vücut Ölçüleri";
+
+// MARK: - Su Takibi
+"Fully hydrated!" = "Tam Hidrasyon!";
+
+// MARK: - Ağırlık
+"Log your weight to see your trend" = "Trendini görmek için kilonuzu kaydedin";
+
+// MARK: - Aralıklı Oruç
+"Start Fast" = "Oruca Başla";
+"Stop Fast" = "Orucu Bitir";
+"Fasting" = "Oruç";
+"Not Fasting" = "Oruç Yok";
+
+// MARK: - Koç
+"Send" = "Gönder";
+
+// MARK: - Yemek Planı
+"Generate plan" = "Plan Oluştur";
+"Log now" = "Şimdi Kaydet";
+"Mark as eaten" = "Yendi Olarak İşaretle";
+
+// MARK: - Tarif
+"Generate Recipe" = "Tarif Oluştur";
+"Serving size" = "Porsiyon Büyüklüğü";
+
+// MARK: - Kullanıcı Katılımı
+"Get started" = "Başla";
+"Next" = "İleri";
+
+// MARK: - Aralık Seçiciler
+"7 days" = "7 Gün";
+"30 days" = "30 Gün";
+"7d" = "7g";
+"30d" = "30g";
+"90d" = "90g";
+
+// MARK: - Format Stringleri
+"No %@ logged today" = "Bugün %@ kaydedilmedi";
+"%@ today" = "Bugün %@";

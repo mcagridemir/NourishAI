@@ -29,6 +29,8 @@ struct MacroRingView: View {
             }
         }
         .frame(width: 120, height: 120)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Calories: \(calories) of \(target). \(Int(progress * 100)) percent of daily goal.")
     }
 }
 
@@ -66,6 +68,8 @@ private struct MacroPill: View {
         .padding(.vertical, 10)
         .background(color.opacity(0.1))
         .clipShape(RoundedRectangle(cornerRadius: NourishTheme.Radius.md))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(label): \(Int(value)) grams")
     }
 }
 
@@ -96,5 +100,7 @@ struct HealthScoreBadge: View {
                 .font(NourishTheme.Font.caption(10))
                 .foregroundStyle(color)
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Health score: \(score) out of 100. \(label).")
     }
 }

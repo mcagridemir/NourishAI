@@ -1,15 +1,93 @@
 // NourishAI — StreamingTextView.swift
 import SwiftUI
 
+// MARK: - Markdown renderer (block + inline)
+
+struct MarkdownTextView: View {
+    let text: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            ForEach(Array(blocks.enumerated()), id: \.offset) { _, block in
+                blockView(block)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .textSelection(.enabled)
+    }
+
+    @ViewBuilder
+    private func blockView(_ block: Block) -> some View {
+        switch block.kind {
+        case .h1:
+            Text(inline(block.content))
+                .font(NourishTheme.Font.title(20))
+                .padding(.top, 2)
+        case .h2:
+            Text(inline(block.content))
+                .font(NourishTheme.Font.headline(17))
+                .padding(.top, 2)
+        case .h3:
+            Text(inline(block.content))
+                .font(NourishTheme.Font.headline(15))
+        case .bullet:
+            HStack(alignment: .top, spacing: 6) {
+                Text("•").font(NourishTheme.Font.body())
+                Text(inline(block.content)).font(NourishTheme.Font.body())
+            }
+        case .paragraph:
+            Text(inline(block.content)).font(NourishTheme.Font.body())
+        case .gap:
+            Color.clear.frame(height: 2)
+        }
+    }
+
+    private func inline(_ raw: String) -> AttributedString {
+        (try? AttributedString(markdown: raw)) ?? AttributedString(raw)
+    }
+
+    // MARK: - Block parsing
+
+    private struct Block {
+        enum Kind { case h1, h2, h3, bullet, paragraph, gap }
+        let kind: Kind
+        let content: String
+        init(_ kind: Kind, _ content: String = "") { self.kind = kind; self.content = content }
+    }
+
+    private var blocks: [Block] {
+        var result = [Block]()
+        var lastWasGap = false
+        for line in text.components(separatedBy: "\n") {
+            let t = line.trimmingCharacters(in: .whitespaces)
+            if t.isEmpty {
+                if !lastWasGap { result.append(Block(.gap)) }
+                lastWasGap = true
+            } else if t.hasPrefix("### ") {
+                result.append(Block(.h3, String(t.dropFirst(4)))); lastWasGap = false
+            } else if t.hasPrefix("## ") {
+                result.append(Block(.h2, String(t.dropFirst(3)))); lastWasGap = false
+            } else if t.hasPrefix("# ") {
+                result.append(Block(.h1, String(t.dropFirst(2)))); lastWasGap = false
+            } else if t.hasPrefix("- ") || t.hasPrefix("* ") {
+                result.append(Block(.bullet, String(t.dropFirst(2)))); lastWasGap = false
+            } else {
+                result.append(Block(.paragraph, t)); lastWasGap = false
+            }
+        }
+        return result
+    }
+}
+
+// MARK: - Streaming wrapper
+
 struct StreamingTextView: View {
     let text: String
     let isStreaming: Bool
 
     var body: some View {
-        HStack(alignment: .bottom, spacing: 4) {
-            Text(text)
-                .font(NourishTheme.Font.body())
-                .textSelection(.enabled)
+        VStack(alignment: .leading, spacing: 4) {
+            MarkdownTextView(text: text)
             if isStreaming {
                 TypingIndicator()
             }

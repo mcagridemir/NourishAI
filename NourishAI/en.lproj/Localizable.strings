@@ -1,0 +1,250 @@
+/* NourishAI — English strings (base) */
+
+// MARK: - Tab Bar
+"Home" = "Home";
+"Log Meal" = "Log Meal";
+"Coach" = "Coach";
+"Meal Plan" = "Meal Plan";
+"Insights" = "Insights";
+
+// MARK: - Common Actions
+"Cancel" = "Cancel";
+"Save" = "Save";
+"Done" = "Done";
+"Add" = "Add";
+"Edit" = "Edit";
+"Delete" = "Delete";
+"Retry" = "Retry";
+"Continue" = "Continue";
+"Restore" = "Restore";
+"Discard" = "Discard";
+"Try again" = "Try again";
+"Log" = "Log";
+"See all" = "See all";
+"Back" = "Back";
+"Loading…" = "Loading…";
+
+// MARK: - Greetings
+"Good morning," = "Good morning,";
+"Good afternoon," = "Good afternoon,";
+"Good evening," = "Good evening,";
+"Hey," = "Hey,";
+
+// MARK: - Meal Types
+"Breakfast" = "Breakfast";
+"Lunch" = "Lunch";
+"Dinner" = "Dinner";
+"Snack" = "Snack";
+"Drink" = "Drink";
+
+// MARK: - Macro Types
+"Calories" = "Calories";
+"Protein" = "Protein";
+"Carbs" = "Carbs";
+"Fat" = "Fat";
+"Fiber" = "Fiber";
+
+// MARK: - Dashboard
+"Macros today" = "Macros today";
+"Tap for details" = "Tap for details";
+"Base goal" = "Base goal";
+"Eaten" = "Eaten";
+"Remaining" = "Remaining";
+"Exercise bonus (+50%)" = "Exercise bonus (+50%)";
+"Today's meals" = "Today's meals";
+"No meals logged yet" = "No meals logged yet";
+"Tap + to log your first meal" = "Tap + to log your first meal";
+"Weekly insight" = "Weekly insight";
+"day streak" = "day streak";
+
+// MARK: - Daily Score Card
+"Daily Score" = "Daily Score";
+"Excellent" = "Excellent";
+"Great" = "Great";
+"Good" = "Good";
+"Fair" = "Fair";
+"Needs Work" = "Needs Work";
+"Hydration" = "Hydration";
+"Meal quality" = "Meal quality";
+"Activity" = "Activity";
+
+// MARK: - Calorie Forecast
+"Today's Forecast" = "Today's Forecast";
+"On track" = "On track";
+"Over budget" = "Over budget";
+"Under budget" = "Under budget";
+"Predicted left" = "Predicted left";
+"Target" = "Target";
+"kcal predicted" = "kcal predicted";
+
+// MARK: - Smart Suggestion
+"Next Meal Idea" = "Next Meal Idea";
+"See ingredients" = "See ingredients";
+"Show less" = "Show less";
+"Quick recipe" = "Quick recipe";
+
+// MARK: - Supplement Dashboard Card
+"Supplements" = "Supplements";
+"All taken today 🎉" = "All taken today 🎉";
+"Time to take your supplements" = "Time to take your supplements";
+"All supplements taken today!" = "All supplements taken today!";
+
+// MARK: - Meal Log
+"Log meal" = "Log meal";
+"Manual entry" = "Manual entry";
+"Take a photo" = "Take a photo";
+"Point at your meal for instant nutrition analysis" = "Point at your meal for instant nutrition analysis";
+"Library" = "Library";
+"Barcode" = "Barcode";
+"Search food" = "Search food";
+"Recipe AI" = "Recipe AI";
+"Voice log" = "Voice log";
+"Scan label" = "Scan label";
+"Quick re-log" = "Quick re-log";
+"Save meal" = "Save meal";
+"Retake photo" = "Retake photo";
+
+// MARK: - Analysis Result
+"Nutrition" = "Nutrition";
+"Tips" = "Tips";
+"Low confidence" = "Low confidence";
+"Adjust values" = "Adjust values";
+"Confidence" = "Confidence";
+"Sugar" = "Sugar";
+"Sodium" = "Sodium";
+"Insights" = "Insights";
+
+// MARK: - Insights
+"7 days" = "7 days";
+"30 days" = "30 days";
+"Avg calories" = "Avg calories";
+"Meals logged" = "Meals logged";
+"Avg health score" = "Avg health score";
+"Avg protein" = "Avg protein";
+"Daily calories" = "Daily calories";
+"Calorie balance" = "Calorie balance";
+"Surplus" = "Surplus";
+"Deficit" = "Deficit";
+"Positive = ate more than target · Negative = deficit" = "Positive = ate more than target · Negative = deficit";
+"Macro average" = "Macro average";
+"Health score trend" = "Health score trend";
+"Weight" = "Weight";
+"Current" = "Current";
+"Total change" = "Total change";
+"Detected deficiencies" = "Detected deficiencies";
+"Below target" = "Below target";
+"Week on week" = "Week on week";
+"This week" = "This week";
+"Last week" = "Last week";
+"Hydration trend" = "Hydration trend";
+"Sleep & Nutrition" = "Sleep & Nutrition";
+"goal reached" = "goal reached";
+"Avg/day" = "Avg/day";
+"Today" = "Today";
+"Good" = "Good";
+"Fair" = "Fair";
+"Poor" = "Poor";
+"No data" = "No data";
+"Breakdown by meal" = "Breakdown by meal";
+"Meals today" = "Meals today";
+
+// MARK: - Profile
+"Profile" = "Profile";
+"Progress" = "Progress";
+"Achievements" = "Achievements";
+"Body metrics" = "Body metrics";
+"Settings" = "Settings";
+"Notification preferences" = "Notification preferences";
+"App theme" = "App theme";
+"Allergies & restrictions" = "Allergies & restrictions";
+"Export meal data (CSV)" = "Export meal data (CSV)";
+
+// MARK: - Supplements
+"Add Supplement" = "Add Supplement";
+"Edit Supplement" = "Edit Supplement";
+"Archived" = "Archived";
+"No supplements yet" = "No supplements yet";
+"Name" = "Name";
+"Dosage" = "Dosage";
+"Schedule" = "Schedule";
+"Frequency" = "Frequency";
+"Time of day" = "Time of day";
+"Notes (optional)" = "Notes (optional)";
+"Notes" = "Notes";
+"Add supplement" = "Add supplement";
+"Delete supplement" = "Delete supplement";
+"Active" = "Active";
+"Colour" = "Colour";
+"Morning" = "Morning";
+"Afternoon" = "Afternoon";
+"Evening" = "Evening";
+"With meals" = "With meals";
+"Before bed" = "Before bed";
+"Daily" = "Daily";
+"Twice daily" = "Twice daily";
+"3x daily" = "3x daily";
+"Weekly" = "Weekly";
+"As needed" = "As needed";
+
+// MARK: - Nutrition Label Scanner
+"Nutrition Label" = "Nutrition Label";
+"Point at a Nutrition Facts label" = "Point at a Nutrition Facts label";
+"Claude reads the entire panel in seconds" = "Claude reads the entire panel in seconds";
+"Good lighting improves accuracy" = "Good lighting improves accuracy";
+"Include the full label in frame" = "Include the full label in frame";
+"Hold steady for sharpest scan" = "Hold steady for sharpest scan";
+"Scan label with camera" = "Scan label with camera";
+"Choose from photo library" = "Choose from photo library";
+"Reading nutrition label…" = "Reading nutrition label…";
+"Label read successfully" = "Label read successfully";
+"How much did you eat?" = "How much did you eat?";
+"Nutrition (scaled)" = "Nutrition (scaled)";
+"Log this meal" = "Log this meal";
+"Scan again" = "Scan again";
+"Couldn't read label" = "Couldn't read label";
+
+// MARK: - What's New
+"What's new in NourishAI" = "What's new in NourishAI";
+"Version" = "Version";
+
+// MARK: - Body Metrics
+"Body Metrics" = "Body Metrics";
+
+// MARK: - Water Tracker
+"Fully hydrated!" = "Fully hydrated!";
+
+// MARK: - Weight
+"Log your weight to see your trend" = "Log your weight to see your trend";
+
+// MARK: - Fasting
+"Start Fast" = "Start Fast";
+"Stop Fast" = "Stop Fast";
+"Fasting" = "Fasting";
+"Not Fasting" = "Not Fasting";
+
+// MARK: - Coach
+"Send" = "Send";
+
+// MARK: - Meal Plan
+"Generate plan" = "Generate plan";
+"Log now" = "Log now";
+"Mark as eaten" = "Mark as eaten";
+
+// MARK: - Recipe
+"Generate Recipe" = "Generate Recipe";
+"Serving size" = "Serving size";
+
+// MARK: - Onboarding
+"Get started" = "Get started";
+"Next" = "Next";
+
+// MARK: - Range pickers
+"7 days" = "7 days";
+"30 days" = "30 days";
+"7d" = "7d";
+"30d" = "30d";
+"90d" = "90d";
+
+// MARK: - Format strings
+"No %@ logged today" = "No %@ logged today";
+"%@ today" = "%@ today";

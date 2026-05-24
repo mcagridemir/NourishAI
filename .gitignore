@@ -1,0 +1,39 @@
+# Xcode
+*.xcuserstate
+*.xcscmblueprint
+*.moved-aside
+xcuserdata/
+*.xccheckout
+*.xcworkspace/xcuserdata/
+DerivedData/
+build/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# CocoaPods
+Pods/
+Podfile.lock
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# Secrets / config
+*.xcconfig
+!NourishAI/Debug.xcconfig
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+
+# Instruments
+*.trace

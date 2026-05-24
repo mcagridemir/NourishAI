@@ -31,7 +31,8 @@ final class HealthKitService: ObservableObject {
     private let writeTypes: Set<HKSampleType> = {
         let ids: [HKQuantityTypeIdentifier] = [
             .dietaryEnergyConsumed, .dietaryProtein,
-            .dietaryCarbohydrates, .dietaryFatTotal, .dietaryFiber
+            .dietaryCarbohydrates, .dietaryFatTotal, .dietaryFiber,
+            .dietaryWater, .bodyMass
         ]
         return Set(ids.compactMap { HKQuantityType.quantityType(forIdentifier: $0) })
     }()
@@ -78,6 +79,25 @@ final class HealthKitService: ObservableObject {
             samples.append(sample)
         }
         try await store.save(samples)
+    }
+
+    func writeWeight(kg: Double) async throws {
+        guard isAuthorized,
+              let type = HKQuantityType.quantityType(forIdentifier: .bodyMass) else { return }
+        let sample = HKQuantitySample(
+            type: type,
+            quantity: HKQuantity(unit: .gramUnit(with: .kilo), doubleValue: kg),
+            start: .now, end: .now
+        )
+        try await store.save(sample)
+    }
+
+    func logWater(ml: Int) async throws {
+        guard isAuthorized,
+              let type = HKQuantityType.quantityType(forIdentifier: .dietaryWater) else { return }
+        let quantity = HKQuantity(unit: .liter(), doubleValue: Double(ml) / 1000.0)
+        let sample = HKQuantitySample(type: type, quantity: quantity, start: .now, end: .now)
+        try await store.save(sample)
     }
 
     // MARK: - Private fetchers

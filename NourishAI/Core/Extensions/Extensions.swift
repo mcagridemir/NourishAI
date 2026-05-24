@@ -1,6 +1,17 @@
 // NourishAI — Extensions.swift
 import Foundation
 import SwiftUI
+internal import UIKit
+
+// MARK: - Share sheet (reusable across the app)
+
+struct ShareSheet: UIViewControllerRepresentable {
+    let items: [Any]
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        UIActivityViewController(activityItems: items, applicationActivities: nil)
+    }
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
+}
 
 extension Int {
     func formatted() -> String {

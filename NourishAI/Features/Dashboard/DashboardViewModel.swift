@@ -30,10 +30,10 @@ final class DashboardViewModel: ObservableObject {
     var greeting: String {
         let hour = Calendar.current.component(.hour, from: .now)
         switch hour {
-        case 5..<12: return "Good morning,"
-        case 12..<17: return "Good afternoon,"
-        case 17..<21: return "Good evening,"
-        default: return "Hey,"
+        case 5..<12: return String(localized: "Good morning,")
+        case 12..<17: return String(localized: "Good afternoon,")
+        case 17..<21: return String(localized: "Good evening,")
+        default:      return String(localized: "Hey,")
         }
     }
 
@@ -41,6 +41,11 @@ final class DashboardViewModel: ObservableObject {
     var calorieProgress: Double { min(1.0, Double(todayCalories) / Double(max(1, user.dailyCalorieTarget))) }
 
     func loadInsights() async {
+        WidgetDataStore.save(user.widgetData)
+        LiveActivityService.shared.startOrUpdate(user: user)
+        SpotlightService.indexMeals(user.mealEntries)
+        fireGoalNudge()
+        scheduleStreakRecovery()
         guard weeklyInsight == nil else { return }
         guard !user.detectedDeficiencies.isEmpty || todayMeals.count >= 3 else { return }
         isLoadingInsights = true
@@ -50,5 +55,24 @@ final class DashboardViewModel: ObservableObject {
         } catch {
             // Fail silently
         }
+    }
+
+    private func fireGoalNudge() {
+        NotificationService.shared.fireSmartGoalNudge(
+            todayCalories: todayCalories,
+            targetCalories: user.dailyCalorieTarget,
+            todayProtein: todayProtein,
+            targetProtein: user.dailyProteinTarget,
+            todayWater: user.todayWaterMl,
+            targetWater: user.dailyWaterGoalMl
+        )
+    }
+
+    private func scheduleStreakRecovery() {
+        let hasLoggedToday = user.mealEntries.contains { Calendar.current.isDateInToday($0.loggedAt) }
+        NotificationService.shared.scheduleStreakRecovery(
+            currentStreak: user.currentStreak,
+            hasLoggedToday: hasLoggedToday
+        )
     }
 }

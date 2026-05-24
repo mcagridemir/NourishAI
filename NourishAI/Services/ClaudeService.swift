@@ -1,6 +1,6 @@
 // NourishAI — ClaudeService.swift
 import Foundation
-import UIKit
+internal import UIKit
 
 // MARK: - API domain types
 
@@ -20,6 +20,23 @@ struct NutritionAnalysis: Codable {
     let suggestions: [String]
     let estimatedPortionSize: String
     let confidence: Double
+}
+
+struct RecipeResult: Codable {
+    let name: String
+    let description: String
+    let servings: Int
+    let prepTimeMinutes: Int
+    let cookTimeMinutes: Int
+    let ingredients: [String]
+    let instructions: [String]
+    var caloriesPerServing: Int   // mutable for serving-size scaling
+    var protein: Double
+    var carbohydrates: Double
+    var fat: Double
+    var fiber: Double
+    let healthScore: Int
+    let tips: [String]
 }
 
 struct MealSuggestion: Codable {
@@ -47,6 +64,26 @@ struct MealPlanDayResponse: Codable {
     let totalCalories: Int
 }
 
+struct WeeklyStats {
+    let avgCalories: Int
+    let avgProtein: Int
+    let avgCarbs: Int
+    let avgFat: Int
+    let mealCount: Int
+    let daysTracked: Int
+    let avgHealthScore: Int
+    let waterGoalHitDays: Int
+}
+
+struct WeeklyReport: Codable {
+    let headline: String
+    let overallScore: Int
+    let highlights: [String]
+    let improvements: [String]
+    let nutrientSpotlight: String
+    let nextWeekChallenge: String
+}
+
 struct UserNutritionContext {
     let profileDescription: String
     let recentNutritionSummary: String
@@ -62,7 +99,7 @@ actor ClaudeService {
     static let shared = ClaudeService()
 
     private let apiKey: String
-    private let model = "claude-sonnet-4-5"
+    private let model = "claude-sonnet-4-6"
     private let baseURL = URL(string: "https://api.anthropic.com/v1/messages")!
     private let decoder = JSONDecoder()
 
@@ -233,6 +270,99 @@ actor ClaudeService {
                 GroceryItem(name: $0.name, quantity: $0.quantity, unit: $0.unit)
             })
         }
+    }
+
+    // MARK: - Recipe generation
+
+    func generateRecipe(ingredients: [String], context: UserNutritionContext) async throws -> RecipeResult {
+        let schema = """
+        {"name":"string","description":"string (1-2 sentences)","servings":integer,"prepTimeMinutes":integer,"cookTimeMinutes":integer,"ingredients":["string"],"instructions":["string"],"caloriesPerServing":integer,"protein":float,"carbohydrates":float,"fat":float,"fiber":float,"healthScore":integer,"tips":["string"]}
+        """
+        let prompt = """
+        Create a healthy recipe using these ingredients: \(ingredients.joined(separator: ", ")).
+        You may add a few common pantry staples. Return ONLY raw JSON matching this schema:
+        \(schema)
+        User: \(context.profileDescription)
+        Avoid: \(context.allergies.isEmpty ? "nothing" : context.allergies.joined(separator: ", "))
+        Target ~\(context.dailyCalorieTarget / 3) kcal per serving.
+        """
+        let body: [String: Any] = [
+            "model": model, "max_tokens": 2048,
+            "messages": [["role": "user", "content": prompt]]
+        ]
+        let data = try await post(body: body)
+        let raw = try decoder.decode(ClaudeResponse.self, from: data)
+        return try parseJSON(RecipeResult.self, from: raw.content.first?.text ?? "{}")
+    }
+
+    // MARK: - Full weekly report
+
+    func generateWeeklyReport(context: UserNutritionContext, stats: WeeklyStats) async throws -> WeeklyReport {
+        let schema = """
+        {
+          "headline": "string (one punchy sentence summarising the week)",
+          "overallScore": integer (0-100),
+          "highlights": ["string", "string", "string"],
+          "improvements": ["string", "string"],
+          "nutrientSpotlight": "string (focus on one specific nutrient pattern)",
+          "nextWeekChallenge": "string (one actionable challenge for next week)"
+        }
+        """
+        let prompt = """
+        Analyse this user's nutrition week and return ONLY raw JSON matching this schema:
+        \(schema)
+
+        User profile: \(context.profileDescription)
+        Week stats:
+        - Average daily calories: \(stats.avgCalories) (target: \(context.dailyCalorieTarget))
+        - Average protein: \(stats.avgProtein)g | carbs: \(stats.avgCarbs)g | fat: \(stats.avgFat)g
+        - Meals logged: \(stats.mealCount) over \(stats.daysTracked) days
+        - Average health score: \(stats.avgHealthScore)/100
+        - Deficiencies detected: \(context.detectedDeficiencies.isEmpty ? "none" : context.detectedDeficiencies.joined(separator: ", "))
+        - Water goal hit: \(stats.waterGoalHitDays)/\(stats.daysTracked) days
+
+        Be specific, warm, and data-driven. No generic advice.
+        """
+        let body: [String: Any] = [
+            "model": model, "max_tokens": 1024,
+            "messages": [["role": "user", "content": prompt]]
+        ]
+        let data = try await post(body: body)
+        let raw = try decoder.decode(ClaudeResponse.self, from: data)
+        return try parseJSON(WeeklyReport.self, from: raw.content.first?.text ?? "{}")
+    }
+
+    // MARK: - Meal replacement
+
+    func replaceMealSuggestion(
+        currentMealName: String,
+        mealType: MealType,
+        preference: String,
+        context: UserNutritionContext
+    ) async throws -> MealSuggestion {
+        let preferenceNote = preference.isEmpty
+            ? "something different but equally nutritious"
+            : preference
+        let approxCal = context.dailyCalorieTarget / (mealType == .snack ? 5 : 3)
+        let prompt = """
+        Suggest a replacement \(mealType.rawValue.lowercased()) instead of "\(currentMealName)".
+        User preference: \(preferenceNote).
+        Return ONLY raw JSON (no markdown):
+        {"name":"","description":"","prepTime":0,"calories":0,"protein":0,"carbohydrates":0,"fat":0,"ingredients":["item1","item2","item3"],"recipe":""}
+        Constraints:
+        - Target ~\(approxCal) kcal
+        - 4-6 ingredients
+        - recipe: 1-2 sentences maximum
+        - Avoid: \(context.allergies.isEmpty ? "nothing" : context.allergies.joined(separator: ", "))
+        User profile: \(context.profileDescription)
+        """
+        let body: [String: Any] = [
+            "model": model, "max_tokens": 512,
+            "messages": [["role": "user", "content": prompt]]
+        ]
+        let data = try await post(body: body)
+        let raw = try decoder.decode(ClaudeResponse.self, from: data)
+        return try parseJSON(MealSuggestion.self, from: raw.content.first?.text ?? "{}")
     }
 
     // MARK: - Nutrition insights

@@ -25,10 +25,11 @@ enum NourishTheme {
 
         static func macro(_ macro: MacroType) -> SwiftUI.Color {
             switch macro {
-            case .protein: return SwiftUI.Color("MacroProtein")   // blue
-            case .carbs:   return SwiftUI.Color("MacroCarbs")     // amber
-            case .fat:     return SwiftUI.Color("MacroFat")       // coral
-            case .fiber:   return SwiftUI.Color("MacroFiber")     // green
+            case .calories: return .orange
+            case .protein:  return SwiftUI.Color("MacroProtein")   // blue
+            case .carbs:    return SwiftUI.Color("MacroCarbs")     // amber
+            case .fat:      return SwiftUI.Color("MacroFat")       // coral
+            case .fiber:    return SwiftUI.Color("MacroFiber")     // green
             }
         }
     }
@@ -70,12 +71,67 @@ enum NourishTheme {
     }
 }
 
-enum MacroType: String, CaseIterable {
-    case protein = "Protein"
-    case carbs   = "Carbs"
-    case fat     = "Fat"
-    case fiber   = "Fiber"
-    var unit: String { "g" }
+enum MacroType: String, CaseIterable, Identifiable {
+    case calories = "Calories"
+    case protein  = "Protein"
+    case carbs    = "Carbs"
+    case fat      = "Fat"
+    case fiber    = "Fiber"
+
+    var id: String { rawValue }
+
+    /// Localized display name — use this in UI instead of `rawValue`.
+    var localizedName: String { NSLocalizedString(rawValue, comment: "") }
+
+    var unit: String {
+        switch self {
+        case .calories: return "kcal"
+        default: return "g"
+        }
+    }
+
+    var icon: String {
+        switch self {
+        case .calories: return "flame.fill"
+        case .protein:  return "bolt.fill"
+        case .carbs:    return "leaf.fill"
+        case .fat:      return "drop.fill"
+        case .fiber:    return "list.bullet.circle.fill"
+        }
+    }
+
+    /// Alias for `detailColor` — convenience for inline use.
+    var color: SwiftUI.Color { detailColor }
+
+    var detailColor: SwiftUI.Color {
+        switch self {
+        case .calories: return .orange
+        case .protein:  return SwiftUI.Color("MacroProtein")
+        case .carbs:    return SwiftUI.Color("MacroCarbs")
+        case .fat:      return SwiftUI.Color("MacroFat")
+        case .fiber:    return SwiftUI.Color("MacroFiber")
+        }
+    }
+
+    func value(of meal: MealEntry) -> Double {
+        switch self {
+        case .calories: return Double(meal.calories)
+        case .protein:  return meal.protein
+        case .carbs:    return meal.carbohydrates
+        case .fat:      return meal.fat
+        case .fiber:    return meal.fiber
+        }
+    }
+
+    func target(for user: User) -> Double {
+        switch self {
+        case .calories: return Double(user.dailyCalorieTarget)
+        case .protein:  return user.dailyProteinTarget
+        case .carbs:    return user.dailyCarbTarget
+        case .fat:      return user.dailyFatTarget
+        case .fiber:    return user.dailyFiberTarget
+        }
+    }
 }
 
 // MARK: - View modifiers

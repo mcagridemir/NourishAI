@@ -6,8 +6,31 @@ struct InsightsView: View {
 
     @Bindable var user: User
     @State private var selectedRange: InsightRange = .week
+    @State private var weightRange: WeightRange = .month
+    @State private var showingLogWeight = false
+    @State private var shareImage: UIImage?
+    @State private var showingShare = false
+    @State private var showingWeeklyReport = false
+    @State private var showingDiary = false
 
-    enum InsightRange: String, CaseIterable { case week = "7 days"; case month = "30 days" }
+    enum InsightRange: String, CaseIterable {
+        case week = "7 days"; case month = "30 days"
+        var localizedTitle: String { NSLocalizedString(rawValue, comment: "") }
+    }
+    enum WeightRange: String, CaseIterable {
+        case week = "7d"; case month = "30d"; case threeMonths = "90d"
+        var localizedTitle: String { NSLocalizedString(rawValue, comment: "") }
+    }
+
+    private var weightDays: Int {
+        switch weightRange { case .week: return 7; case .month: return 30; case .threeMonths: return 90 }
+    }
+
+    private var weightEntries: [WeightEntry] {
+        user.weightEntries
+            .filter { $0.loggedAt > Date().addingTimeInterval(-Double(weightDays) * 86400) }
+            .sorted { $0.loggedAt < $1.loggedAt }
+    }
 
     private var entries: [MealEntry] {
         let days = selectedRange == .week ? 7 : 30
@@ -28,21 +51,83 @@ struct InsightsView: View {
                 VStack(spacing: NourishTheme.Spacing.lg) {
                     rangePicker
                     summaryCards
+                    MealHeatmapView(mealEntries: user.mealEntries)
                     if !dailyCalories.isEmpty { calorieChart }
+                    if !dailyCalories.isEmpty { calorieBalanceChart }
                     macroBreakdownChart
+                    WeekComparisonView(user: user)
                     healthScoreChart
+                    MealTimingView(mealEntries: user.mealEntries)
+                    SleepNutritionCard(user: user)
+                    HydrationTrendView(user: user)
+                    weightSection
                     deficiencySection
                 }
                 .padding(NourishTheme.Spacing.md)
             }
             .background(NourishTheme.Color.background)
             .navigationTitle("Insights")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    HStack(spacing: 16) {
+                        Button {
+                            showingDiary = true
+                        } label: {
+                            Image(systemName: "calendar")
+                                .foregroundStyle(NourishTheme.Color.primary)
+                        }
+                        Button {
+                            showingWeeklyReport = true
+                        } label: {
+                            Image(systemName: "doc.text.magnifyingglass")
+                                .foregroundStyle(NourishTheme.Color.primary)
+                        }
+                        Button {
+                            renderShareCard()
+                        } label: {
+                            Image(systemName: "square.and.arrow.up")
+                                .foregroundStyle(NourishTheme.Color.primary)
+                        }
+                    }
+                }
+            }
+            .sheet(isPresented: $showingDiary) {
+                FoodDiaryCalendarView(user: user)
+            }
+            .sheet(isPresented: $showingWeeklyReport) {
+                WeeklyReportView(user: user)
+            }
+            .sheet(isPresented: $showingShare) {
+                if let image = shareImage {
+                    ShareSheet(items: [image])
+                }
+            }
+        }
+    }
+
+    @MainActor
+    private func renderShareCard() {
+        let days = selectedRange == .week ? 7 : 30
+        let card = NutritionShareCard(
+            user: user,
+            avgCalories: entries.isEmpty ? 0 : entries.map { $0.calories }.reduce(0, +) / entries.count,
+            avgProtein: Int(avgProtein),
+            avgCarbs: Int(avgCarbs),
+            avgFat: Int(avgFat),
+            streak: user.currentStreak,
+            days: days
+        )
+        let renderer = ImageRenderer(content: card)
+        renderer.scale = UIScreen.main.scale
+        if let image = renderer.uiImage {
+            shareImage = image
+            showingShare = true
         }
     }
 
     private var rangePicker: some View {
         Picker("Range", selection: $selectedRange) {
-            ForEach(InsightRange.allCases, id: \.self) { Text($0.rawValue).tag($0) }
+            ForEach(InsightRange.allCases, id: \.self) { Text($0.localizedTitle).tag($0) }
         }
         .pickerStyle(.segmented)
     }
@@ -71,6 +156,42 @@ struct InsightsView: View {
         }
         .padding()
         .nourishCard()
+    }
+
+    private var calorieBalanceChart: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Text("Calorie balance").font(NourishTheme.Font.headline())
+                Spacer()
+                HStack(spacing: 12) {
+                    legendDot(color: NourishTheme.Color.primary, label: "Surplus")
+                    legendDot(color: .orange, label: "Deficit")
+                }
+            }
+            Chart(dailyCalories, id: \.0) { day in
+                let balance = day.1 - user.dailyCalorieTarget
+                BarMark(x: .value("Day", day.0, unit: .day),
+                        y: .value("Balance", balance))
+                    .foregroundStyle(balance >= 0 ? NourishTheme.Color.primary : Color.orange)
+                    .cornerRadius(4)
+                RuleMark(y: .value("Zero", 0))
+                    .foregroundStyle(.secondary)
+                    .lineStyle(StrokeStyle(lineWidth: 1, dash: [4]))
+            }
+            .frame(height: 140)
+            Text("Positive = ate more than target · Negative = deficit")
+                .font(NourishTheme.Font.caption(11))
+                .foregroundStyle(.secondary)
+        }
+        .padding()
+        .nourishCard()
+    }
+
+    private func legendDot(color: Color, label: String) -> some View {
+        HStack(spacing: 4) {
+            Circle().fill(color).frame(width: 8, height: 8)
+            Text(label).font(NourishTheme.Font.caption(11))
+        }
     }
 
     private var macroBreakdownChart: some View {
@@ -139,6 +260,83 @@ struct InsightsView: View {
         }
     }
 
+    private var weightSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Text("Weight").font(NourishTheme.Font.headline())
+                Spacer()
+                Button {
+                    HapticService.selection()
+                    showingLogWeight = true
+                } label: {
+                    Label("Log", systemImage: "plus")
+                        .font(NourishTheme.Font.caption())
+                        .foregroundStyle(NourishTheme.Color.primary)
+                }
+            }
+
+            HStack(spacing: 16) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(String(format: "%.1f kg", user.latestWeightKg))
+                        .font(NourishTheme.Font.numeric)
+                        .foregroundStyle(NourishTheme.Color.primary)
+                    Text("Current").font(NourishTheme.Font.caption()).foregroundStyle(.secondary)
+                }
+                if let change = user.weightChangeSinceStart {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("\(change < 0 ? "" : "+")\(String(format: "%.1f", change)) kg")
+                            .font(NourishTheme.Font.headline())
+                            .foregroundStyle(change < 0 ? NourishTheme.Color.primary : .orange)
+                        Text("Total change").font(NourishTheme.Font.caption()).foregroundStyle(.secondary)
+                    }
+                }
+                Spacer()
+                Picker("", selection: $weightRange) {
+                    ForEach(WeightRange.allCases, id: \.self) { Text($0.localizedTitle).tag($0) }
+                }
+                .pickerStyle(.segmented)
+                .frame(width: 150)
+            }
+
+            if weightEntries.count >= 2 {
+                Chart(weightEntries) { entry in
+                    LineMark(x: .value("Date", entry.loggedAt), y: .value("kg", entry.weightKg))
+                        .foregroundStyle(NourishTheme.Color.primary)
+                        .interpolationMethod(.catmullRom)
+                    AreaMark(x: .value("Date", entry.loggedAt), y: .value("kg", entry.weightKg))
+                        .foregroundStyle(NourishTheme.Color.primary.opacity(0.08))
+                        .interpolationMethod(.catmullRom)
+                    PointMark(x: .value("Date", entry.loggedAt), y: .value("kg", entry.weightKg))
+                        .foregroundStyle(NourishTheme.Color.primary)
+                        .symbolSize(30)
+                }
+                .chartYScale(domain: weightChartDomain)
+                .frame(height: 160)
+            } else {
+                VStack(spacing: 8) {
+                    Image(systemName: "chart.line.uptrend.xyaxis")
+                        .font(.system(size: 32))
+                        .foregroundStyle(NourishTheme.Color.primaryLight)
+                    Text("Log your weight to see your trend")
+                        .font(NourishTheme.Font.body(13))
+                        .foregroundStyle(.secondary)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 24)
+            }
+        }
+        .padding()
+        .nourishCard()
+        .sheet(isPresented: $showingLogWeight) { LogWeightSheet(user: user) }
+    }
+
+    private var weightChartDomain: ClosedRange<Double> {
+        let weights = weightEntries.map { $0.weightKg }
+        let min = (weights.min() ?? 60) - 2
+        let max = (weights.max() ?? 80) + 2
+        return min...max
+    }
+
     // MARK: - Computed stats
     private var avgCalories: String { entries.isEmpty ? "–" : "\(entries.map { $0.calories }.reduce(0, +) / entries.count)" }
     private var avgHealthScore: Int { entries.isEmpty ? 0 : entries.map { $0.healthScore }.reduce(0, +) / entries.count }
@@ -146,6 +344,8 @@ struct InsightsView: View {
     private var avgCarbs: Double { entries.isEmpty ? 0 : entries.map { $0.carbohydrates }.reduce(0, +) / Double(entries.count) }
     private var avgFat: Double { entries.isEmpty ? 0 : entries.map { $0.fat }.reduce(0, +) / Double(entries.count) }
 }
+
+// ShareSheet is defined in Core/Extensions/Extensions.swift
 
 private struct StatCard: View {
     let label: String; let value: String; let unit: String; let icon: String; let color: Color

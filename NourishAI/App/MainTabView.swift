@@ -4,20 +4,21 @@ import SwiftUI
 
 struct MainTabView: View {
     @Environment(\.modelContext) private var context
-    
+    @EnvironmentObject private var router: AppRouter
+    @Environment(\.horizontalSizeClass) private var hSizeClass
+
     let user: User
-    @State private var selectedTab: Tab = .dashboard
 
     enum Tab: Int, CaseIterable {
         case dashboard, log, coach, plan, insights
 
         var title: String {
             switch self {
-            case .dashboard: return "Home"
-            case .log:       return "Log Meal"
-            case .coach:     return "Coach"
-            case .plan:      return "Meal Plan"
-            case .insights:  return "Insights"
+            case .dashboard: return String(localized: "Home")
+            case .log:       return String(localized: "Log Meal")
+            case .coach:     return String(localized: "Coach")
+            case .plan:      return String(localized: "Meal Plan")
+            case .insights:  return String(localized: "Insights")
             }
         }
 
@@ -33,7 +34,18 @@ struct MainTabView: View {
     }
 
     var body: some View {
-        TabView(selection: $selectedTab) {
+        if hSizeClass == .regular {
+            // iPad / large-screen: NavigationSplitView sidebar
+            iPadLayout
+        } else {
+            // iPhone: standard tab bar
+            phoneLayout
+        }
+    }
+
+    // MARK: - iPhone layout
+    private var phoneLayout: some View {
+        TabView(selection: $router.selectedTab) {
             DashboardView(user: user)
                 .tabItem { Label(Tab.dashboard.title, systemImage: Tab.dashboard.icon) }
                 .tag(Tab.dashboard)
@@ -56,4 +68,33 @@ struct MainTabView: View {
         }
         .tint(NourishTheme.Color.primary)
     }
+
+    // MARK: - iPad layout
+    @ViewBuilder
+    private var iPadLayout: some View {
+        NavigationSplitView {
+            // Sidebar list
+            List(Tab.allCases, id: \.self, selection: Binding(
+                get: { router.selectedTab },
+                set: { if let t = $0 { router.selectedTab = t } }
+            )) { tab in
+                Label(tab.title, systemImage: tab.icon)
+                    .tag(tab)
+            }
+            .navigationTitle("NourishAI")
+            .listStyle(.sidebar)
+        } detail: {
+            switch router.selectedTab {
+            case .dashboard: DashboardView(user: user)
+            case .log:       MealLogView(user: user, context: context)
+            case .coach:     CoachView(user: user)
+            case .plan:      MealPlanView(user: user)
+            case .insights:  InsightsView(user: user)
+            }
+        }
+        .tint(NourishTheme.Color.primary)
+    }
 }
+
+// Register the URL scheme in Info.plist:
+// CFBundleURLTypes → item 0 → CFBundleURLSchemes → nourishai
