@@ -72,8 +72,7 @@ struct MainTabView: View {
     // MARK: - iPad layout
     @ViewBuilder
     private var iPadLayout: some View {
-        NavigationSplitView {
-            // Sidebar list
+        NavigationSplitView(columnVisibility: .constant(.all)) {
             List(Tab.allCases, id: \.self, selection: Binding(
                 get: { router.selectedTab },
                 set: { if let t = $0 { router.selectedTab = t } }
@@ -83,6 +82,14 @@ struct MainTabView: View {
             }
             .navigationTitle("Sana")
             .listStyle(.sidebar)
+            .safeAreaInset(edge: .bottom) {
+                let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
+                Text("Version \(version)")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(.bottom, 12)
+            }
         } detail: {
             switch router.selectedTab {
             case .dashboard: DashboardView(user: user)
@@ -92,6 +99,7 @@ struct MainTabView: View {
             case .insights:  InsightsView(user: user)
             }
         }
+        .navigationSplitViewStyle(.balanced)
         .tint(SanaTheme.Color.primary)
     }
 }

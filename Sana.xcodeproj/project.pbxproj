@@ -7,9 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		350B03124525488F822BC278 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = D41F98939C17491FA4A522F9 /* FirebaseCrashlytics */; };
 		8583E1162FC21B6D006ACF1B /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8583E1152FC21B6D006ACF1B /* WidgetKit.framework */; };
 		8583E1182FC21B6D006ACF1B /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8583E1172FC21B6D006ACF1B /* SwiftUI.framework */; };
 		8583E1252FC21B6E006ACF1B /* SanaWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 8583E1132FC21B6D006ACF1B /* SanaWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		85B1AA272FC44016003629E4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 85B1AA262FC44016003629E4 /* GoogleService-Info.plist */; };
+		C4EA2661BAFD491B90681822 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 26DA5C2107B148F7875EBE26 /* FirebaseAnalytics */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +78,7 @@
 		858C6A452FC255C30069778F /* SanaWatch Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SanaWatch Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		858C6A512FC255C30069778F /* SanaWatch Watch AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SanaWatch Watch AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		858C6A5B2FC255C30069778F /* SanaWatch Watch AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SanaWatch Watch AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		85B1AA262FC44016003629E4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -120,6 +124,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4EA2661BAFD491B90681822 /* FirebaseAnalytics in Frameworks */,
+				350B03124525488F822BC278 /* FirebaseCrashlytics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -173,6 +179,7 @@
 		8583E0212FC1E602006ACF1B = {
 			isa = PBXGroup;
 			children = (
+				85B1AA262FC44016003629E4 /* GoogleService-Info.plist */,
 				8583E13E2FC24FA5006ACF1B /* SanaWidgetExtension.entitlements */,
 				8583E02C2FC1E602006ACF1B /* Sana */,
 				8583E03A2FC1E604006ACF1B /* SanaTests */,
@@ -220,6 +227,7 @@
 				8583E0272FC1E602006ACF1B /* Frameworks */,
 				8583E0282FC1E602006ACF1B /* Resources */,
 				8583E12A2FC21B6E006ACF1B /* Embed Foundation Extensions */,
+				85297D9F2FC3991C00F6F715 /* Crashlytics */,
 			);
 			buildRules = (
 			);
@@ -231,6 +239,8 @@
 			);
 			name = Sana;
 			packageProductDependencies = (
+				26DA5C2107B148F7875EBE26 /* FirebaseAnalytics */,
+				D41F98939C17491FA4A522F9 /* FirebaseCrashlytics */,
 			);
 			productName = Sana;
 			productReference = 8583E02A2FC1E602006ACF1B /* Sana.app */;
@@ -416,9 +426,16 @@
 				en,
 				Base,
 				tr,
+				es,
+				"pt-BR",
+				fr,
+				de,
 			);
 			mainGroup = 8583E0212FC1E602006ACF1B;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				66D26217927B46FF987A697A /* XCLocalSwiftPackageReference "../../firebase-ios-sdk-local" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 8583E02B2FC1E602006ACF1B /* Products */;
 			projectDirPath = "";
@@ -440,6 +457,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85B1AA272FC44016003629E4 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -486,6 +504,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		85297D9F2FC3991C00F6F715 /* Crashlytics */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = Crashlytics;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ \"${CONFIGURATION}\" = \"Release\" ]; then\n  \"$HOME/firebase-ios-sdk-local/Crashlytics/run\" \"${PROJECT_DIR}/GoogleService-Info.plist\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8583E0262FC1E602006ACF1B /* Sources */ = {
@@ -623,7 +662,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -681,7 +720,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -707,15 +746,7 @@
 				EXCLUDED_SOURCE_FILE_NAMES = Info.plist;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Sana/Info.plist;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
-				INFOPLIST_KEY_NSCameraUsageDescription = "Sana uses your camera to photograph and analyse your meals.";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "Sana reads your activity and sleep data to personalise your nutrition advice.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Sana logs your meals to Apple Health to keep your nutrition data in sync.";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Sana accesses your photos to analyse meal images.";
-				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -748,15 +779,7 @@
 				EXCLUDED_SOURCE_FILE_NAMES = Info.plist;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Sana/Info.plist;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
-				INFOPLIST_KEY_NSCameraUsageDescription = "Sana uses your camera to photograph and analyse your meals.";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "Sana reads your activity and sleep data to personalise your nutrition advice.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Sana logs your meals to Apple Health to keep your nutrition data in sync.";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Sana accesses your photos to analyse meal images.";
-				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -785,7 +808,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = NHFBU2GC6N;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cagri.SanaTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -807,7 +830,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = NHFBU2GC6N;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cagri.SanaTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -876,8 +899,6 @@
 				EXCLUDED_SOURCE_FILE_NAMES = Info.plist;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = SanaWidget/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = SanaWidget;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -910,8 +931,6 @@
 				EXCLUDED_SOURCE_FILE_NAMES = Info.plist;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = SanaWidget/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = SanaWidget;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -950,7 +969,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = .watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cagri.Sana.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -961,7 +980,7 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Debug;
 		};
@@ -984,7 +1003,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = .watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cagri.Sana.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -995,7 +1014,7 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Release;
 		};
@@ -1018,7 +1037,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SanaWatch Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SanaWatch Watch App";
-				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Debug;
 		};
@@ -1041,7 +1060,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SanaWatch Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SanaWatch Watch App";
-				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Release;
 		};
@@ -1063,7 +1082,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				TEST_TARGET_NAME = "SanaWatch Watch App";
-				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Debug;
 		};
@@ -1085,7 +1104,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				TEST_TARGET_NAME = "SanaWatch Watch App";
-				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Release;
 		};
@@ -1165,6 +1184,26 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		66D26217927B46FF987A697A /* XCLocalSwiftPackageReference "../../firebase-ios-sdk-local" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "../../firebase-ios-sdk-local";
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		26DA5C2107B148F7875EBE26 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 66D26217927B46FF987A697A /* XCLocalSwiftPackageReference "../../firebase-ios-sdk-local" */;
+			productName = FirebaseAnalytics;
+		};
+		D41F98939C17491FA4A522F9 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 66D26217927B46FF987A697A /* XCLocalSwiftPackageReference "../../firebase-ios-sdk-local" */;
+			productName = FirebaseCrashlytics;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8583E0222FC1E602006ACF1B /* Project object */;
 }

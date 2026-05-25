@@ -16,6 +16,18 @@ struct WhatsNewView: View {
     }
 
     private let features: [(icon: String, color: Color, title: String, body: String)] = [
+        ("bolt.heart.fill",      SanaTheme.Color.primary, "Calorie Deficit Tracker",
+         "The dashboard now shows your daily deficit or surplus, projected weekly weight change, and progress toward your weight goal."),
+        ("scalemass.fill",       .indigo,  "Weight Goal & Target",
+         "Set a target weight in Edit Profile. A progress bar and estimated weeks-to-goal appear on the dashboard automatically."),
+        ("globe",                .teal,    "Country-Aware Meal Suggestions",
+         "AI meal ideas now respect your country and food traditions — simit and ayran for Turkey, grits for the US, and so on."),
+        ("heart.text.square.fill", .pink, "Health Conditions",
+         "Tell Sana about diabetes, anemia, PCOS, and 11 other conditions. Every meal plan and AI suggestion now accounts for them."),
+        ("ruler.fill",           .orange,  "Imperial Units",
+         "US, UK, and other imperial-unit users now see lbs and ft/in throughout the app — onboarding, insights, profile, and charts."),
+        ("sparkles",             SanaTheme.Color.accent, "AI Quick Add with Portions",
+         "Describe a meal in plain language — \"2 köfte, 1 glass ayran\" — and Claude estimates all macros instantly."),
         ("moon.zzz.fill",        .purple,  "Fasting Dynamic Island",
          "Your fast countdown now lives in the Dynamic Island — glanceable without opening the app."),
         ("square.grid.3x3.fill", SanaTheme.Color.primary, "Contribution Heatmap",

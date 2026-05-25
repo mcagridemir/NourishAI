@@ -1,0 +1,8 @@
+/* InfoPlist.strings — Deutsch */
+CFBundleDisplayName = "Sana";
+NSCameraUsageDescription = "Sana verwendet die Kamera, um deine Mahlzeiten zu analysieren und Nährwertangaben zu scannen.";
+NSMicrophoneUsageDescription = "Sana verwendet das Mikrofon, damit du Mahlzeiten per Sprache erfassen kannst.";
+NSSpeechRecognitionUsageDescription = "Sana verwendet Spracherkennung, um gesprochene Mahlzeitennamen zu transkribieren.";
+NSHealthShareUsageDescription = "Sana liest deine Schritte, Schlaf und Herzfrequenz, um Ernährungsanalysen zu personalisieren.";
+NSHealthUpdateUsageDescription = "Sana schreibt deine Mahlzeiten, Wasseraufnahme und dein Gewicht in Apple Health.";
+NSPhotoLibraryUsageDescription = "Sana greift auf deine Fotobibliothek zu, um gespeicherte Mahlzeitenfotos zu analysieren.";

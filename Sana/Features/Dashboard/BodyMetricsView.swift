@@ -77,48 +77,7 @@ struct BodyMetricsView: View {
                     }
 
                     // Ideal weight range
-                    VStack(alignment: .leading, spacing: 14) {
-                        Label("Ideal weight range", systemImage: "scalemass.fill")
-                            .font(SanaTheme.Font.headline())
-                        HStack(spacing: 0) {
-                            VStack(spacing: 4) {
-                                Text(String(format: "%.1f kg", idealWeightRange.min))
-                                    .font(SanaTheme.Font.headline(14))
-                                Text("Lower").font(SanaTheme.Font.caption(11)).foregroundStyle(.secondary)
-                            }
-                            .frame(maxWidth: .infinity)
-                            Text("–")
-                                .font(SanaTheme.Font.headline())
-                                .foregroundStyle(.secondary)
-                            VStack(spacing: 4) {
-                                Text(String(format: "%.1f kg", idealWeightRange.max))
-                                    .font(SanaTheme.Font.headline(14))
-                                Text("Upper").font(SanaTheme.Font.caption(11)).foregroundStyle(.secondary)
-                            }
-                            .frame(maxWidth: .infinity)
-                        }
-                        Text("Based on a healthy BMI of 18.5–24.9 for your height (\(Int(user.heightCm)) cm)")
-                            .font(SanaTheme.Font.caption(11))
-                            .foregroundStyle(.secondary)
-
-                        let delta = weightKg - idealWeightRange.max
-                        if delta > 0 {
-                            Label("\(String(format: "%.1f", delta)) kg above healthy range", systemImage: "arrow.down.circle.fill")
-                                .font(SanaTheme.Font.body(13))
-                                .foregroundStyle(.orange)
-                        } else if weightKg < idealWeightRange.min {
-                            let below = idealWeightRange.min - weightKg
-                            Label("\(String(format: "%.1f", below)) kg below healthy range", systemImage: "arrow.up.circle.fill")
-                                .font(SanaTheme.Font.body(13))
-                                .foregroundStyle(.blue)
-                        } else {
-                            Label("You're within the healthy range", systemImage: "checkmark.circle.fill")
-                                .font(SanaTheme.Font.body(13))
-                                .foregroundStyle(SanaTheme.Color.primary)
-                        }
-                    }
-                    .padding()
-                    .nourishCard()
+                    idealWeightRangeCard
 
                     // Activity level
                     VStack(alignment: .leading, spacing: 12) {
@@ -173,6 +132,72 @@ struct BodyMetricsView: View {
                 }
             }
         }
+    }
+
+    // MARK: - Unit helpers
+
+    private func formatWeight(_ kg: Double) -> String {
+        user.unitSystem == .imperial
+            ? String(format: "%.1f lbs", kg * 2.20462)
+            : String(format: "%.1f kg", kg)
+    }
+
+    private var heightDescription: String {
+        if user.unitSystem == .imperial {
+            let totalInches = user.heightCm / 2.54
+            let feet = Int(totalInches / 12)
+            let inches = Int(totalInches.truncatingRemainder(dividingBy: 12))
+            return "\(feet)'\(inches)\""
+        } else {
+            return "\(Int(user.heightCm)) cm"
+        }
+    }
+
+    // MARK: - Ideal weight range card
+
+    private var idealWeightRangeCard: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            Label("Ideal weight range", systemImage: "scalemass.fill")
+                .font(SanaTheme.Font.headline())
+            HStack(spacing: 0) {
+                VStack(spacing: 4) {
+                    Text(formatWeight(idealWeightRange.min))
+                        .font(SanaTheme.Font.headline(14))
+                    Text("Lower").font(SanaTheme.Font.caption(11)).foregroundStyle(.secondary)
+                }
+                .frame(maxWidth: .infinity)
+                Text("–")
+                    .font(SanaTheme.Font.headline())
+                    .foregroundStyle(.secondary)
+                VStack(spacing: 4) {
+                    Text(formatWeight(idealWeightRange.max))
+                        .font(SanaTheme.Font.headline(14))
+                    Text("Upper").font(SanaTheme.Font.caption(11)).foregroundStyle(.secondary)
+                }
+                .frame(maxWidth: .infinity)
+            }
+            Text("Based on a healthy BMI of 18.5–24.9 for your height (\(heightDescription))")
+                .font(SanaTheme.Font.caption(11))
+                .foregroundStyle(.secondary)
+
+            let delta = weightKg - idealWeightRange.max
+            if delta > 0 {
+                Label("\(formatWeight(delta)) above healthy range", systemImage: "arrow.down.circle.fill")
+                    .font(SanaTheme.Font.body(13))
+                    .foregroundStyle(.orange)
+            } else if weightKg < idealWeightRange.min {
+                let below = idealWeightRange.min - weightKg
+                Label("\(formatWeight(below)) below healthy range", systemImage: "arrow.up.circle.fill")
+                    .font(SanaTheme.Font.body(13))
+                    .foregroundStyle(.blue)
+            } else {
+                Label("You're within the healthy range", systemImage: "checkmark.circle.fill")
+                    .font(SanaTheme.Font.body(13))
+                    .foregroundStyle(SanaTheme.Color.primary)
+            }
+        }
+        .padding()
+        .nourishCard()
     }
 
     // MARK: - BMI card

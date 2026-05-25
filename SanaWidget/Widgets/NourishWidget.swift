@@ -13,6 +13,7 @@ struct SanaWidgetData: Codable {
     var protein: Double
     var proteinTarget: Double
     var updatedAt: Date
+    var isImperial: Bool = false
 
     static let placeholder = SanaWidgetData(
         calories: 0, calorieTarget: 2000,
@@ -25,6 +26,13 @@ struct SanaWidgetData: Codable {
     var waterProgress: Double   { min(1.0, Double(waterMl) / Double(max(1, waterGoalMl))) }
     var proteinProgress: Double { min(1.0, protein / max(1, proteinTarget)) }
     var caloriesRemaining: Int  { max(0, calorieTarget - calories) }
+
+    func formatWater(_ ml: Int) -> String {
+        if isImperial {
+            return String(format: "%.0f fl oz", Double(ml) * 0.033814)
+        }
+        return ml >= 1000 ? String(format: "%.1fL", Double(ml) / 1000) : "\(ml) ml"
+    }
 }
 
 private enum WidgetDataStore {
@@ -73,9 +81,9 @@ private extension Color {
 // MARK: - Deep link URLs
 
 private enum WidgetLink {
-    static let dashboard = URL(string: "nourishai://dashboard")!
-    static let water     = URL(string: "nourishai://water")!
-    static let log       = URL(string: "nourishai://log")!
+    static let dashboard = URL(string: "sana://dashboard")!
+    static let water     = URL(string: "sana://water")!
+    static let log       = URL(string: "sana://log")!
 }
 
 // MARK: - Small Widget  (calories ring + streak)
@@ -157,7 +165,7 @@ struct MediumWidgetView: View {
                 VStack(alignment: .leading, spacing: 3) {
                     HStack(spacing: 4) {
                         Image(systemName: "drop.fill").foregroundStyle(.blue).font(.system(size: 10))
-                        Text("\(data.waterMl) / \(data.waterGoalMl) ml")
+                        Text("\(data.formatWater(data.waterMl)) / \(data.formatWater(data.waterGoalMl))")
                             .font(.system(size: 11, weight: .medium))
                             .foregroundStyle(.primary)
                     }
@@ -224,7 +232,7 @@ struct AccessoryRectangularView: View {
                 .font(.system(size: 11, weight: .semibold))
                 .foregroundStyle(Color.nourishGreen)
             ProgressView(value: data.calorieProgress).tint(Color.nourishGreen)
-            Label("\(data.waterMl) / \(data.waterGoalMl) ml", systemImage: "drop.fill")
+            Label("\(data.formatWater(data.waterMl)) / \(data.formatWater(data.waterGoalMl))", systemImage: "drop.fill")
                 .font(.system(size: 11, weight: .medium))
                 .foregroundStyle(.blue)
             ProgressView(value: data.waterProgress).tint(.blue)
@@ -238,7 +246,7 @@ struct AccessoryRectangularView: View {
 struct AccessoryInlineView: View {
     let data: SanaWidgetData
     var body: some View {
-        Label("\(data.caloriesRemaining) kcal left  💧\(data.waterMl)ml", systemImage: "fork.knife")
+        Label("\(data.caloriesRemaining) kcal left  💧\(data.formatWater(data.waterMl))", systemImage: "fork.knife")
     }
 }
 

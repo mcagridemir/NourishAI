@@ -300,14 +300,14 @@ struct InsightsView: View {
 
             HStack(spacing: 16) {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(String(format: "%.1f kg", user.latestWeightKg))
+                    Text(user.formattedCurrentWeight)
                         .font(SanaTheme.Font.numeric)
                         .foregroundStyle(SanaTheme.Color.primary)
                     Text("Current").font(SanaTheme.Font.caption()).foregroundStyle(.secondary)
                 }
                 if let change = user.weightChangeSinceStart {
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("\(change < 0 ? "" : "+")\(String(format: "%.1f", change)) kg")
+                        Text("\(change < 0 ? "−" : "+")\(user.formatWeight(abs(change)))")
                             .font(SanaTheme.Font.headline())
                             .foregroundStyle(change < 0 ? SanaTheme.Color.primary : .orange)
                         Text("Total change").font(SanaTheme.Font.caption()).foregroundStyle(.secondary)
@@ -323,17 +323,27 @@ struct InsightsView: View {
 
             if weightEntries.count >= 2 {
                 Chart(weightEntries) { entry in
-                    LineMark(x: .value("Date", entry.loggedAt), y: .value("kg", entry.weightKg))
-                        .foregroundStyle(SanaTheme.Color.primary)
-                        .interpolationMethod(.catmullRom)
-                    AreaMark(x: .value("Date", entry.loggedAt), y: .value("kg", entry.weightKg))
-                        .foregroundStyle(SanaTheme.Color.primary.opacity(0.08))
-                        .interpolationMethod(.catmullRom)
-                    PointMark(x: .value("Date", entry.loggedAt), y: .value("kg", entry.weightKg))
-                        .foregroundStyle(SanaTheme.Color.primary)
-                        .symbolSize(30)
+                    LineMark(
+                        x: .value("Date", entry.loggedAt),
+                        y: .value(user.weightUnit, chartWeight(entry.weightKg))
+                    )
+                    .foregroundStyle(SanaTheme.Color.primary)
+                    .interpolationMethod(.catmullRom)
+                    AreaMark(
+                        x: .value("Date", entry.loggedAt),
+                        y: .value(user.weightUnit, chartWeight(entry.weightKg))
+                    )
+                    .foregroundStyle(SanaTheme.Color.primary.opacity(0.08))
+                    .interpolationMethod(.catmullRom)
+                    PointMark(
+                        x: .value("Date", entry.loggedAt),
+                        y: .value(user.weightUnit, chartWeight(entry.weightKg))
+                    )
+                    .foregroundStyle(SanaTheme.Color.primary)
+                    .symbolSize(30)
                 }
                 .chartYScale(domain: weightChartDomain)
+                .chartYAxisLabel(user.weightUnit, position: .leading)
                 .frame(height: 160)
             } else {
                 VStack(spacing: 8) {
@@ -354,11 +364,18 @@ struct InsightsView: View {
         .sheet(isPresented: $showingLogWeight) { LogWeightSheet(user: user) }
     }
 
+    // Convert a kg value to the user's display unit for charting.
+    private func chartWeight(_ kg: Double) -> Double {
+        user.unitSystem == .imperial ? kg * 2.20462 : kg
+    }
+
     private var weightChartDomain: ClosedRange<Double> {
-        let weights = weightEntries.map { $0.weightKg }
-        let min = (weights.min() ?? 60) - 2
-        let max = (weights.max() ?? 80) + 2
-        return min...max
+        let isImperial = user.unitSystem == .imperial
+        let margin  = isImperial ? 4.4 : 2.0
+        let defLo   = isImperial ? 132.0 : 60.0
+        let defHi   = isImperial ? 176.0 : 80.0
+        let weights = weightEntries.map { chartWeight($0.weightKg) }
+        return (weights.min() ?? defLo) - margin ... (weights.max() ?? defHi) + margin
     }
 
     // MARK: - Computed stats

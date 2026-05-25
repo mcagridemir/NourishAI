@@ -89,11 +89,11 @@ struct WatchDashboardView: View {
     private var waterCard: some View {
         VStack(spacing: 6) {
             HStack {
-                Label("\(data.waterMl) ml", systemImage: "drop.fill")
+                Label(data.formatWater(data.waterMl), systemImage: "drop.fill")
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundStyle(.blue)
                 Spacer()
-                Text("\(data.waterGoalMl) ml goal")
+                Text("\(data.formatWater(data.waterGoalMl)) goal")
                     .font(.system(size: 10))
                     .foregroundStyle(.secondary)
             }

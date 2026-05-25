@@ -40,27 +40,39 @@ struct LogWeightSheet: View {
         }
     }
 
+    // MARK: - Unit helpers
+
+    /// Step size in kg: 0.1 kg for metric, ≈0.1 lbs for imperial
+    private var weightStep: Double { user.unitSystem == .imperial ? 0.04536 : 0.1 }
+
+    private var displayWeight: Double {
+        user.unitSystem == .imperial ? weightKg * 2.20462 : weightKg
+    }
+
+    private var weightUnit: String { user.unitSystem == .imperial ? "lbs" : "kg" }
+
     // MARK: - Sub-views
 
     private var weightDisplay: some View {
         VStack(spacing: 4) {
-            Text(String(format: "%.1f", weightKg))
+            Text(String(format: "%.1f", displayWeight))
                 .font(.system(size: 72, weight: .bold, design: .rounded))
                 .foregroundStyle(SanaTheme.Color.primary)
                 .contentTransition(.numericText())
                 .animation(SanaTheme.Animation.smooth, value: weightKg)
-            Text("kg")
+            Text(weightUnit)
                 .font(SanaTheme.Font.headline(20))
                 .foregroundStyle(.secondary)
         }
     }
 
     private var controls: some View {
-        VStack(spacing: SanaTheme.Spacing.md) {
+        let step = weightStep
+        return VStack(spacing: SanaTheme.Spacing.md) {
             HStack(spacing: SanaTheme.Spacing.lg) {
                 Button {
                     HapticService.impact(.light)
-                    weightKg = max(30, weightKg - 0.1)
+                    weightKg = max(30, weightKg - step)
                 } label: {
                     Image(systemName: "minus.circle.fill")
                         .font(.system(size: 44))
@@ -69,7 +81,7 @@ struct LogWeightSheet: View {
                 Spacer()
                 Button {
                     HapticService.impact(.light)
-                    weightKg = min(300, weightKg + 0.1)
+                    weightKg = min(300, weightKg + step)
                 } label: {
                     Image(systemName: "plus.circle.fill")
                         .font(.system(size: 44))
@@ -77,7 +89,7 @@ struct LogWeightSheet: View {
                 }
             }
 
-            Slider(value: $weightKg, in: max(30, weightKg - 30)...min(300, weightKg + 30), step: 0.1)
+            Slider(value: $weightKg, in: max(30, weightKg - 30)...min(300, weightKg + 30), step: step)
                 .tint(SanaTheme.Color.primary)
         }
         .padding()
@@ -87,11 +99,15 @@ struct LogWeightSheet: View {
     @ViewBuilder
     private var changeIndicator: some View {
         let diff = weightKg - user.latestWeightKg
-        if abs(diff) >= 0.1 {
+        let threshold = weightStep
+        if abs(diff) >= threshold {
+            let diffDisplay: String = user.unitSystem == .imperial
+                ? String(format: "%.1f lbs", diff * 2.20462)
+                : String(format: "%.1f kg", diff)
             HStack(spacing: 6) {
                 Image(systemName: diff < 0 ? "arrow.down.circle.fill" : "arrow.up.circle.fill")
                     .foregroundStyle(diff < 0 ? SanaTheme.Color.primary : .orange)
-                Text("\(diff < 0 ? "" : "+")\(String(format: "%.1f", diff)) kg from last entry")
+                Text("\(diff < 0 ? "" : "+")\(diffDisplay) from last entry")
                     .font(SanaTheme.Font.caption())
                     .foregroundStyle(.secondary)
             }

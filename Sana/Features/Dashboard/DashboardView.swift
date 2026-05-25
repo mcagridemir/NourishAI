@@ -1,6 +1,7 @@
 // Sana — DashboardView.swift
 import SwiftUI
 import SwiftData
+import StoreKit
 
 struct DashboardView: View {
 
@@ -8,10 +9,13 @@ struct DashboardView: View {
     @StateObject private var vm: DashboardViewModel
     @EnvironmentObject private var healthKit: HealthKitService
     @EnvironmentObject private var router: AppRouter
+    @Environment(\.horizontalSizeClass) private var hSizeClass
     @AppStorage("celebrated.streaks") private var celebratedStreaks: String = ""
     @State private var showingMilestone = false
     @State private var showingGoals = false
     @State private var showingPaywall = false
+
+    private var isIPad: Bool { hSizeClass == .regular }
 
     init(user: User) {
         self.user = user
@@ -29,6 +33,7 @@ struct DashboardView: View {
                 VStack(spacing: 0) {
                     dashboardHeader
                     heroDailySummaryCard
+                    weightGoalSection
                     quickActionsRow
                     dailyScoreSection
                     aiInsightSection
@@ -40,6 +45,8 @@ struct DashboardView: View {
                     premiumNudge
                 }
                 .padding(.bottom, 32)
+                .frame(maxWidth: isIPad ? 720 : .infinity)
+                .frame(maxWidth: .infinity, alignment: .center)
             }
             .background(SanaTheme.Color.background)
             .toolbar(.hidden, for: .navigationBar)
@@ -95,7 +102,7 @@ struct DashboardView: View {
             }
         }
         .padding(.horizontal, SanaTheme.Spacing.lg)
-        .padding(.top, 60)
+        .padding(.top, isIPad ? 20 : 60)
         .padding(.bottom, SanaTheme.Spacing.sm)
     }
 
@@ -172,10 +179,15 @@ struct DashboardView: View {
     }
 
     private var heroSideStats: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        let balance = adjustedCalorieTarget - vm.todayCalories
+        let isDeficit = balance >= 0
+        return VStack(alignment: .leading, spacing: 14) {
             HeroStatRow(label: "Eaten",  value: "\(vm.todayCalories.formatted())", unit: "kcal", dotColor: SanaTheme.Color.primary)
             HeroStatRow(label: "Burned", value: "\(Int(healthKit.todayActiveCalories).formatted())", unit: "kcal", dotColor: SanaTheme.Color.accent)
-            HeroStatRow(label: "Goal",   value: "\(adjustedCalorieTarget.formatted())", unit: "kcal", dotColor: .white, muted: true)
+            HeroStatRow(label: isDeficit ? "Deficit" : "Surplus",
+                        value: (isDeficit ? "−" : "+") + abs(balance).formatted(),
+                        unit: "kcal",
+                        dotColor: isDeficit ? SanaTheme.Color.primary : .orange)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -195,19 +207,37 @@ struct DashboardView: View {
         }
     }
 
+    // MARK: Weight Goal / Calorie Deficit
+
+    private var weightGoalSection: some View {
+        WeightGoalCard(user: user, adjustedCalorieTarget: adjustedCalorieTarget)
+            .padding(.horizontal, SanaTheme.Spacing.lg)
+            .padding(.bottom, SanaTheme.Spacing.lg)
+    }
+
     // MARK: Quick Actions
 
+    @ViewBuilder
     private var quickActionsRow: some View {
-        HStack(spacing: 10) {
-            QuickActionCard(icon: "camera.fill", label: "Snap meal", sub: "AI estimates", color: SanaTheme.Color.primary) {
-                router.selectedTab = .log
+        let snapCard = QuickActionCard(icon: "camera.fill", label: "Snap meal", sub: "AI estimates", color: SanaTheme.Color.primary) { router.selectedTab = .log }
+        let coachCard = QuickActionCard(icon: "sparkles", label: "Ask Coach", sub: "Get advice", color: SanaTheme.Color.accent) { router.selectedTab = .coach }
+        if isIPad {
+            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
+                snapCard
+                coachCard
+                QuickActionCard(icon: "calendar", label: "Meal Plan", sub: "Weekly view", color: .indigo) { router.selectedTab = .plan }
+                QuickActionCard(icon: "chart.bar.fill", label: "Insights", sub: "Your trends", color: .teal) { router.selectedTab = .insights }
             }
-            QuickActionCard(icon: "sparkles", label: "Ask Coach", sub: "Get advice", color: SanaTheme.Color.accent) {
-                router.selectedTab = .coach
+            .padding(.horizontal, SanaTheme.Spacing.lg)
+            .padding(.bottom, SanaTheme.Spacing.lg)
+        } else {
+            HStack(spacing: 10) {
+                snapCard
+                coachCard
             }
+            .padding(.horizontal, SanaTheme.Spacing.lg)
+            .padding(.bottom, SanaTheme.Spacing.lg)
         }
-        .padding(.horizontal, SanaTheme.Spacing.lg)
-        .padding(.bottom, SanaTheme.Spacing.lg)
     }
 
     // MARK: Daily Score
@@ -261,7 +291,7 @@ struct DashboardView: View {
             if vm.todayMeals.isEmpty {
                 EmptyMealsPrompt()
             } else {
-                ForEach(vm.todayMeals.prefix(3)) { meal in
+                ForEach(vm.todayMeals.prefix(isIPad ? 5 : 3)) { meal in
                     MealRowView(meal: meal)
                 }
             }
@@ -276,11 +306,9 @@ struct DashboardView: View {
     // MARK: Hydration + Fasting (2-column)
 
     private var hydrationFastingRow: some View {
-        HStack(alignment: .top, spacing: 10) {
+        VStack(spacing: 10) {
             WaterTrackerView(user: user)
-                .frame(maxWidth: .infinity)
             FastingTrackerView()
-                .frame(maxWidth: .infinity)
         }
         .padding(.horizontal, SanaTheme.Spacing.lg)
         .padding(.bottom, SanaTheme.Spacing.lg)
@@ -314,6 +342,10 @@ struct DashboardView: View {
                         HealthMetricCell(label: "Active", value: "\(Int(healthKit.todayActiveCalories))", unit: "kcal", color: SanaTheme.Color.accent)
                         Divider().frame(height: 36).opacity(0.2)
                         HealthMetricCell(label: "Sleep",  value: String(format: "%.1f", healthKit.lastNightSleep), unit: "hrs", color: Color.indigo)
+                        if isIPad && healthKit.heartRateResting > 0 {
+                            Divider().frame(height: 36).opacity(0.2)
+                            HealthMetricCell(label: "Resting HR", value: "\(Int(healthKit.heartRateResting))", unit: "bpm", color: .red)
+                        }
                     }
                 }
                 .padding(SanaTheme.Spacing.lg)
@@ -385,7 +417,13 @@ struct DashboardView: View {
         guard !celebratedStreaks.components(separatedBy: ",").contains(key) else { return }
         celebratedStreaks = (celebratedStreaks.isEmpty ? key : celebratedStreaks + "," + key)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-            withAnimation { showingMilestone = true }
+            withAnimation(SanaTheme.Animation.smooth) { showingMilestone = true }
+        }
+        if streak == 7 || streak == 14 || streak == 30 {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+                guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
+                SKStoreReviewController.requestReview(in: scene)
+            }
         }
     }
 }

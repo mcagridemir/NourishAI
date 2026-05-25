@@ -5,18 +5,48 @@ import SwiftData
 struct OnboardingFlowView: View {
 
     @Environment(\.modelContext) private var context
+    @EnvironmentObject private var auth: AuthService
     @State private var step = 0
     @State private var name = ""
-    @State private var email = ""
     @State private var goal: NutritionGoal = .eatHealthier
-    @State private var dietStyle: DietaryStyle = .omnivore
+    @State private var dietStyle: DietaryStyle = .noPreference
     @State private var allergies: Set<String> = []
+    @State private var healthConditions: Set<String> = []
     @State private var sex: BiologicalSex = .preferNotToSay
     @State private var heightCm: Double = 170
     @State private var weightKg: Double = 70
     @State private var activityLevel: ActivityLevel = .moderatelyActive
 
-    private let totalSteps = 5
+    // Unit system from device locale — onboarding sliders work in display units;
+    // the User model always stores metric internally.
+    private let onboardingUnits = UnitSystem.deviceDefault
+
+    private var heightBinding: Binding<Double> {
+        Binding(
+            get: { onboardingUnits == .imperial ? heightCm / 2.54 : heightCm },
+            set: { v in heightCm = onboardingUnits == .imperial ? v * 2.54 : v }
+        )
+    }
+    private var weightBinding: Binding<Double> {
+        Binding(
+            get: { onboardingUnits == .imperial ? weightKg * 2.20462 : weightKg },
+            set: { v in weightKg = onboardingUnits == .imperial ? v / 2.20462 : v }
+        )
+    }
+    private var heightDisplayLabel: String {
+        if onboardingUnits == .imperial {
+            let totalIn = Int(heightCm / 2.54)
+            return "\(totalIn / 12)' \(totalIn % 12)\""
+        }
+        return "\(Int(heightCm)) cm"
+    }
+    private var weightDisplayLabel: String {
+        onboardingUnits == .imperial
+            ? String(format: "%.0f lbs", weightKg * 2.20462)
+            : "\(Int(weightKg)) kg"
+    }
+
+    private let totalSteps = 6
     private let commonAllergens = ["Gluten", "Dairy", "Nuts", "Eggs", "Soy", "Shellfish", "Fish", "Sesame"]
 
     var body: some View {
@@ -30,6 +60,7 @@ struct OnboardingFlowView: View {
                     goalStep.tag(2)
                     dietStep.tag(3)
                     allergyStep.tag(4)
+                    healthConditionsStep.tag(5)
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .animation(SanaTheme.Animation.smooth, value: step)
@@ -56,15 +87,16 @@ struct OnboardingFlowView: View {
 
     private var welcomeStep: some View {
         OnboardingStep(title: "Welcome to Sana", subtitle: "Your personal AI nutrition coach. Let's set up your profile.", icon: "leaf.fill", iconColor: SanaTheme.Color.primary) {
-            VStack(spacing: 16) {
-                NourishTextField(placeholder: "Your name", text: $name)
-                NourishTextField(placeholder: "Email address", text: $email)
-                    .keyboardType(.emailAddress).autocapitalization(.none)
-            }
+            NourishTextField(placeholder: "Your name", text: $name)
         } next: {
             HapticService.stepForward()
             step = 1
-        } nextEnabled: { !name.isEmpty && email.contains("@") }
+        } nextEnabled: { !name.isEmpty }
+        .onAppear {
+            // Pre-fill name from Apple Sign In if available
+            let pending = auth.consumePendingName()
+            if !pending.isEmpty && name.isEmpty { name = pending }
+        }
     }
 
     private var profileStep: some View {
@@ -76,12 +108,22 @@ struct OnboardingFlowView: View {
                 .pickerStyle(.segmented)
 
                 VStack(alignment: .leading, spacing: 6) {
-                    Text("Height: \(Int(heightCm)) cm").font(SanaTheme.Font.caption()).foregroundStyle(.secondary)
-                    Slider(value: $heightCm, in: 140...220, step: 1).tint(SanaTheme.Color.primary)
+                    Text("Height: \(heightDisplayLabel)")
+                        .font(SanaTheme.Font.caption()).foregroundStyle(.secondary)
+                    Slider(
+                        value: heightBinding,
+                        in: onboardingUnits == .imperial ? 55...87 : 140...220,
+                        step: 1
+                    ).tint(SanaTheme.Color.primary)
                 }
                 VStack(alignment: .leading, spacing: 6) {
-                    Text("Weight: \(Int(weightKg)) kg").font(SanaTheme.Font.caption()).foregroundStyle(.secondary)
-                    Slider(value: $weightKg, in: 40...160, step: 0.5).tint(SanaTheme.Color.primary)
+                    Text("Weight: \(weightDisplayLabel)")
+                        .font(SanaTheme.Font.caption()).foregroundStyle(.secondary)
+                    Slider(
+                        value: weightBinding,
+                        in: onboardingUnits == .imperial ? 88...353 : 40...160,
+                        step: onboardingUnits == .imperial ? 1 : 0.5
+                    ).tint(SanaTheme.Color.primary)
                 }
                 Picker("Activity level", selection: $activityLevel) {
                     ForEach(ActivityLevel.allCases, id: \.self) { Text($0.rawValue).tag($0) }
@@ -102,17 +144,44 @@ struct OnboardingFlowView: View {
     }
 
     private var dietStep: some View {
-        OnboardingStep(title: "Dietary style", subtitle: "How would you describe your eating habits?", icon: "fork.knife", iconColor: .green) {
-            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
-                ForEach(DietaryStyle.allCases, id: \.self) { d in
-                    SelectionTile(label: d.rawValue, isSelected: dietStyle == d) { dietStyle = d }
+        OnboardingStep(
+            title: "Dietary style",
+            subtitle: "How would you describe your eating habits? You can skip this.",
+            icon: "fork.knife", iconColor: .green
+        ) {
+            VStack(spacing: 10) {
+                // "No preference" skip tile — visually distinct
+                Button {
+                    HapticService.selection()
+                    dietStyle = .noPreference
+                } label: {
+                    HStack {
+                        Image(systemName: dietStyle == .noPreference ? "checkmark.circle.fill" : "circle.dashed")
+                            .foregroundStyle(dietStyle == .noPreference ? SanaTheme.Color.primary : .secondary)
+                        Text("No preference / Skip")
+                            .font(SanaTheme.Font.body())
+                            .foregroundStyle(dietStyle == .noPreference ? SanaTheme.Color.primary : .secondary)
+                        Spacer()
+                    }
+                    .padding()
+                    .background(dietStyle == .noPreference ? SanaTheme.Color.primaryLight : SanaTheme.Color.surface)
+                    .clipShape(RoundedRectangle(cornerRadius: SanaTheme.Radius.md))
+                    .overlay(RoundedRectangle(cornerRadius: SanaTheme.Radius.md)
+                        .stroke(dietStyle == .noPreference ? SanaTheme.Color.primary : Color.clear, lineWidth: 1.5))
+                }
+                .buttonStyle(.plain)
+
+                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
+                    ForEach(DietaryStyle.allCases.filter { $0 != .noPreference }, id: \.self) { d in
+                        SelectionTile(label: d.rawValue, isSelected: dietStyle == d) { dietStyle = d }
+                    }
                 }
             }
         } next: { HapticService.stepForward(); step = 4 } nextEnabled: { true }
     }
 
     private var allergyStep: some View {
-        OnboardingStep(title: "Any food allergies?", subtitle: "Select all that apply. You can change this later.", icon: "allergens", iconColor: .red) {
+        OnboardingStep(title: "Any food allergies?", subtitle: "Select all that apply. You can change this later.", icon: "exclamationmark.circle.fill", iconColor: .red) {
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
                 ForEach(commonAllergens, id: \.self) { a in
                     SelectionTile(label: a, isSelected: allergies.contains(a)) {
@@ -120,20 +189,50 @@ struct OnboardingFlowView: View {
                     }
                 }
             }
-        } next: {
-            HapticService.notification(.success)
-            createUser()
-        } nextEnabled: { true }
+        } next: { HapticService.stepForward(); step = 5 } nextEnabled: { true }
+    }
+
+    private var healthConditionsStep: some View {
+        OnboardingStep(
+            title: "Any health conditions?",
+            subtitle: "We'll tailor meals and advice around these. Select all that apply.",
+            icon: "heart.text.square.fill",
+            iconColor: .pink,
+            content: {
+                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
+                    ForEach(HealthCondition.allCases, id: \.self) { c in
+                        SelectionTile(label: c.rawValue, isSelected: healthConditions.contains(c.rawValue)) {
+                            if healthConditions.contains(c.rawValue) {
+                                healthConditions.remove(c.rawValue)
+                            } else {
+                                healthConditions.insert(c.rawValue)
+                            }
+                        }
+                    }
+                }
+            },
+            next: {
+                HapticService.notification(.success)
+                createUser()
+            },
+            nextLabel: "Get started",
+            nextEnabled: { true }
+        )
     }
 
     // MARK: - Create user
 
     private func createUser() {
         let user = User(
-            name: name, email: email, biologicalSex: sex,
+            authID: auth.currentUserID ?? "",
+            name: name,
+            biologicalSex: sex,
             heightCm: heightCm, weightKg: weightKg,
             activityLevel: activityLevel, primaryGoal: goal,
-            dietaryStyle: dietStyle, allergies: Array(allergies)
+            dietaryStyle: dietStyle,
+            allergies: Array(allergies),
+            healthConditions: Array(healthConditions),
+            country: User.deviceCountry
         )
         context.insert(user)
 

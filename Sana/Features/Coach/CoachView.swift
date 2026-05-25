@@ -174,7 +174,13 @@ struct CoachView: View {
                 .padding(.bottom, 8)
             }
             .onChange(of: vm.messages.count) { _, _ in
-                withAnimation { proxy.scrollTo(vm.messages.last?.id.uuidString ?? "streaming", anchor: .bottom) }
+                withAnimation {
+                    if let id = vm.messages.last?.id {
+                        proxy.scrollTo(id, anchor: .bottom)
+                    } else {
+                        proxy.scrollTo("streaming", anchor: .bottom)
+                    }
+                }
             }
             .onChange(of: vm.streamingBuffer) { _, _ in
                 proxy.scrollTo("streaming", anchor: .bottom)

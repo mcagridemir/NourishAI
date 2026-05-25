@@ -20,6 +20,24 @@ struct HydrationTrendView: View {
         }
     }
 
+    private var isImperial: Bool { user.unitSystem == .imperial }
+    private let flOzFactor: Double = 0.033814
+
+    /// Convert ml to chart display unit (ml or fl oz).
+    private func chartWater(_ ml: Int) -> Double {
+        isImperial ? Double(ml) * flOzFactor : Double(ml)
+    }
+
+    /// Format a chart axis value that is already in display units.
+    private func waterAxisLabel(_ v: Double) -> String {
+        if isImperial {
+            return String(format: "%.0f fl oz", v)
+        } else {
+            let ml = Int(v)
+            return ml >= 1000 ? "\(ml / 1000)L" : "\(ml)ml"
+        }
+    }
+
     private var goalHitDays: Int { dailyData.filter { $0.ml >= $0.goal }.count }
     private var avgMl: Int {
         let filled = dailyData.filter { $0.ml > 0 }
@@ -47,16 +65,16 @@ struct HydrationTrendView: View {
             Chart(dailyData, id: \.day) { item in
                 BarMark(
                     x: .value("Day", item.day, unit: .day),
-                    y: .value("ml", item.ml)
+                    y: .value(isImperial ? "fl oz" : "ml", chartWater(item.ml))
                 )
                 .foregroundStyle(item.ml >= item.goal ? Color.blue : Color.blue.opacity(0.35))
                 .cornerRadius(4)
 
-                RuleMark(y: .value("Goal", item.goal))
+                RuleMark(y: .value("Goal", chartWater(item.goal)))
                     .foregroundStyle(.blue.opacity(0.5))
                     .lineStyle(StrokeStyle(lineWidth: 1, dash: [4]))
                     .annotation(position: .top, alignment: .trailing) {
-                        Text("Goal \(item.goal / 1000)L")
+                        Text("Goal \(user.formatWater(item.goal))")
                             .font(SanaTheme.Font.caption(9))
                             .foregroundStyle(.blue.opacity(0.7))
                     }
@@ -64,8 +82,8 @@ struct HydrationTrendView: View {
             .chartYAxis {
                 AxisMarks(values: .automatic(desiredCount: 4)) { value in
                     AxisValueLabel {
-                        if let ml = value.as(Int.self) {
-                            Text(ml >= 1000 ? "\(ml / 1000)L" : "\(ml)ml")
+                        if let v = value.as(Double.self) {
+                            Text(waterAxisLabel(v))
                                 .font(SanaTheme.Font.caption(10))
                         }
                     }
@@ -82,19 +100,17 @@ struct HydrationTrendView: View {
 
             // Summary row
             HStack(spacing: 0) {
-                summaryChip(label: "Avg/day", value: avgMl >= 1000
-                    ? String(format: "%.1fL", Double(avgMl) / 1000)
-                    : "\(avgMl)ml", color: .blue)
+                summaryChip(label: "Avg/day",
+                            value: user.formatWater(avgMl),
+                            color: .blue)
                 Spacer()
-                summaryChip(label: "Today", value: {
-                    let t = user.todayWaterMl
-                    return t >= 1000 ? String(format: "%.1fL", Double(t) / 1000) : "\(t)ml"
-                }(), color: user.todayWaterMl >= user.dailyWaterGoalMl ? SanaTheme.Color.primary : .orange)
+                summaryChip(label: "Today",
+                            value: user.formatWater(user.todayWaterMl),
+                            color: user.todayWaterMl >= user.dailyWaterGoalMl ? SanaTheme.Color.primary : .orange)
                 Spacer()
-                summaryChip(label: "Remaining", value: {
-                    let r = max(0, user.dailyWaterGoalMl - user.todayWaterMl)
-                    return r >= 1000 ? String(format: "%.1fL", Double(r) / 1000) : "\(r)ml"
-                }(), color: Color.secondary)
+                summaryChip(label: "Remaining",
+                            value: user.formatWater(max(0, user.dailyWaterGoalMl - user.todayWaterMl)),
+                            color: Color.secondary)
             }
         }
         .padding()

@@ -1,0 +1,16 @@
+name            = "sana-ai-proxy"
+main            = "worker.js"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+# Optional per-IP rate limit (requests per minute per IP).
+[vars]
+RATE_LIMIT_PER_MINUTE = "30"
+
+# Secrets are never stored in this file — set them once via CLI:
+#
+#   wrangler secret put ANTHROPIC_API_KEY
+#   wrangler secret put APP_SECRET
+#
+# APP_SECRET must match BackendConfig.appSecret in the iOS app.
+# Generate a good one: python3 -c "import secrets; print(secrets.token_hex(32))"

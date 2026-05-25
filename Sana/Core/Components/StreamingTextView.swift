@@ -5,15 +5,18 @@ import SwiftUI
 
 struct MarkdownTextView: View {
     let text: String
+    @State private var cachedBlocks: [Block] = []
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            ForEach(Array(blocks.enumerated()), id: \.offset) { _, block in
+            ForEach(Array(cachedBlocks.enumerated()), id: \.offset) { _, block in
                 blockView(block)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .textSelection(.enabled)
+        .onAppear { cachedBlocks = parseBlocks(text) }
+        .onChange(of: text) { _, new in cachedBlocks = parseBlocks(new) }
     }
 
     @ViewBuilder
@@ -55,10 +58,10 @@ struct MarkdownTextView: View {
         init(_ kind: Kind, _ content: String = "") { self.kind = kind; self.content = content }
     }
 
-    private var blocks: [Block] {
+    private func parseBlocks(_ raw: String) -> [Block] {
         var result = [Block]()
         var lastWasGap = false
-        for line in text.components(separatedBy: "\n") {
+        for line in raw.components(separatedBy: "\n") {
             let t = line.trimmingCharacters(in: .whitespaces)
             if t.isEmpty {
                 if !lastWasGap { result.append(Block(.gap)) }
@@ -96,7 +99,7 @@ struct StreamingTextView: View {
 }
 
 struct TypingIndicator: View {
-    @State private var phase = 0
+    @State private var animating = false
 
     var body: some View {
         HStack(spacing: 3) {
@@ -104,11 +107,16 @@ struct TypingIndicator: View {
                 Circle()
                     .fill(SanaTheme.Color.primary.opacity(0.6))
                     .frame(width: 5, height: 5)
-                    .scaleEffect(phase == i ? 1.3 : 0.8)
-                    .animation(.easeInOut(duration: 0.4).repeatForever().delay(Double(i) * 0.15), value: phase)
+                    .scaleEffect(animating ? 1.3 : 0.8)
+                    .animation(
+                        .easeInOut(duration: 0.4)
+                            .repeatForever(autoreverses: true)
+                            .delay(Double(i) * 0.15),
+                        value: animating
+                    )
             }
         }
-        .onAppear { phase = 1 }
+        .onAppear { animating = true }
     }
 }
 

@@ -120,7 +120,8 @@ final class LiveActivityService {
             protein: user.todayProtein,
             proteinTarget: user.dailyProteinTarget,
             mealCount: user.todayMealCount,
-            streak: user.currentStreak
+            streak: user.currentStreak,
+            isImperial: user.unitSystem == .imperial
         )
     }
 }

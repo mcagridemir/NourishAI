@@ -15,11 +15,19 @@ struct SanaActivityAttributes: ActivityAttributes {
         var proteinTarget: Double
         var mealCount: Int
         var streak: Int
+        var isImperial: Bool = false
 
         var calorieProgress: Double { min(1.0, Double(calories) / Double(max(1, calorieTarget))) }
         var waterProgress: Double   { min(1.0, Double(waterMl) / Double(max(1, waterGoalMl))) }
         var proteinProgress: Double { min(1.0, protein / max(1, proteinTarget)) }
         var caloriesRemaining: Int  { max(0, calorieTarget - calories) }
+
+        func formatWater(_ ml: Int) -> String {
+            if isImperial {
+                return String(format: "%.0f fl oz", Double(ml) * 0.033814)
+            }
+            return ml >= 1000 ? String(format: "%.1fL", Double(ml) / 1000) : "\(ml) ml"
+        }
     }
     var userName: String
 }
@@ -85,7 +93,7 @@ private struct LockScreenView: View {
                 VStack(alignment: .leading, spacing: 3) {
                     HStack(spacing: 4) {
                         Image(systemName: "drop.fill").foregroundStyle(.blue).font(.system(size: 11))
-                        Text("\(state.waterMl) / \(state.waterGoalMl) ml")
+                        Text("\(state.formatWater(state.waterMl)) / \(state.formatWater(state.waterGoalMl))")
                             .font(.system(size: 12, weight: .medium))
                     }
                     ProgressView(value: state.waterProgress).tint(.blue)
@@ -146,7 +154,7 @@ private struct CompactTrailingView: View {
             Image(systemName: "drop.fill")
                 .font(.system(size: 10))
                 .foregroundStyle(.blue)
-            Text("\(state.waterMl)ml")
+            Text(state.formatWater(state.waterMl))
                 .font(.system(size: 12, weight: .medium))
         }
     }
@@ -193,7 +201,7 @@ private struct ExpandedView: View {
 
                 VStack(alignment: .leading, spacing: 10) {
                     progressRow(icon: "drop.fill", color: .blue,
-                                label: "\(state.waterMl)ml water",
+                                label: "\(state.formatWater(state.waterMl)) water",
                                 progress: state.waterProgress)
                     progressRow(icon: "bolt.fill", color: .indigo,
                                 label: "\(Int(state.protein))g protein",

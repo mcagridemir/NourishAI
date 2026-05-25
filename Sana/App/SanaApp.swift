@@ -2,24 +2,66 @@
 import SwiftUI
 import SwiftData
 import BackgroundTasks
+import FirebaseCore
+internal import Combine
 internal import UIKit
 
-// MARK: - AppDelegate (Quick Actions + cold-launch shortcut handling)
+// MARK: - AppDelegate (Quick Actions + notification deep-linking)
 
 final class AppDelegate: NSObject, UIApplicationDelegate {
+
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        UNUserNotificationCenter.current().delegate = self
+        return true
+    }
+
     func application(_ application: UIApplication,
                      performActionFor shortcutItem: UIApplicationShortcutItem,
                      completionHandler: @escaping (Bool) -> Void) {
-        NotificationCenter.default.post(
-            name: .nourishQuickAction,
-            object: shortcutItem
-        )
+        NotificationCenter.default.post(name: .sanaQuickAction, object: shortcutItem)
         completionHandler(true)
     }
 }
 
+extension AppDelegate: UNUserNotificationCenterDelegate {
+
+    // Route notification taps to the appropriate tab.
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                didReceive response: UNNotificationResponse,
+                                withCompletionHandler completionHandler: @escaping () -> Void) {
+        let url = Self.deepLinkURL(for: response.notification.request.identifier)
+        NotificationCenter.default.post(name: .sanaDeepLink, object: url)
+        completionHandler()
+    }
+
+    // Show banners even when the app is foregrounded.
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.banner, .sound])
+    }
+
+    private static func deepLinkURL(for identifier: String) -> URL {
+        let path: String
+        switch true {
+        case identifier.hasPrefix("meal_"):            path = "log"
+        case identifier.hasPrefix("deficiency_"):      path = "coach"
+        case identifier == "weekly_summary":           path = "insights"
+        case identifier == "fasting_complete":         path = "dashboard"
+        case identifier.hasPrefix("hydration_"):       path = "water"
+        case identifier.hasPrefix("streak_recovery_"): path = "log"
+        case identifier.hasPrefix("smart_"):           path = "dashboard"
+        case identifier.hasPrefix("supplement_"):      path = "dashboard"
+        default:                                       path = "dashboard"
+        }
+        return URL(string: "sana://\(path)")!
+    }
+}
+
 extension Notification.Name {
-    static let nourishQuickAction = Notification.Name("nourishQuickAction")
+    static let sanaQuickAction = Notification.Name("sanaQuickAction")
+    static let sanaDeepLink    = Notification.Name("sanaDeepLink")
 }
 
 // MARK: - Main App
@@ -28,31 +70,55 @@ extension Notification.Name {
 struct SanaApp: App {
 
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+    @StateObject private var auth         = AuthService.shared
     @StateObject private var subscription = SubscriptionService.shared
     @StateObject private var healthKit    = HealthKitService.shared
     @StateObject private var router       = AppRouter()
     @StateObject private var theme        = ThemeManager.shared
+    @Environment(\.scenePhase) private var scenePhase
 
     private let bgTaskID = "com.cagri.Sana.widgetRefresh"
 
     init() {
+        FirebaseApp.configure()
         AppRouter.registerQuickActions()
+        _ = MetricsService.shared
     }
 
     var body: some Scene {
         WindowGroup {
             RootView()
                 .modelContainer(AppContainer.shared.modelContainer)
+                .environmentObject(auth)
                 .environmentObject(subscription)
                 .environmentObject(healthKit)
                 .environmentObject(router)
                 .tint(theme.primaryColor)
+                .onChange(of: auth.state) { _, state in
+                    switch state {
+                    case .signedIn(let id, let provider):
+                        FirebaseService.shared.setUserID(id)
+                        FirebaseService.shared.setUserProperty(provider.rawValue, for: .authProvider)
+                    case .signedOut:
+                        FirebaseService.shared.setUserID(nil)
+                    case .loading:
+                        break
+                    }
+                }
                 .onOpenURL { url in router.handle(url) }
-                .onReceive(NotificationCenter.default.publisher(for: .nourishQuickAction)) { note in
+                .onReceive(NotificationCenter.default.publisher(for: .sanaQuickAction)) { note in
                     if let item = note.object as? UIApplicationShortcutItem {
                         router.handle(shortcutItem: item)
                     }
                 }
+                .onReceive(NotificationCenter.default.publisher(for: .sanaDeepLink)) { note in
+                    if let url = note.object as? URL { router.handle(url) }
+                }
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            if newPhase == .active && healthKit.isAuthorized {
+                Task { await healthKit.refreshAll() }
+            }
         }
         .backgroundTask(.appRefresh(bgTaskID)) {
             // Re-save widget data so the home screen widget stays current overnight

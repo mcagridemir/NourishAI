@@ -15,6 +15,20 @@ struct ProfileView: View {
     @State private var showingThemePicker = false
     @State private var showingSupplements = false
 
+    // Keychain is canonical; fall back to user.email for accounts created before this change.
+    private var displayEmail: String {
+        if let keychainEmail = KeychainService.load(for: .userEmail), !keychainEmail.isEmpty {
+            return keychainEmail
+        }
+        // One-time migration: move existing SwiftData email into Keychain.
+        if !user.email.isEmpty {
+            KeychainService.save(user.email, for: .userEmail)
+            user.email = ""
+            return KeychainService.load(for: .userEmail) ?? ""
+        }
+        return ""
+    }
+
     var body: some View {
         List {
             // Header
@@ -24,7 +38,7 @@ struct ProfileView: View {
                         .overlay(Text(user.name.prefix(1)).font(SanaTheme.Font.title(24)).foregroundStyle(SanaTheme.Color.primary))
                     VStack(alignment: .leading, spacing: 4) {
                         Text(user.name).font(SanaTheme.Font.headline(18))
-                        Text(user.email).font(SanaTheme.Font.caption()).foregroundStyle(.secondary)
+                        Text(displayEmail).font(SanaTheme.Font.caption()).foregroundStyle(.secondary)
                         if user.subscriptionTier == .premium {
                             Label("Premium", systemImage: "sparkles").font(SanaTheme.Font.caption(11))
                                 .foregroundStyle(.white).padding(.horizontal, 8).padding(.vertical, 3)
@@ -37,11 +51,11 @@ struct ProfileView: View {
 
             // Physical stats
             Section("Physical profile") {
-                ProfileRow(label: "Height", value: "\(Int(user.heightCm)) cm")
+                ProfileRow(label: "Height", value: user.formattedHeight)
                 HStack {
                     Text("Weight").foregroundStyle(.secondary)
                     Spacer()
-                    Text("\(String(format: "%.1f", user.latestWeightKg)) kg")
+                    Text(user.formattedCurrentWeight)
                     Button {
                         HapticService.selection()
                         showingLogWeight = true
@@ -55,7 +69,7 @@ struct ProfileView: View {
                     HStack {
                         Spacer()
                         Label(
-                            "\(change < 0 ? "" : "+")\(String(format: "%.1f", change)) kg total",
+                            "\(change < 0 ? "−" : "+")\(user.formatWeight(abs(change))) total",
                             systemImage: change < 0 ? "arrow.down.circle.fill" : "arrow.up.circle.fill"
                         )
                         .font(SanaTheme.Font.caption())
@@ -63,6 +77,9 @@ struct ProfileView: View {
                     }
                 }
                 ProfileRow(label: "BMI", value: String(format: "%.1f", user.bmi))
+                if let age = user.age {
+                    ProfileRow(label: "Age", value: "\(age)")
+                }
                 ProfileRow(label: "Activity level", value: user.activityLevel.rawValue)
             }
 
@@ -151,6 +168,25 @@ struct ProfileView: View {
                         .foregroundStyle(.primary)
                 }
             }
+
+            Section {
+                Button(role: .destructive) {
+                    HapticService.destructive()
+                    AuthService.shared.signOut()
+                } label: {
+                    Label("Sign out", systemImage: "rectangle.portrait.and.arrow.right")
+                }
+            }
+
+            #if DEBUG
+            Section("Debug") {
+                Button(role: .destructive) {
+                    FirebaseService.shared.forceCrash()
+                } label: {
+                    Label("Test Crashlytics crash", systemImage: "ant.fill")
+                }
+            }
+            #endif
         }
         .navigationTitle("Profile")
         .toolbar {

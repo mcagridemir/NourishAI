@@ -62,14 +62,19 @@ struct MealLogView: View {
                         .font(SanaTheme.Font.caption())
                 }
             }
-            .sheet(isPresented: $vm.showingCamera) {
+            .fullScreenCover(isPresented: $vm.showingCamera) {
                 CameraView { image in
                     vm.showingCamera = false
                     Task { await vm.handleCapturedImage(image) }
                 }
+                .ignoresSafeArea()
             }
             .sheet(isPresented: $vm.showingManualEntry) {
-                ManualMealEntryView(mealType: vm.selectedMealType, prefillName: vm.voicePrefill) { name, cal, prot, carbs, fat in
+                ManualMealEntryView(
+                    mealType: vm.selectedMealType,
+                    prefillName: vm.voicePrefill,
+                    nutritionContext: user.nutritionContext
+                ) { name, cal, prot, carbs, fat in
                     vm.saveManualMeal(name: name, calories: cal, protein: prot, carbs: carbs, fat: fat)
                     vm.voicePrefill = ""
                     dismiss()

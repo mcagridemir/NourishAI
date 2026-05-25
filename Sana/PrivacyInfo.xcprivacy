@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+
+    <!-- App does not participate in cross-app tracking -->
+    <key>NSPrivacyTracking</key>
+    <false/>
+    <key>NSPrivacyTrackingDomains</key>
+    <array/>
+
+    <!-- Required-Reason APIs used by the app -->
+    <key>NSPrivacyAccessedAPITypes</key>
+    <array>
+
+        <!--
+            UserDefaults — WidgetDataStore reads/writes app-group defaults
+            to pass today's summary to the home-screen widget.
+        -->
+        <dict>
+            <key>NSPrivacyAccessedAPIType</key>
+            <string>NSPrivacyAccessedAPICategoryUserDefaults</string>
+            <key>NSPrivacyAccessedAPITypeReasons</key>
+            <array>
+                <!-- App reads/writes its own defaults; widget extension reads shared suite -->
+                <string>CA92.1</string>
+            </array>
+        </dict>
+
+        <!--
+            File timestamps — SwiftData (SQLite) stores and reads file
+            modification dates within the app's own container. Meal log
+            dates are also displayed to the user in the meal history UI.
+        -->
+        <dict>
+            <key>NSPrivacyAccessedAPIType</key>
+            <string>NSPrivacyAccessedAPICategoryFileTimestamp</string>
+            <key>NSPrivacyAccessedAPITypeReasons</key>
+            <array>
+                <!-- Access within the app's own container -->
+                <string>C617.1</string>
+                <!-- Display timestamps to the user (meal log dates, chat history) -->
+                <string>3B52.1</string>
+            </array>
+        </dict>
+
+        <!--
+            Disk space — SwiftData checks available disk space before
+            writing new entries to the local store.
+        -->
+        <dict>
+            <key>NSPrivacyAccessedAPIType</key>
+            <string>NSPrivacyAccessedAPICategoryDiskSpace</string>
+            <key>NSPrivacyAccessedAPITypeReasons</key>
+            <array>
+                <!-- Check available space before writing to app container -->
+                <string>85F4.1</string>
+            </array>
+        </dict>
+
+        <!--
+            System boot time — used internally by URLSession (network
+            requests to the Claude API) to calculate request timeouts
+            and elapsed time.
+        -->
+        <dict>
+            <key>NSPrivacyAccessedAPIType</key>
+            <string>NSPrivacyAccessedAPICategorySystemBootTime</string>
+            <key>NSPrivacyAccessedAPITypeReasons</key>
+            <array>
+                <!-- Calculate elapsed time for network request timeouts -->
+                <string>35F9.1</string>
+            </array>
+        </dict>
+
+    </array>
+
+    <!--
+        Data the app collects and sends off-device.
+        All data below is sent to Anthropic's Claude API solely to provide
+        the AI nutrition coaching feature. No data is linked to the user's
+        identity and none is used for tracking or advertising.
+    -->
+    <key>NSPrivacyCollectedDataTypes</key>
+    <array>
+
+        <!-- Meal photos sent to Claude Vision for nutrition analysis -->
+        <dict>
+            <key>NSPrivacyCollectedDataType</key>
+            <string>NSPrivacyCollectedDataTypePhotosorVideos</string>
+            <key>NSPrivacyCollectedDataTypeLinked</key>
+            <false/>
+            <key>NSPrivacyCollectedDataTypeTracking</key>
+            <false/>
+            <key>NSPrivacyCollectedDataTypePurposes</key>
+            <array>
+                <string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+            </array>
+        </dict>
+
+        <!-- Nutrition context (calories, macros, goals) sent to Claude -->
+        <dict>
+            <key>NSPrivacyCollectedDataType</key>
+            <string>NSPrivacyCollectedDataTypeHealthAndFitness</string>
+            <key>NSPrivacyCollectedDataTypeLinked</key>
+            <false/>
+            <key>NSPrivacyCollectedDataTypeTracking</key>
+            <false/>
+            <key>NSPrivacyCollectedDataTypePurposes</key>
+            <array>
+                <string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+            </array>
+        </dict>
+
+        <!-- Chat messages sent to Claude (coach conversations) -->
+        <dict>
+            <key>NSPrivacyCollectedDataType</key>
+            <string>NSPrivacyCollectedDataTypeOtherUserContent</string>
+            <key>NSPrivacyCollectedDataTypeLinked</key>
+            <false/>
+            <key>NSPrivacyCollectedDataTypeTracking</key>
+            <false/>
+            <key>NSPrivacyCollectedDataTypePurposes</key>
+            <array>
+                <string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+            </array>
+        </dict>
+
+    </array>
+
+</dict>
+</plist>

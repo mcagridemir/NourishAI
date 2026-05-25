@@ -10,6 +10,7 @@ struct WatchWidgetData: Codable {
     var streak: Int
     var protein: Double
     var proteinTarget: Double
+    var isImperial: Bool = false
 
     static let placeholder = WatchWidgetData(
         calories: 0, calorieTarget: 2000,
@@ -21,6 +22,13 @@ struct WatchWidgetData: Codable {
     var waterProgress: Double   { min(1, Double(waterMl)  / Double(max(1, waterGoalMl))) }
     var proteinProgress: Double { min(1, protein / max(1, proteinTarget)) }
     var caloriesRemaining: Int  { max(0, calorieTarget - calories) }
+
+    func formatWater(_ ml: Int) -> String {
+        if isImperial {
+            return String(format: "%.0f fl oz", Double(ml) * 0.033814)
+        }
+        return ml >= 1000 ? String(format: "%.1fL", Double(ml) / 1000) : "\(ml) ml"
+    }
 }
 
 enum WatchDataStore {

@@ -23,9 +23,11 @@ final class AppContainer {
                              WaterEntry.self, WeightEntry.self,
                              Supplement.self, SupplementLog.self])
 
-        // CloudKit sync — uncomment once developer account is fully activated (can take 24-48h):
-        // let config = ModelConfiguration(schema: schema, cloudKitDatabase: .automatic)
-        let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+        // CloudKit sync: flip BackendConfig.cloudKitEnabled to true once your
+        // Apple Developer account is fully activated (can take 24-48h after first activation).
+        let config = BackendConfig.cloudKitEnabled
+            ? ModelConfiguration(schema: schema, cloudKitDatabase: .automatic)
+            : ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
         if let container = try? ModelContainer(for: schema, configurations: [config]) {
             modelContainer = container

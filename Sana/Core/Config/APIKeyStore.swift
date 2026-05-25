@@ -9,6 +9,7 @@
 //
 // Long-term goal: replace this with a backend proxy so the key never
 // ships in the client binary at all.
+import Foundation
 
 enum APIKeyStore {
 

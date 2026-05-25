@@ -12,10 +12,10 @@ enum WaterAmountOption: Int, AppEnum {
 
     static let typeDisplayRepresentation: TypeDisplayRepresentation = "Water Amount"
     static let caseDisplayRepresentations: [WaterAmountOption: DisplayRepresentation] = [
-        .small:      "150 ml",
-        .medium:     "250 ml",
-        .large:      "350 ml",
-        .extraLarge: "500 ml"
+        .small:      "150 ml (5 fl oz)",
+        .medium:     "250 ml (8 fl oz)",
+        .large:      "350 ml (12 fl oz)",
+        .extraLarge: "500 ml (17 fl oz)"
     ]
 }
 
@@ -37,7 +37,8 @@ struct LogWaterIntent: AppIntent {
             let current = defaults?.integer(forKey: key) ?? 0
             defaults?.set(current + ml, forKey: key)
         }
-        return .result(dialog: "Logged \(ml) ml of water in Sana. 💧")
+        let flOz = String(format: "%.0f", Double(ml) * 0.033814)
+        return .result(dialog: "Logged \(ml) ml (\(flOz) fl oz) of water in Sana. 💧")
     }
 }
 

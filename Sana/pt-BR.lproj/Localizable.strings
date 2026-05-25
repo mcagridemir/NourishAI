@@ -1,0 +1,317 @@
+/* Sana — Português (Brasil) */
+
+// MARK: - Aba de navegação
+"Home" = "Início";
+"Log Meal" = "Registrar";
+"Coach" = "Treinador";
+"Meal Plan" = "Plano alimentar";
+"Insights" = "Análises";
+
+// MARK: - Ações comuns
+"Cancel" = "Cancelar";
+"Save" = "Salvar";
+"Done" = "Concluído";
+"Add" = "Adicionar";
+"Edit" = "Editar";
+"Delete" = "Excluir";
+"Retry" = "Tentar novamente";
+"Continue" = "Continuar";
+"Restore" = "Restaurar";
+"Discard" = "Descartar";
+"Try again" = "Tentar novamente";
+"Log" = "Registrar";
+"See all" = "Ver tudo";
+"Back" = "Voltar";
+"Loading…" = "Carregando…";
+
+// MARK: - Saudações
+"Good morning," = "Bom dia,";
+"Good afternoon," = "Boa tarde,";
+"Good evening," = "Boa noite,";
+"Hey," = "Olá,";
+
+// MARK: - Tipos de refeição
+"Breakfast" = "Café da manhã";
+"Lunch" = "Almoço";
+"Dinner" = "Jantar";
+"Snack" = "Lanche";
+"Drink" = "Bebida";
+
+// MARK: - Macros
+"Calories" = "Calorias";
+"Protein" = "Proteínas";
+"Carbs" = "Carboidratos";
+"Fat" = "Gorduras";
+"Fiber" = "Fibra";
+
+// MARK: - Painel
+"Macros today" = "Macros hoje";
+"Tap for details" = "Toque para detalhes";
+"Base goal" = "Meta base";
+"Eaten" = "Consumido";
+"Remaining" = "Restante";
+"Exercise bonus (+50%)" = "Bônus exercício (+50%)";
+"Today's meals" = "Refeições de hoje";
+"No meals logged yet" = "Nenhuma refeição registrada";
+"Tap + to log your first meal" = "Toque + para registrar sua primeira refeição";
+"Weekly insight" = "Análise semanal";
+"day streak" = "dias seguidos";
+
+// MARK: - Pontuação diária
+"Daily Score" = "Pontuação diária";
+"Excellent" = "Excelente";
+"Great" = "Ótimo";
+"Good" = "Bom";
+"Fair" = "Regular";
+"Needs Work" = "Precisa melhorar";
+"Hydration" = "Hidratação";
+"Meal quality" = "Qualidade das refeições";
+"Activity" = "Atividade";
+
+// MARK: - Previsão calórica
+"Today's Forecast" = "Previsão de hoje";
+"On track" = "No caminho certo";
+"Over budget" = "Acima da meta";
+"Under budget" = "Abaixo da meta";
+"Predicted left" = "Previsto restante";
+"Target" = "Meta";
+"kcal predicted" = "kcal previstas";
+
+// MARK: - Sugestão inteligente
+"Next Meal Idea" = "Ideia para a próxima refeição";
+"See ingredients" = "Ver ingredientes";
+"Show less" = "Mostrar menos";
+"Quick recipe" = "Receita rápida";
+
+// MARK: - Suplementos (painel)
+"Supplements" = "Suplementos";
+"All taken today 🎉" = "Todos tomados hoje! 🎉";
+"Time to take your supplements" = "Hora de tomar seus suplementos";
+"All supplements taken today!" = "Todos os suplementos tomados hoje!";
+
+// MARK: - Registro de refeição
+"Log meal" = "Registrar refeição";
+"Manual entry" = "Entrada manual";
+"Take a photo" = "Tirar uma foto";
+"Point at your meal for instant nutrition analysis" = "Aponte para sua refeição para análise nutricional instantânea";
+"Library" = "Biblioteca";
+"Barcode" = "Código de barras";
+"Search food" = "Buscar alimento";
+"Recipe AI" = "Receita com IA";
+"Voice log" = "Registro por voz";
+"Scan label" = "Escanear rótulo";
+"Quick re-log" = "Re-registro rápido";
+"Save meal" = "Salvar refeição";
+"Retake photo" = "Tirar outra foto";
+
+// MARK: - Resultado da análise
+"Nutrition" = "Nutrição";
+"Tips" = "Dicas";
+"Low confidence" = "Baixa confiança";
+"Adjust values" = "Ajustar valores";
+"Confidence" = "Confiança";
+"Sugar" = "Açúcar";
+"Sodium" = "Sódio";
+"Insights" = "Análises";
+
+// MARK: - Análises
+"7 days" = "7 dias";
+"30 days" = "30 dias";
+"Avg calories" = "Calorias médias";
+"Meals logged" = "Refeições registradas";
+"Avg health score" = "Pontuação média";
+"Avg protein" = "Proteínas médias";
+"Daily calories" = "Calorias diárias";
+"Calorie balance" = "Balanço calórico";
+"Surplus" = "Superávit";
+"Deficit" = "Déficit";
+"Positive = ate more than target · Negative = deficit" = "Positivo = comeu mais que a meta · Negativo = déficit";
+"Macro average" = "Média de macros";
+"Health score trend" = "Tendência de pontuação";
+"Weight" = "Peso";
+"Current" = "Atual";
+"Total change" = "Variação total";
+"Detected deficiencies" = "Deficiências detectadas";
+"Below target" = "Abaixo da meta";
+"Week on week" = "Semana a semana";
+"This week" = "Esta semana";
+"Last week" = "Semana passada";
+"Hydration trend" = "Tendência de hidratação";
+"Sleep & Nutrition" = "Sono e nutrição";
+"goal reached" = "meta alcançada";
+"Avg/day" = "Média/dia";
+"Today" = "Hoje";
+"Good" = "Bom";
+"Fair" = "Regular";
+"Poor" = "Ruim";
+"No data" = "Sem dados";
+"Breakdown by meal" = "Detalhamento por refeição";
+"Meals today" = "Refeições hoje";
+
+// MARK: - Perfil
+"Profile" = "Perfil";
+"Progress" = "Progresso";
+"Achievements" = "Conquistas";
+"Body metrics" = "Métricas corporais";
+"Settings" = "Configurações";
+"Notification preferences" = "Preferências de notificações";
+"App theme" = "Tema do app";
+"Allergies & restrictions" = "Alergias e restrições";
+"Export meal data (CSV)" = "Exportar dados (CSV)";
+
+// MARK: - Suplementos
+"Add Supplement" = "Adicionar suplemento";
+"Edit Supplement" = "Editar suplemento";
+"Archived" = "Arquivado";
+"No supplements yet" = "Nenhum suplemento ainda";
+"Name" = "Nome";
+"Dosage" = "Dosagem";
+"Schedule" = "Horário";
+"Frequency" = "Frequência";
+"Time of day" = "Período do dia";
+"Notes (optional)" = "Notas (opcional)";
+"Notes" = "Notas";
+"Add supplement" = "Adicionar suplemento";
+"Delete supplement" = "Excluir suplemento";
+"Active" = "Ativo";
+"Colour" = "Cor";
+"Morning" = "Manhã";
+"Afternoon" = "Tarde";
+"Evening" = "Noite";
+"With meals" = "Com refeições";
+"Before bed" = "Antes de dormir";
+"Daily" = "Diário";
+"Twice daily" = "Duas vezes ao dia";
+"3x daily" = "3 vezes ao dia";
+"Weekly" = "Semanal";
+"As needed" = "Conforme necessário";
+
+// MARK: - Scanner de rótulo nutricional
+"Nutrition Label" = "Rótulo nutricional";
+"Point at a Nutrition Facts label" = "Aponte para a tabela nutricional";
+"Claude reads the entire panel in seconds" = "Claude lê o painel inteiro em segundos";
+"Good lighting improves accuracy" = "Boa iluminação melhora a precisão";
+"Include the full label in frame" = "Inclua o rótulo completo no enquadramento";
+"Hold steady for sharpest scan" = "Segure firme para melhor leitura";
+"Scan label with camera" = "Escanear com câmera";
+"Choose from photo library" = "Escolher da biblioteca";
+"Reading nutrition label…" = "Lendo rótulo nutricional…";
+"Label read successfully" = "Rótulo lido com sucesso";
+"How much did you eat?" = "Quanto você comeu?";
+"Nutrition (scaled)" = "Nutrição (ajustada)";
+"Log this meal" = "Registrar esta refeição";
+"Scan again" = "Escanear novamente";
+"Couldn't read label" = "Não foi possível ler o rótulo";
+
+// MARK: - Novidades
+"What's new in Sana" = "Novidades no Sana";
+"Version" = "Versão";
+
+// MARK: - Métricas corporais
+"Body Metrics" = "Métricas corporais";
+
+// MARK: - Rastreador de água
+"Fully hydrated!" = "Totalmente hidratado!";
+
+// MARK: - Peso
+"Log your weight to see your trend" = "Registre seu peso para ver sua tendência";
+
+// MARK: - Jejum
+"Start Fast" = "Iniciar jejum";
+"Stop Fast" = "Encerrar jejum";
+"Fasting" = "Em jejum";
+"Not Fasting" = "Sem jejum";
+
+// MARK: - Treinador
+"Send" = "Enviar";
+
+// MARK: - Plano alimentar
+"Generate plan" = "Gerar plano";
+"Log now" = "Registrar agora";
+"Mark as eaten" = "Marcar como comido";
+
+// MARK: - Receita
+"Generate Recipe" = "Gerar receita";
+"Serving size" = "Porção";
+
+// MARK: - Introdução
+"Get started" = "Começar";
+"Next" = "Próximo";
+
+// MARK: - Seletores de período
+"7 days" = "7 dias";
+"30 days" = "30 dias";
+"7d" = "7d";
+"30d" = "30d";
+"90d" = "90d";
+
+// MARK: - Strings de formato
+"No %@ logged today" = "Nenhum %@ registrado hoje";
+"%@ today" = "%@ hoje";
+
+// MARK: - Perfil (estendido)
+"Language" = "Idioma";
+
+// MARK: - Insights de sono e nutrição
+"Connect Apple Health to see how your sleep affects eating habits." = "Conecte o Apple Saúde para ver como seu sono afeta seus hábitos alimentares.";
+"Great sleep! Well-rested nights are linked to better food choices and reduced cravings." = "Ótimo sono! Noites bem dormidas estão ligadas a melhores escolhas alimentares e menos desejos.";
+"Slightly under 7 hours. Mild sleep debt can increase appetite by ~15%. Stay mindful of snacking." = "Um pouco menos de 7 horas. A privação leve de sono pode aumentar o apetite em ~15%. Atenção aos lanchinhos.";
+"Less than 5 hours detected. Poor sleep raises ghrelin (hunger hormone) — aim for nutrient-dense meals today." = "Menos de 5 horas detectadas. O sono ruim eleva a grelina (hormônio da fome) — priorize refeições nutritivas hoje.";
+
+// MARK: - Plano alimentar (estendido)
+"Nutrition coach" = "Treinador nutricional";
+"Regenerate" = "Regenerar";
+"Generate my plan" = "Gerar meu plano";
+"No meal plan yet" = "Nenhum plano alimentar ainda";
+"Generate a personalised 3-day meal plan tailored to your goals, preferences, and nutritional needs." = "Gere um plano alimentar de 3 dias personalizado de acordo com seus objetivos, preferências e necessidades nutricionais.";
+"Building your meal plan…" = "Criando seu plano alimentar…";
+"Claude is personalising 3 days of meals for you" = "Claude está personalizando 3 dias de refeições para você";
+"Ingredients" = "Ingredientes";
+"Recipe" = "Receita";
+
+// MARK: - Substituição de refeição
+"Change Meal" = "Trocar refeição";
+"Replacing" = "Substituindo";
+"What would you prefer? (optional)" = "O que você preferiria? (opcional)";
+"e.g. something lighter, no dairy…" = "ex: algo mais leve, sem laticínios…";
+"Quick picks" = "Sugestões rápidas";
+"Something lighter" = "Algo mais leve";
+"Higher protein" = "Mais proteínas";
+"Vegan option" = "Opção vegana";
+"No cooking needed" = "Sem necessidade de cozinhar";
+"Something different" = "Algo diferente";
+"Finding a replacement…" = "Buscando substituto…";
+"Replace with something new" = "Substituir por algo novo";
+
+// MARK: - Card do plano do treinador
+"Meal plan ready" = "Plano alimentar pronto";
+"I've built a personalised weekly plan. Save it to Meal Plan?" = "Criei um plano semanal personalizado. Salvar no Plano alimentar?";
+"Dismiss" = "Dispensar";
+"Meal plan saved! Switch to the Meal Plan tab to view it. 🗓" = "Plano salvo! Vá para a aba Plano alimentar para visualizá-lo. 🗓";
+
+// MARK: - Sugestões do treinador
+"Create a meal plan for me this week" = "Crie um plano alimentar para mim esta semana";
+"What should I eat to hit my protein goal today?" = "O que devo comer para atingir minha meta de proteínas hoje?";
+"Am I missing any key nutrients this week?" = "Estou faltando algum nutriente essencial esta semana?";
+"How can I reduce my sugar intake?" = "Como posso reduzir meu consumo de açúcar?";
+
+// MARK: - Análise de ingredientes
+"Claude is extracting macros, serving sizes, and ingredient list" = "Claude está extraindo macros, porções e lista de ingredientes";
+"× serving" = "× porção";
+"Contains concerning ingredients" = "Contém ingredientes preocupantes";
+"Some ingredients to watch" = "Alguns ingredientes a observar";
+"Clean ingredient list" = "Lista de ingredientes limpa";
+"High concern" = "Alta preocupação";
+"Watch" = "Observar";
+"Hide full list" = "Ocultar lista completa";
+"Show all %d ingredients" = "Mostrar todos os %d ingredientes";
+
+"High in saturated fat; linked to cardiovascular risk and environmental concerns." = "Alto em gordura saturada; associado a risco cardiovascular e preocupações ambientais.";
+"Contains trans fats, which raise LDL cholesterol." = "Contém gorduras trans, que elevam o colesterol LDL.";
+"Rapidly spikes blood sugar; associated with obesity and metabolic syndrome." = "Eleva rapidamente o açúcar no sangue; associado à obesidade e síndrome metabólica.";
+"Concentrated sugar source; contributes to excess calorie intake." = "Fonte concentrada de açúcar; contribui para o excesso calórico.";
+"Preservatives in processed meats linked to increased cancer risk." = "Conservantes em carnes processadas associados a maior risco de câncer.";
+"Controversial additive; may cause digestive inflammation in some people." = "Aditivo controverso; pode causar inflamação digestiva em algumas pessoas.";
+"Synthetic antioxidant preservatives; possible carcinogen at high doses." = "Conservantes antioxidantes sintéticos; possível carcinógeno em doses altas.";
+"Synthetic flavour/colour with no nutritional benefit." = "Sabor/cor sintético sem benefício nutricional.";
+"Artificial sweetener; some studies link them to altered gut microbiome." = "Adoçante artificial; alguns estudos os associam a alterações no microbioma intestinal.";

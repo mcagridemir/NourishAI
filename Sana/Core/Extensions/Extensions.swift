@@ -47,4 +47,9 @@ extension View {
     func `if`<Content: View>(_ condition: Bool, transform: (Self) -> Content) -> some View {
         if condition { transform(self) } else { self }
     }
+
+    /// Applies an animation only when Reduce Motion is off.
+    func animateIfAllowed<V: Equatable>(_ animation: SwiftUI.Animation = SanaTheme.Animation.smooth, value: V) -> some View {
+        self.animation(UIAccessibility.isReduceMotionEnabled ? .none : animation, value: value)
+    }
 }

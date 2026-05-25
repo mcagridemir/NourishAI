@@ -1,0 +1,8 @@
+/* InfoPlist.strings — Español */
+CFBundleDisplayName = "Sana";
+NSCameraUsageDescription = "Sana usa la cámara para analizar tus comidas y escanear etiquetas de información nutricional.";
+NSMicrophoneUsageDescription = "Sana usa el micrófono para que puedas registrar comidas por voz.";
+NSSpeechRecognitionUsageDescription = "Sana usa el reconocimiento de voz para transcribir los nombres de las comidas que dices.";
+NSHealthShareUsageDescription = "Sana lee tus pasos, sueño y frecuencia cardíaca para personalizar tus análisis nutricionales.";
+NSHealthUpdateUsageDescription = "Sana escribe tus comidas, ingesta de agua y peso en Apple Salud.";
+NSPhotoLibraryUsageDescription = "Sana accede a tu biblioteca de fotos para analizar imágenes guardadas de comidas.";

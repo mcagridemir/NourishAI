@@ -66,10 +66,11 @@ struct NutritionGoalsView: View {
 
                     // Hydration
                     GoalSection(title: "Hydration", icon: "drop.fill") {
+                        let factor: Double = user.unitSystem == .imperial ? 0.033814 : 1.0
                         GoalRow(label: "Water",
-                                value: Double(water),
-                                target: Double(user.dailyWaterGoalMl),
-                                unit: "ml",
+                                value: Double(water) * factor,
+                                target: Double(user.dailyWaterGoalMl) * factor,
+                                unit: user.waterUnit,
                                 color: .blue)
                     }
 

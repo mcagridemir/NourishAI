@@ -50,17 +50,21 @@ struct StreakMilestoneView: View {
         }
         .onAppear {
             HapticService.notification(.success)
-            withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
+            withAnimation(SanaTheme.Animation.snappy) {
                 scale = 1; opacity = 1
             }
-            withAnimation(.easeOut(duration: 2.5).delay(2)) {
+            if !UIAccessibility.isReduceMotionEnabled {
+                withAnimation(.easeOut(duration: 2.5).delay(2)) {
+                    confettiOpacity = 0
+                }
+            } else {
                 confettiOpacity = 0
             }
         }
     }
 
     private func dismiss() {
-        withAnimation(.easeIn(duration: 0.2)) {
+        withAnimation(SanaTheme.Animation.smooth) {
             scale = 0.8; opacity = 0
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { onDismiss() }

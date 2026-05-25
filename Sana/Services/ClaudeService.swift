@@ -89,7 +89,20 @@ struct UserNutritionContext {
     let recentNutritionSummary: String
     let detectedDeficiencies: [String]
     let allergies: [String]
+    let healthConditions: [String]
+    let country: String
     let dailyCalorieTarget: Int
+
+    // Convenience helpers for prompts
+    var avoidClause: String {
+        allergies.isEmpty ? "nothing" : allergies.joined(separator: ", ")
+    }
+    var conditionsClause: String {
+        healthConditions.isEmpty ? "none" : healthConditions.joined(separator: ", ")
+    }
+    var cuisineNote: String {
+        country.isEmpty ? "" : "Prefer \(country) cuisine and traditional foods when appropriate."
+    }
 }
 
 // MARK: - ClaudeService
@@ -100,13 +113,16 @@ actor ClaudeService {
 
     private let apiKey: String
     private let model = "claude-sonnet-4-6"
-    private let baseURL = URL(string: "https://api.anthropic.com/v1/messages")!
+    private let directURL = URL(string: "https://api.anthropic.com/v1/messages")!
     private let decoder = JSONDecoder()
 
     private init() {
         let key = APIKeyStore.claudeAPIKey
-        guard !key.isEmpty else {
-            fatalError("Claude API key is missing. Run Scripts/generate_api_key.py and update APIKeyStore.swift.")
+        // Key is only required when calling Anthropic directly (no proxy configured).
+        if BackendConfig.proxyURL == nil {
+            guard !key.isEmpty else {
+                fatalError("Claude API key missing. Run Scripts/generate_api_key.py and update APIKeyStore.swift, or configure BackendConfig.proxyURL.")
+            }
         }
         self.apiKey = key
     }
@@ -147,6 +163,8 @@ actor ClaudeService {
         Use metric units. Estimate portions from visual cues.
         Meal type context: \(mealType.rawValue)
         User profile: \(context.profileDescription)
+        Health conditions to consider: \(context.conditionsClause)
+        \(context.cuisineNote)
         """
 
         let body: [String: Any] = [
@@ -168,6 +186,32 @@ actor ClaudeService {
         return try parseJSON(NutritionAnalysis.self, from: jsonText)
     }
 
+    // MARK: - Text meal analysis (natural-language description → NutritionAnalysis)
+
+    func analyzeTextMeal(description: String, context: UserNutritionContext) async throws -> NutritionAnalysis {
+        let schema = """
+        {"mealName":"string","calories":"integer","protein":"float (g)","carbohydrates":"float (g)","fat":"float (g)","fiber":"float (g)","sugar":"float (g)","sodium":"float (mg)","vitamins":{"vitamin_c":0,"vitamin_d":0,"vitamin_b12":0},"minerals":{"iron":0,"calcium":0,"potassium":0},"healthScore":"integer 0-100","insights":["string"],"suggestions":["string"],"estimatedPortionSize":"string","confidence":"float 0-1"}
+        """
+        let regionHint = context.country.isEmpty ? "internationally" : "in \(context.country)"
+        let system = """
+        You are an expert nutritionist AI. Estimate the nutritional content of food described in plain language.
+        Consider typical portion sizes as understood \(regionHint) — e.g. "1 glass" ≈ 200-250 ml, "1 bowl" ≈ 300-350 ml, "1 plate" ≈ 400 g, "1 tablespoon" ≈ 15 g, "1 teaspoon" ≈ 5 g, "1 handful" ≈ 30 g.
+        Return ONLY valid JSON matching this schema. No markdown, no explanation.
+        \(schema)
+        User profile: \(context.profileDescription)
+        Health conditions: \(context.conditionsClause)
+        """
+        let body: [String: Any] = [
+            "model": model,
+            "max_tokens": 1024,
+            "system": system,
+            "messages": [["role": "user", "content": "Estimate nutrition for: \(description)"]]
+        ]
+        let data = try await post(body: body)
+        let raw  = try decoder.decode(ClaudeResponse.self, from: data)
+        return try parseJSON(NutritionAnalysis.self, from: raw.content.first?.text ?? "{}")
+    }
+
     // MARK: - Streaming chat
 
     func streamChat(messages: [ChatMessage], context: UserNutritionContext) -> AsyncThrowingStream<String, Error> {
@@ -182,6 +226,9 @@ actor ClaudeService {
                     User profile: \(context.profileDescription)
                     Recent nutrition: \(context.recentNutritionSummary)
                     Deficiencies detected: \(context.detectedDeficiencies.isEmpty ? "none" : context.detectedDeficiencies.joined(separator: ", "))
+                    Health conditions: \(context.conditionsClause)
+                    \(context.cuisineNote)
+                    When suggesting meals, use culturally familiar foods for the user's region. Always flag any meal or nutrient that conflicts with their health conditions.
                     """
 
                     let apiMessages = messages.prefix(40).map { $0.toAPIDict() }
@@ -222,8 +269,11 @@ actor ClaudeService {
         Each meal: {"name":"","description":"","prepTime":0,"calories":0,"protein":0,"carbohydrates":0,"fat":0,"ingredients":["item1","item2"],"recipe":""}
         Rules: max 3 ingredients per meal, recipe max 1 sentence, snacks array can be empty.
         User: \(context.profileDescription)
-        Avoid: \(context.allergies.isEmpty ? "nothing" : context.allergies.joined(separator: ", "))
+        Avoid: \(context.avoidClause)
+        Health conditions to accommodate: \(context.conditionsClause)
+        \(context.cuisineNote)
         Target: \(context.dailyCalorieTarget) kcal/day
+        Include traditional \(context.country.isEmpty ? "local" : context.country) meals and ingredients where fitting.
         """
 
         let body: [String: Any] = [
@@ -283,7 +333,9 @@ actor ClaudeService {
         You may add a few common pantry staples. Return ONLY raw JSON matching this schema:
         \(schema)
         User: \(context.profileDescription)
-        Avoid: \(context.allergies.isEmpty ? "nothing" : context.allergies.joined(separator: ", "))
+        Avoid: \(context.avoidClause)
+        Health conditions to accommodate: \(context.conditionsClause)
+        \(context.cuisineNote)
         Target ~\(context.dailyCalorieTarget / 3) kcal per serving.
         """
         let body: [String: Any] = [
@@ -353,7 +405,9 @@ actor ClaudeService {
         - Target ~\(approxCal) kcal
         - 4-6 ingredients
         - recipe: 1-2 sentences maximum
-        - Avoid: \(context.allergies.isEmpty ? "nothing" : context.allergies.joined(separator: ", "))
+        - Avoid: \(context.avoidClause)
+        - Health conditions: \(context.conditionsClause)
+        \(context.cuisineNote)
         User profile: \(context.profileDescription)
         """
         let body: [String: Any] = [
@@ -396,11 +450,16 @@ actor ClaudeService {
     }
 
     private func buildRequest(body: [String: Any]) throws -> URLRequest {
-        var req = URLRequest(url: baseURL, timeoutInterval: 120)
+        let url = BackendConfig.proxyURL ?? directURL
+        var req = URLRequest(url: url, timeoutInterval: 120)
         req.httpMethod = "POST"
         req.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        req.setValue(apiKey, forHTTPHeaderField: "x-api-key")
         req.setValue("2023-06-01", forHTTPHeaderField: "anthropic-version")
+        if BackendConfig.proxyURL != nil {
+            req.setValue(BackendConfig.appSecret, forHTTPHeaderField: "X-App-Secret")
+        } else {
+            req.setValue(apiKey, forHTTPHeaderField: "x-api-key")
+        }
         req.httpBody = try JSONSerialization.data(withJSONObject: body)
         return req
     }

@@ -8,7 +8,14 @@ struct WaterTrackerView: View {
     @Environment(\.modelContext) private var context
     @EnvironmentObject private var healthKit: HealthKitService
 
-    private let quickAmounts = [150, 250, 350, 500]
+    /// Quick-add amounts always stored in ml; displayed in the user's chosen unit.
+    private let quickAmountsML = [150, 250, 350, 500]
+
+    private func quickAmountLabel(_ ml: Int) -> String {
+        user.unitSystem == .imperial
+            ? "+\(String(format: "%.0f", Double(ml) * 0.033814)) fl oz"
+            : "+\(ml)"
+    }
 
     private var progress: Double {
         min(1.0, Double(user.todayWaterMl) / Double(max(1, user.dailyWaterGoalMl)))
@@ -48,7 +55,7 @@ struct WaterTrackerView: View {
                 .font(SanaTheme.Font.headline())
                 .foregroundStyle(.blue)
             Spacer()
-            Text("\(user.todayWaterMl) / \(user.dailyWaterGoalMl) ml")
+            Text("\(user.formatWater(user.todayWaterMl)) / \(user.formatWater(user.dailyWaterGoalMl))")
                 .font(SanaTheme.Font.caption())
                 .foregroundStyle(.secondary)
             if progress >= 1.0 {
@@ -73,17 +80,17 @@ struct WaterTrackerView: View {
         }
         .frame(height: 10)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Water progress: \(user.todayWaterMl) of \(user.dailyWaterGoalMl) millilitres. \(Int(progress * 100)) percent.")
+        .accessibilityLabel("Water progress: \(user.formatWater(user.todayWaterMl)) of \(user.formatWater(user.dailyWaterGoalMl)). \(Int(progress * 100)) percent.")
         .accessibilityValue("\(Int(progress * 100))%")
     }
 
     private var quickAddRow: some View {
         HStack(spacing: SanaTheme.Spacing.xs) {
-            ForEach(quickAmounts, id: \.self) { amount in
-                Button("+\(amount)") {
-                    addWater(amount)
+            ForEach(quickAmountsML, id: \.self) { ml in
+                Button(quickAmountLabel(ml)) {
+                    addWater(ml)
                 }
-                .accessibilityLabel("Add \(amount) millilitres of water")
+                .accessibilityLabel("Add \(quickAmountLabel(ml)) of water")
                 .font(SanaTheme.Font.caption(12))
                 .padding(.horizontal, 10)
                 .padding(.vertical, 6)
@@ -92,9 +99,6 @@ struct WaterTrackerView: View {
                 .clipShape(Capsule())
             }
             Spacer()
-            Text("ml")
-                .font(SanaTheme.Font.caption(11))
-                .foregroundStyle(.secondary)
         }
     }
 

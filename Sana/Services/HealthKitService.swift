@@ -32,6 +32,7 @@ final class HealthKitService: ObservableObject {
         let ids: [HKQuantityTypeIdentifier] = [
             .dietaryEnergyConsumed, .dietaryProtein,
             .dietaryCarbohydrates, .dietaryFatTotal, .dietaryFiber,
+            .dietarySodium, .dietarySugar,
             .dietaryWater, .bodyMass
         ]
         return Set(ids.compactMap { HKQuantityType.quantityType(forIdentifier: $0) })
@@ -41,6 +42,7 @@ final class HealthKitService: ObservableObject {
         guard HKHealthStore.isHealthDataAvailable() else { return }
         try await store.requestAuthorization(toShare: writeTypes, read: readTypes)
         isAuthorized = true
+        setupObservers()
         await refreshAll()
     }
 
@@ -65,13 +67,16 @@ final class HealthKitService: ObservableObject {
         let now = entry.loggedAt
         var samples = [HKQuantitySample]()
 
-        let macros: [(HKQuantityTypeIdentifier, Double, HKUnit)] = [
+        var macros: [(HKQuantityTypeIdentifier, Double, HKUnit)] = [
             (.dietaryEnergyConsumed, Double(entry.calories), .kilocalorie()),
             (.dietaryProtein, entry.protein, .gram()),
             (.dietaryCarbohydrates, entry.carbohydrates, .gram()),
             (.dietaryFatTotal, entry.fat, .gram()),
             (.dietaryFiber, entry.fiber, .gram())
         ]
+        if entry.sodium > 0 { macros.append((.dietarySodium, entry.sodium, .gram())) }
+        if entry.sugar  > 0 { macros.append((.dietarySugar,  entry.sugar,  .gram())) }
+
         for (id, value, unit) in macros {
             guard let type = HKQuantityType.quantityType(forIdentifier: id) else { continue }
             let sample = HKQuantitySample(type: type, quantity: HKQuantity(unit: unit, doubleValue: value),
@@ -98,6 +103,23 @@ final class HealthKitService: ObservableObject {
         let quantity = HKQuantity(unit: .liter(), doubleValue: Double(ml) / 1000.0)
         let sample = HKQuantitySample(type: type, quantity: quantity, start: .now, end: .now)
         try await store.save(sample)
+    }
+
+    // MARK: - Live observers
+
+    private func setupObservers() {
+        observeQuantity(.stepCount)
+        observeQuantity(.activeEnergyBurned)
+    }
+
+    private func observeQuantity(_ identifier: HKQuantityTypeIdentifier) {
+        guard let type = HKQuantityType.quantityType(forIdentifier: identifier) else { return }
+        let query = HKObserverQuery(sampleType: type, predicate: nil) { [weak self] _, completionHandler, error in
+            guard let self, error == nil else { completionHandler(); return }
+            Task { await self.refreshAll() }
+            completionHandler()
+        }
+        store.execute(query)
     }
 
     // MARK: - Private fetchers

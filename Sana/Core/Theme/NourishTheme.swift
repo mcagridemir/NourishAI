@@ -106,9 +106,21 @@ enum SanaTheme {
 
     // MARK: - Animations
     enum Animation {
-        static let snappy = SwiftUI.Animation.spring(response: 0.35, dampingFraction: 0.8)
-        static let smooth = SwiftUI.Animation.easeInOut(duration: 0.3)
-        static let slow   = SwiftUI.Animation.easeInOut(duration: 0.6)
+        static var snappy: SwiftUI.Animation {
+            UIAccessibility.isReduceMotionEnabled
+                ? .linear(duration: 0.15)
+                : .spring(response: 0.35, dampingFraction: 0.8)
+        }
+        static var smooth: SwiftUI.Animation {
+            UIAccessibility.isReduceMotionEnabled
+                ? .linear(duration: 0.15)
+                : .easeInOut(duration: 0.3)
+        }
+        static var slow: SwiftUI.Animation {
+            UIAccessibility.isReduceMotionEnabled
+                ? .linear(duration: 0.15)
+                : .easeInOut(duration: 0.6)
+        }
     }
 }
 
