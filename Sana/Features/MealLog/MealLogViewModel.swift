@@ -150,6 +150,7 @@ final class MealLogViewModel: ObservableObject {
         scheduleDeficiencyAlertsIfNeeded()
         refreshWidget()
         refreshLiveActivity()
+        requestReviewIfEligible()
         reset()
     }
 
@@ -198,6 +199,7 @@ final class MealLogViewModel: ObservableObject {
         scheduleDeficiencyAlertsIfNeeded()
         refreshWidget()
         refreshLiveActivity()
+        requestReviewIfEligible()
     }
 
     func saveRecipeMeal(_ recipe: RecipeResult) {

@@ -152,9 +152,14 @@ final class HealthKitService: ObservableObject {
         let predicate = HKQuery.predicateForSamples(withStart: start, end: .now)
         return await withCheckedContinuation { continuation in
             let query = HKSampleQuery(sampleType: type, predicate: predicate, limit: 20, sortDescriptors: nil) { _, samples, _ in
+                let asleepValues: Set<Int> = [
+                    HKCategoryValueSleepAnalysis.asleepUnspecified.rawValue,
+                    HKCategoryValueSleepAnalysis.asleepCore.rawValue,
+                    HKCategoryValueSleepAnalysis.asleepDeep.rawValue,
+                    HKCategoryValueSleepAnalysis.asleepREM.rawValue
+                ]
                 let hours = (samples as? [HKCategorySample])?.filter {
-                    $0.value == HKCategoryValueSleepAnalysis.asleepUnspecified.rawValue ||
-                    $0.value == HKCategoryValueSleepAnalysis.asleepCore.rawValue
+                    asleepValues.contains($0.value)
                 }.reduce(0.0) { $0 + $1.endDate.timeIntervalSince($1.startDate) } ?? 0
                 continuation.resume(returning: hours / 3600)
             }

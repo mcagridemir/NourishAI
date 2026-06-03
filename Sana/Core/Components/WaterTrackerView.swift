@@ -107,7 +107,6 @@ struct WaterTrackerView: View {
         let entry = WaterEntry(amountMl: ml)
         entry.user = user
         user.waterEntries.append(entry)
-        withAnimation(SanaTheme.Animation.smooth) { }
         Task { try? await HealthKitService.shared.logWater(ml: ml) }
         WidgetDataStore.save(user.widgetData)
         LiveActivityService.shared.startOrUpdate(user: user)

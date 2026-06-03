@@ -320,6 +320,14 @@ struct DashboardView: View {
             } else {
                 ForEach(vm.todayMeals.prefix(isIPad ? 5 : 3)) { meal in
                     MealRowView(meal: meal)
+                        .contextMenu {
+                            Button(role: .destructive) {
+                                HapticService.destructive()
+                                user.mealEntries.removeAll { $0.id == meal.id }
+                            } label: {
+                                Label("Delete meal", systemImage: "trash")
+                            }
+                        }
                 }
             }
         }
@@ -404,7 +412,9 @@ struct DashboardView: View {
 
     // MARK: Premium Nudge
 
+    @ViewBuilder
     private var premiumNudge: some View {
+        if user.subscriptionTier == .free {
         Button { HapticService.impact(.light); showingPaywall = true } label: {
             HStack(spacing: 14) {
                 RoundedRectangle(cornerRadius: 14)
@@ -433,6 +443,7 @@ struct DashboardView: View {
         .buttonStyle(.plain)
         .padding(.horizontal, SanaTheme.Spacing.lg)
         .padding(.bottom, SanaTheme.Spacing.lg)
+        } // end if user.subscriptionTier == .free
     }
 
     // MARK: - Helpers

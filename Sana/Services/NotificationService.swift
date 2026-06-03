@@ -114,7 +114,8 @@ final class NotificationService {
     /// Call once after each meal log. Fires a one-shot nudge if the user is close (≤ 20%) to a goal.
     func fireSmartGoalNudge(todayCalories: Int, targetCalories: Int,
                             todayProtein: Double, targetProtein: Double,
-                            todayWater: Int, targetWater: Int) {
+                            todayWater: Int, targetWater: Int,
+                            targetWaterFormatted: String = "") {
         let calRemaining   = targetCalories - todayCalories
         let protRemaining  = targetProtein - todayProtein
         let waterRemaining = targetWater - todayWater
@@ -142,9 +143,10 @@ final class NotificationService {
         }
         // Water goal met
         if waterRemaining <= 0 && waterRemaining > -500 {
+            let waterLabel = targetWaterFormatted.isEmpty ? "\(targetWater) ml" : targetWaterFormatted
             send(center, id: "smart_water_\(dayKey())",
                  title: "Fully hydrated! 💧",
-                 body: "You've hit your \(targetWater) ml water goal. Your body thanks you.")
+                 body: "You've hit your \(waterLabel) water goal. Your body thanks you.")
         }
     }
 

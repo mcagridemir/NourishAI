@@ -73,7 +73,8 @@ final class DashboardViewModel: ObservableObject {
             todayProtein: todayProtein,
             targetProtein: user.dailyProteinTarget,
             todayWater: user.todayWaterMl,
-            targetWater: user.dailyWaterGoalMl
+            targetWater: user.dailyWaterGoalMl,
+            targetWaterFormatted: user.formatWater(user.dailyWaterGoalMl)
         )
     }
 

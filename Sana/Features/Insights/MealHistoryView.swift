@@ -79,6 +79,12 @@ struct MealHistoryView: View {
                                         .tint(SanaTheme.Color.accent)
                                     }
                                     .swipeActions(edge: .trailing) {
+                                        Button(role: .destructive) {
+                                            HapticService.destructive()
+                                            user.mealEntries.removeAll { $0.id == meal.id }
+                                        } label: {
+                                            Label("Delete", systemImage: "trash")
+                                        }
                                         Button {
                                             HapticService.selection()
                                             editingMeal = meal
