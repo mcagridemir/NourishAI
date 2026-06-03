@@ -117,14 +117,7 @@ actor ClaudeService {
     private let decoder = JSONDecoder()
 
     private init() {
-        let key = APIKeyStore.claudeAPIKey
-        // Key is only required when calling Anthropic directly (no proxy configured).
-        if BackendConfig.proxyURL == nil {
-            guard !key.isEmpty else {
-                fatalError("Claude API key missing. Run Scripts/generate_api_key.py and update APIKeyStore.swift, or configure BackendConfig.proxyURL.")
-            }
-        }
-        self.apiKey = key
+        self.apiKey = APIKeyStore.claudeAPIKey
     }
 
     // MARK: - Meal photo analysis
@@ -458,6 +451,9 @@ actor ClaudeService {
         if BackendConfig.proxyURL != nil {
             req.setValue(BackendConfig.appSecret, forHTTPHeaderField: "X-App-Secret")
         } else {
+            guard !apiKey.isEmpty else {
+                fatalError("Claude API key missing. Run Scripts/generate_api_key.py and update APIKeyStore.swift, or configure BackendConfig.proxyURL.")
+            }
             req.setValue(apiKey, forHTTPHeaderField: "x-api-key")
         }
         req.httpBody = try JSONSerialization.data(withJSONObject: body)
@@ -492,14 +488,14 @@ actor ClaudeService {
 
 // MARK: - Private response types
 
-private struct ClaudeResponse: Codable {
+private struct ClaudeResponse: Codable, Sendable {
     let content: [ContentBlock]
-    struct ContentBlock: Codable { let text: String? }
+    struct ContentBlock: Codable, Sendable { let text: String? }
 }
 
-private struct StreamDelta: Codable {
+private struct StreamDelta: Codable, Sendable {
     let delta: DeltaContent?
-    struct DeltaContent: Codable { let text: String? }
+    struct DeltaContent: Codable, Sendable { let text: String? }
 }
 
 // MARK: - Errors

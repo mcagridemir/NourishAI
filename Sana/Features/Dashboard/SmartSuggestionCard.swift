@@ -69,6 +69,7 @@ struct SmartSuggestionCard: View {
                     ForEach(mealTimeSuggestion.ingredients, id: \.self) { ing in
                         HStack(spacing: 6) {
                             Circle().fill(mealTimeSuggestion.color).frame(width: 5, height: 5)
+                                .accessibilityHidden(true)
                             Text(ing).font(SanaTheme.Font.body(13))
                         }
                     }

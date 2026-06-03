@@ -514,6 +514,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
+				"$(PROJECT_DIR)/GoogleService-Info.plist",
 			);
 			name = Crashlytics;
 			outputFileListPaths = (
@@ -522,7 +523,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"${CONFIGURATION}\" = \"Release\" ]; then\n  \"$HOME/firebase-ios-sdk-local/Crashlytics/run\" \"${PROJECT_DIR}/GoogleService-Info.plist\"\nfi\n";
+			shellScript = "if [ \"${CONFIGURATION}\" = \"Release\" ] && [ \"${PLATFORM_NAME}\" != \"iphonesimulator\" ]; then\n  \"$HOME/firebase-ios-sdk-local/Crashlytics/run\" \"${PROJECT_DIR}/GoogleService-Info.plist\" || true\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

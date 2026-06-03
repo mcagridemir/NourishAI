@@ -316,3 +316,25 @@
 "Synthetic antioxidant preservatives; possible carcinogen at high doses." = "Synthetic antioxidant preservatives; possible carcinogen at high doses.";
 "Synthetic flavour/colour with no nutritional benefit." = "Synthetic flavour/colour with no nutritional benefit.";
 "Artificial sweetener; some studies link them to altered gut microbiome." = "Artificial sweetener; some studies link them to altered gut microbiome.";
+
+// MARK: - Coach context-aware suggestions (new)
+"What's a great breakfast for my goals today?" = "What's a great breakfast for my goals today?";
+"Suggest a healthy lunch for me right now" = "Suggest a healthy lunch for me right now";
+"What should I have for dinner tonight?" = "What should I have for dinner tonight?";
+"What's a light snack before bed?" = "What's a light snack before bed?";
+"How do I stay in a deficit without feeling hungry?" = "How do I stay in a deficit without feeling hungry?";
+"What should I eat to maximise muscle growth today?" = "What should I eat to maximise muscle growth today?";
+"Which foods give me sustained energy throughout the day?" = "Which foods give me sustained energy throughout the day?";
+"Give me nutrition advice for my health conditions" = "Give me nutrition advice for my health conditions";
+"Tips to drink more water throughout the day" = "Tips to drink more water throughout the day";
+"I'm on a %d-day streak! What's next for me?" = "I'm on a %d-day streak! What's next for me?";
+"What should I log for my first meal today?" = "What should I log for my first meal today?";
+
+// MARK: - Onboarding activity step (new)
+"How active are you?" = "How active are you?";
+"This helps us calculate your daily calorie needs accurately." = "This helps us calculate your daily calorie needs accurately.";
+"Desk job, little or no exercise" = "Desk job, little or no exercise";
+"Light exercise 1–3 days/week" = "Light exercise 1–3 days/week";
+"Moderate exercise 3–5 days/week" = "Moderate exercise 3–5 days/week";
+"Hard exercise 6–7 days/week" = "Hard exercise 6–7 days/week";
+"Physical job or twice-daily training" = "Physical job or twice-daily training";

@@ -1,5 +1,6 @@
 // Sana — WatchDashboardView.swift
 import SwiftUI
+import WatchKit
 
 struct WatchDashboardView: View {
 
@@ -101,11 +102,15 @@ struct WatchDashboardView: View {
                 .tint(.blue)
             HStack(spacing: 6) {
                 ForEach([150, 250, 350], id: \.self) { ml in
-                    Button("+\(ml)") {
+                    Button {
                         WatchDataStore.logWater(ml)
                         data.waterMl = min(data.waterGoalMl, data.waterMl + ml)
                         WKInterfaceDevice.current().play(.success)
                         waterLogged = true
+                    } label: {
+                        Text(data.isImperial
+                             ? "+\(Int((Double(ml) * 0.033814).rounded())) oz"
+                             : "+\(ml)")
                     }
                     .font(.system(size: 11, weight: .semibold))
                     .foregroundStyle(.white)

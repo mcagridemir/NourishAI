@@ -64,6 +64,7 @@ struct ProfileView: View {
                             .foregroundStyle(SanaTheme.Color.primary)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel("Log weight")
                 }
                 if let change = user.weightChangeSinceStart {
                     HStack {

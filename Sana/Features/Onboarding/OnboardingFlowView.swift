@@ -46,7 +46,7 @@ struct OnboardingFlowView: View {
             : "\(Int(weightKg)) kg"
     }
 
-    private let totalSteps = 6
+    private let totalSteps = 7
     private let commonAllergens = ["Gluten", "Dairy", "Nuts", "Eggs", "Soy", "Shellfish", "Fish", "Sesame"]
 
     var body: some View {
@@ -57,10 +57,11 @@ struct OnboardingFlowView: View {
                 TabView(selection: $step) {
                     welcomeStep.tag(0)
                     profileStep.tag(1)
-                    goalStep.tag(2)
-                    dietStep.tag(3)
-                    allergyStep.tag(4)
-                    healthConditionsStep.tag(5)
+                    activityStep.tag(2)
+                    goalStep.tag(3)
+                    dietStep.tag(4)
+                    allergyStep.tag(5)
+                    healthConditionsStep.tag(6)
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .animation(SanaTheme.Animation.smooth, value: step)
@@ -71,16 +72,33 @@ struct OnboardingFlowView: View {
     // MARK: - Progress bar (segmented pills)
 
     private var progressBar: some View {
-        HStack(spacing: 4) {
-            ForEach(0..<totalSteps, id: \.self) { i in
-                RoundedRectangle(cornerRadius: 999)
-                    .fill(i <= step ? SanaTheme.Color.primary : SanaTheme.Color.primaryLight)
-                    .frame(height: 4)
-                    .animation(SanaTheme.Animation.smooth, value: step)
+        HStack(spacing: 8) {
+            if step > 0 {
+                Button {
+                    HapticService.selection()
+                    withAnimation(SanaTheme.Animation.smooth) { step -= 1 }
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundStyle(.primary)
+                        .frame(width: 32, height: 32)
+                }
+                .transition(.opacity)
+            } else {
+                Color.clear.frame(width: 32, height: 32)
+            }
+            HStack(spacing: 4) {
+                ForEach(0..<totalSteps, id: \.self) { i in
+                    RoundedRectangle(cornerRadius: 999)
+                        .fill(i <= step ? SanaTheme.Color.primary : SanaTheme.Color.primaryLight)
+                        .frame(height: 4)
+                        .animation(SanaTheme.Animation.smooth, value: step)
+                }
             }
         }
         .padding(.horizontal, SanaTheme.Spacing.lg)
         .padding(.vertical, SanaTheme.Spacing.sm)
+        .animation(SanaTheme.Animation.smooth, value: step > 0)
     }
 
     // MARK: - Steps
@@ -88,6 +106,8 @@ struct OnboardingFlowView: View {
     private var welcomeStep: some View {
         OnboardingStep(title: "Welcome to Sana", subtitle: "Your personal AI nutrition coach. Let's set up your profile.", icon: "leaf.fill", iconColor: SanaTheme.Color.primary) {
             NourishTextField(placeholder: "Your name", text: $name)
+                .submitLabel(.continue)
+                .onSubmit { if !name.isEmpty { HapticService.stepForward(); step = 1 } }
         } next: {
             HapticService.stepForward()
             step = 1
@@ -125,12 +145,56 @@ struct OnboardingFlowView: View {
                         step: onboardingUnits == .imperial ? 1 : 0.5
                     ).tint(SanaTheme.Color.primary)
                 }
-                Picker("Activity level", selection: $activityLevel) {
-                    ForEach(ActivityLevel.allCases, id: \.self) { Text($0.rawValue).tag($0) }
-                }
-                .pickerStyle(.wheel).frame(height: 100).clipped()
             }
         } next: { HapticService.stepForward(); step = 2 } nextEnabled: { true }
+    }
+
+    private var activityStep: some View {
+        OnboardingStep(
+            title: "How active are you?",
+            subtitle: "This helps us calculate your daily calorie needs accurately.",
+            icon: "figure.run",
+            iconColor: .blue
+        ) {
+            VStack(spacing: 10) {
+                ForEach(ActivityLevel.allCases, id: \.self) { level in
+                    Button {
+                        HapticService.selection()
+                        activityLevel = level
+                    } label: {
+                        HStack {
+                            VStack(alignment: .leading, spacing: 3) {
+                                Text(level.rawValue)
+                                    .font(SanaTheme.Font.body())
+                                    .foregroundStyle(.primary)
+                                Text(activityLevelDescription(level))
+                                    .font(SanaTheme.Font.caption(12))
+                                    .foregroundStyle(.secondary)
+                            }
+                            Spacer()
+                            Image(systemName: activityLevel == level ? "checkmark.circle.fill" : "circle")
+                                .foregroundStyle(activityLevel == level ? SanaTheme.Color.primary : .secondary)
+                        }
+                        .padding()
+                        .background(activityLevel == level ? SanaTheme.Color.primaryLight : SanaTheme.Color.surface)
+                        .clipShape(RoundedRectangle(cornerRadius: SanaTheme.Radius.md))
+                        .overlay(RoundedRectangle(cornerRadius: SanaTheme.Radius.md)
+                            .stroke(activityLevel == level ? SanaTheme.Color.primary : Color.clear, lineWidth: 1.5))
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        } next: { HapticService.stepForward(); step = 3 } nextEnabled: { true }
+    }
+
+    private func activityLevelDescription(_ level: ActivityLevel) -> String {
+        switch level {
+        case .sedentary:        return "Desk job, little or no exercise"
+        case .lightlyActive:    return "Light exercise 1–3 days/week"
+        case .moderatelyActive: return "Moderate exercise 3–5 days/week"
+        case .veryActive:       return "Hard exercise 6–7 days/week"
+        case .extraActive:      return "Physical job or twice-daily training"
+        }
     }
 
     private var goalStep: some View {
@@ -140,7 +204,7 @@ struct OnboardingFlowView: View {
                     SelectionRow(label: g.rawValue, isSelected: goal == g) { goal = g }
                 }
             }
-        } next: { HapticService.stepForward(); step = 3 } nextEnabled: { true }
+        } next: { HapticService.stepForward(); step = 4 } nextEnabled: { true }
     }
 
     private var dietStep: some View {
@@ -177,7 +241,7 @@ struct OnboardingFlowView: View {
                     }
                 }
             }
-        } next: { HapticService.stepForward(); step = 4 } nextEnabled: { true }
+        } next: { HapticService.stepForward(); step = 5 } nextEnabled: { true }
     }
 
     private var allergyStep: some View {
@@ -189,7 +253,7 @@ struct OnboardingFlowView: View {
                     }
                 }
             }
-        } next: { HapticService.stepForward(); step = 5 } nextEnabled: { true }
+        } next: { HapticService.stepForward(); step = 6 } nextEnabled: { true }
     }
 
     private var healthConditionsStep: some View {

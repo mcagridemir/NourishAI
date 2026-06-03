@@ -315,6 +315,7 @@ private struct SecureInputField: View {
                     .foregroundStyle(.secondary)
                     .font(.system(size: 14))
             }
+            .accessibilityLabel(isRevealed ? "Hide password" : "Show password")
         }
         .padding()
         .background(SanaTheme.Color.surface)

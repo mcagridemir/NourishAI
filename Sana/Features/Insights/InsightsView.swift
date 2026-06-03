@@ -174,6 +174,7 @@ struct InsightsView: View {
                     .lineStyle(StrokeStyle(lineWidth: 1, dash: [4]))
             }
             .frame(height: 160)
+            .accessibilityLabel("Daily calories bar chart. Target line at \(user.dailyCalorieTarget) kcal.")
         }
         .padding()
         .nourishCard()
@@ -234,6 +235,7 @@ struct InsightsView: View {
                 ForEach(data, id: \.0) { item in
                     HStack(spacing: 4) {
                         Circle().fill(item.2).frame(width: 8, height: 8)
+                            .accessibilityHidden(true)
                         Text(item.0).font(SanaTheme.Font.caption(11))
                     }
                 }

@@ -14,6 +14,8 @@ struct DashboardView: View {
     @State private var showingMilestone = false
     @State private var showingGoals = false
     @State private var showingPaywall = false
+    @State private var shareImage: UIImage?
+    @State private var showingShare = false
 
     private var isIPad: Bool { hSizeClass == .regular }
 
@@ -55,6 +57,9 @@ struct DashboardView: View {
         .task(id: user.currentStreak) { checkStreakMilestone() }
         .sheet(isPresented: $showingGoals) { NutritionGoalsView(user: user) }
         .sheet(isPresented: $showingPaywall) { PaywallView() }
+        .sheet(isPresented: $showingShare) {
+            if let image = shareImage { ShareSheet(items: [image]) }
+        }
         .overlay {
             if showingMilestone {
                 StreakMilestoneView(streak: user.currentStreak) { showingMilestone = false }
@@ -88,6 +93,15 @@ struct DashboardView: View {
                     .clipShape(Capsule())
                     .accessibilityLabel("\(user.currentStreak) day logging streak")
                 }
+                Button {
+                    HapticService.impact(.light)
+                    renderDailySummary()
+                } label: {
+                    Image(systemName: "square.and.arrow.up")
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundStyle(SanaTheme.Color.primary)
+                }
+                .accessibilityLabel("Share daily summary")
                 NavigationLink(destination: ProfileView(user: user)) {
                     Circle()
                         .fill(SanaTheme.Color.primaryLight)
@@ -409,6 +423,54 @@ struct DashboardView: View {
     }
 
     // MARK: - Helpers
+
+    @MainActor
+    private func renderDailySummary() {
+        // Compute the daily score inline (mirrors DailyScoreCard logic)
+        let target = user.dailyCalorieTarget
+        let calScore = target > 0
+            ? max(0, Int(100 - abs(1.0 - Double(vm.todayCalories) / Double(target)) * 200))
+            : 50
+        let protScore = user.dailyProteinTarget > 0
+            ? min(100, Int(vm.todayProtein / user.dailyProteinTarget * 100))
+            : 0
+        let hydScore = user.dailyWaterGoalMl > 0
+            ? min(100, user.todayWaterMl * 100 / user.dailyWaterGoalMl)
+            : 0
+        let todayMeals = vm.todayMeals
+        let qualScore = todayMeals.isEmpty ? 0
+            : todayMeals.map { $0.healthScore }.reduce(0, +) / todayMeals.count
+        let actScore: Int = healthKit.isAuthorized
+            ? min(100, healthKit.todaySteps * 100 / 8000)
+            : 50
+        let totalScore = Int(Double(calScore) * 0.25 + Double(protScore) * 0.25 +
+                             Double(hydScore) * 0.20 + Double(qualScore) * 0.20 +
+                             Double(actScore) * 0.10)
+
+        let card = DailySummaryShareCard(
+            caloriesEaten: vm.todayCalories,
+            caloriesTarget: adjustedCalorieTarget,
+            protein: vm.todayProtein,
+            proteinTarget: user.dailyProteinTarget,
+            carbs: vm.todayCarbs,
+            carbsTarget: user.dailyCarbTarget,
+            fat: vm.todayFat,
+            fatTarget: user.dailyFatTarget,
+            waterMl: user.todayWaterMl,
+            waterGoalMl: user.dailyWaterGoalMl,
+            steps: healthKit.todaySteps,
+            dailyScore: totalScore,
+            streak: user.currentStreak,
+            userName: user.name,
+            isImperial: user.unitSystem == .imperial
+        )
+        let renderer = ImageRenderer(content: card.padding(20).background(Color(red: 0.06, green: 0.06, blue: 0.06)))
+        renderer.scale = UIScreen.main.scale
+        if let image = renderer.uiImage {
+            shareImage = image
+            showingShare = true
+        }
+    }
 
     private func checkStreakMilestone() {
         let streak = user.currentStreak

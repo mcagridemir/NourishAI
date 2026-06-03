@@ -12,6 +12,8 @@ struct MealPlanView: View {
         _vm = StateObject(wrappedValue: MealPlanViewModel(user: user))
     }
 
+    @State private var showingGroceryList = false
+
     var body: some View {
         NavigationStack {
             Group {
@@ -38,19 +40,33 @@ struct MealPlanView: View {
             .toolbar {
                 if vm.currentPlan != nil && !vm.isGenerating {
                     ToolbarItem(placement: .topBarTrailing) {
-                        Button {
-                            HapticService.startAction()
-                            Task { await vm.generatePlan() }
-                        } label: {
-                            Label("Regenerate", systemImage: "arrow.clockwise")
+                        HStack(spacing: 4) {
+                            Button {
+                                HapticService.impact(.light)
+                                showingGroceryList = true
+                            } label: {
+                                Label("Grocery list", systemImage: "cart.fill")
+                            }
+                            .foregroundStyle(SanaTheme.Color.primary)
+                            .accessibilityLabel("Open grocery list")
+
+                            Button {
+                                HapticService.startAction()
+                                Task { await vm.generatePlan() }
+                            } label: {
+                                Label("Regenerate", systemImage: "arrow.clockwise")
+                            }
+                            .foregroundStyle(SanaTheme.Color.primary)
+                            .accessibilityLabel("Regenerate meal plan")
                         }
-                        .foregroundStyle(SanaTheme.Color.primary)
-                        .accessibilityLabel("Regenerate meal plan")
                     }
                 }
             }
         }
         .task { vm.loadExistingPlan() }
+        .sheet(isPresented: $showingGroceryList) {
+            GroceryListView(user: user)
+        }
     }
 }
 
@@ -115,6 +131,8 @@ private struct DayTab: View {
                     .clipShape(Circle())
             }
         }
+        .accessibilityLabel(day.dayName + ", " + day.date.formatted(.dateTime.month().day()))
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }
 
@@ -129,6 +147,7 @@ private struct DayCalorieSummary: View {
             }
             Spacer()
             CircleProgress(value: Double(day.totalCalories), total: Double(target), color: SanaTheme.Color.primary)
+                .accessibilityHidden(true)
         }
         .padding()
         .nourishCard()
@@ -195,6 +214,7 @@ private struct PlannedMealCard: View {
                         Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
                             .foregroundStyle(.secondary)
                     }
+                    .accessibilityLabel(isExpanded ? "Collapse \(meal.name)" : "Expand \(meal.name)")
                 }
             }
             .padding()

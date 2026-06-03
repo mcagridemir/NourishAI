@@ -315,3 +315,25 @@
 "Synthetic antioxidant preservatives; possible carcinogen at high doses." = "Conservantes antioxidantes sintéticos; posible carcinógeno a altas dosis.";
 "Synthetic flavour/colour with no nutritional benefit." = "Saborizante/colorante sintético sin beneficio nutricional.";
 "Artificial sweetener; some studies link them to altered gut microbiome." = "Edulcorante artificial; algunos estudios los asocian con alteraciones del microbioma intestinal.";
+
+// MARK: - Sugerencias contextuales del Coach (nuevas)
+"What's a great breakfast for my goals today?" = "¿Cuál es un buen desayuno para mis objetivos de hoy?";
+"Suggest a healthy lunch for me right now" = "Sugiéreme un almuerzo saludable ahora mismo";
+"What should I have for dinner tonight?" = "¿Qué debería cenar esta noche?";
+"What's a light snack before bed?" = "¿Cuál es un snack ligero antes de dormir?";
+"How do I stay in a deficit without feeling hungry?" = "¿Cómo mantengo el déficit calórico sin sentir hambre?";
+"What should I eat to maximise muscle growth today?" = "¿Qué debo comer para maximizar el crecimiento muscular hoy?";
+"Which foods give me sustained energy throughout the day?" = "¿Qué alimentos me dan energía sostenida durante todo el día?";
+"Give me nutrition advice for my health conditions" = "Dame consejos de nutrición para mis condiciones de salud";
+"Tips to drink more water throughout the day" = "Consejos para beber más agua durante el día";
+"I'm on a %d-day streak! What's next for me?" = "¡Llevo una racha de %d días! ¿Qué sigue para mí?";
+"What should I log for my first meal today?" = "¿Qué debo registrar para mi primera comida de hoy?";
+
+// MARK: - Paso de actividad del onboarding (nuevo)
+"How active are you?" = "¿Qué tan activo eres?";
+"This helps us calculate your daily calorie needs accurately." = "Esto nos ayuda a calcular con precisión tus necesidades calóricas diarias.";
+"Desk job, little or no exercise" = "Trabajo de oficina, poco o ningún ejercicio";
+"Light exercise 1–3 days/week" = "Ejercicio ligero 1–3 días/semana";
+"Moderate exercise 3–5 days/week" = "Ejercicio moderado 3–5 días/semana";
+"Hard exercise 6–7 days/week" = "Ejercicio intenso 6–7 días/semana";
+"Physical job or twice-daily training" = "Trabajo físico o entrenamiento dos veces al día";

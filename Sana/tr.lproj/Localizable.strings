@@ -316,3 +316,25 @@
 "Synthetic antioxidant preservatives; possible carcinogen at high doses." = "Yapay antioksidan koruyucular; yüksek dozda kanserojen olabilir.";
 "Synthetic flavour/colour with no nutritional benefit." = "Besleyici değeri olmayan yapay tat/renk maddesi.";
 "Artificial sweetener; some studies link them to altered gut microbiome." = "Yapay tatlandırıcı; bazı araştırmalar bağırsak mikrobiyomunu etkilediğini göstermektedir.";
+
+// MARK: - Koç bağlama duyarlı öneriler (yeni)
+"What's a great breakfast for my goals today?" = "Hedeflerime uygun harika bir kahvaltı ne olabilir?";
+"Suggest a healthy lunch for me right now" = "Şu an için sağlıklı bir öğle yemeği öner";
+"What should I have for dinner tonight?" = "Bu akşam akşam yemeği için ne yemeliyim?";
+"What's a light snack before bed?" = "Yatmadan önce hafif bir atıştırmalık nedir?";
+"How do I stay in a deficit without feeling hungry?" = "Acıkmadan kalori açığında nasıl kalabilirim?";
+"What should I eat to maximise muscle growth today?" = "Kas gelişimini en üst düzeye çıkarmak için bugün ne yemeliyim?";
+"Which foods give me sustained energy throughout the day?" = "Gün boyu sürekli enerji veren besinler nelerdir?";
+"Give me nutrition advice for my health conditions" = "Sağlık durumuma göre beslenme önerisi ver";
+"Tips to drink more water throughout the day" = "Gün içinde daha fazla su içmek için ipuçları";
+"I'm on a %d-day streak! What's next for me?" = "%d günlük serimdeyim! Sıradaki ne?";
+"What should I log for my first meal today?" = "Bugünkü ilk öğüne ne kaydetmeliyim?";
+
+// MARK: - Kullanıcı katılımı - aktivite adımı (yeni)
+"How active are you?" = "Ne kadar aktifsiniz?";
+"This helps us calculate your daily calorie needs accurately." = "Günlük kalori ihtiyacınızı doğru hesaplamamıza yardımcı olur.";
+"Desk job, little or no exercise" = "Masa başı iş, çok az veya hiç egzersiz yok";
+"Light exercise 1–3 days/week" = "Haftada 1–3 gün hafif egzersiz";
+"Moderate exercise 3–5 days/week" = "Haftada 3–5 gün orta düzey egzersiz";
+"Hard exercise 6–7 days/week" = "Haftada 6–7 gün yoğun egzersiz";
+"Physical job or twice-daily training" = "Fiziksel iş veya günde iki kez antrenman";

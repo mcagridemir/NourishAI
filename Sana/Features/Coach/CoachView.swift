@@ -157,8 +157,9 @@ struct CoachView: View {
             ScrollView {
                 LazyVStack(spacing: 12) {
                     if vm.messages.isEmpty {
-                        WelcomeBubble(name: user.name.components(separatedBy: " ").first ?? user.name) { suggestion in
+                        WelcomeBubble(user: user) { suggestion in
                             vm.inputText = suggestion
+                            Task { await vm.sendMessage() }
                         }
                     }
                     ForEach(vm.messages) { message in
@@ -166,19 +167,32 @@ struct CoachView: View {
                             .id(message.id)
                     }
                     if vm.isStreaming {
-                        ChatBubble(message: ChatMessage(role: .assistant, content: vm.streamingBuffer), isLive: true)
-                            .id("streaming")
+                        if vm.streamingBuffer.isEmpty {
+                            ThinkingBubble()
+                                .id("thinking")
+                                .transition(.opacity.combined(with: .scale(scale: 0.95, anchor: .leading)))
+                        } else {
+                            ChatBubble(message: ChatMessage(role: .assistant, content: vm.streamingBuffer), isLive: true)
+                                .id("streaming")
+                                .transition(.opacity)
+                        }
                     }
                 }
                 .padding(SanaTheme.Spacing.md)
                 .padding(.bottom, 8)
+                .animation(SanaTheme.Animation.smooth, value: vm.streamingBuffer.isEmpty && vm.isStreaming)
             }
             .onChange(of: vm.messages.count) { _, _ in
                 withAnimation {
                     if let id = vm.messages.last?.id {
                         proxy.scrollTo(id, anchor: .bottom)
-                    } else {
-                        proxy.scrollTo("streaming", anchor: .bottom)
+                    }
+                }
+            }
+            .onChange(of: vm.isStreaming) { _, streaming in
+                withAnimation(SanaTheme.Animation.smooth) {
+                    if streaming {
+                        proxy.scrollTo("thinking", anchor: .bottom)
                     }
                 }
             }
@@ -280,18 +294,109 @@ struct BubbleShape: Shape {
     }
 }
 
+// MARK: - Thinking indicator
+
+struct ThinkingBubble: View {
+    @State private var animating = false
+
+    var body: some View {
+        HStack(alignment: .bottom, spacing: 8) {
+            Circle()
+                .fill(LinearGradient(
+                    colors: [SanaTheme.Color.primary, SanaTheme.Color.primaryDeep],
+                    startPoint: .topLeading, endPoint: .bottomTrailing
+                ))
+                .frame(width: 30, height: 30)
+                .overlay(
+                    Image(systemName: "sparkles")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(.white)
+                )
+                .accessibilityHidden(true)
+
+            HStack(spacing: 5) {
+                ForEach(0..<3, id: \.self) { i in
+                    Circle()
+                        .fill(Color.secondary.opacity(0.55))
+                        .frame(width: 7, height: 7)
+                        .offset(y: animating ? -5 : 3)
+                        .animation(
+                            .easeInOut(duration: 0.45)
+                                .repeatForever(autoreverses: true)
+                                .delay(Double(i) * 0.15),
+                            value: animating
+                        )
+                }
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 14)
+            .background(SanaTheme.Color.surface)
+            .clipShape(BubbleShape(isUser: false))
+
+            Spacer(minLength: 60)
+        }
+        .accessibilityLabel("Sana is thinking")
+        .onAppear { animating = true }
+    }
+}
+
 // MARK: - Welcome bubble
 
 private struct WelcomeBubble: View {
-    let name: String
+    let user: User
     let onSelectSuggestion: (String) -> Void
-    // Using NSLocalizedString so the tapped string (sent to Claude) is also localized.
-    let suggestions = [
-        NSLocalizedString("Create a meal plan for me this week", comment: ""),
-        NSLocalizedString("What should I eat to hit my protein goal today?", comment: ""),
-        NSLocalizedString("Am I missing any key nutrients this week?", comment: ""),
-        NSLocalizedString("How can I reduce my sugar intake?", comment: "")
-    ]
+
+    private var firstName: String {
+        user.name.components(separatedBy: " ").first ?? user.name
+    }
+
+    private var suggestions: [String] {
+        let hour = Calendar.current.component(.hour, from: Date())
+        var pool: [String] = []
+
+        // Time-of-day meal suggestion
+        if hour < 10 {
+            pool.append(NSLocalizedString("What's a great breakfast for my goals today?", comment: ""))
+        } else if hour < 14 {
+            pool.append(NSLocalizedString("Suggest a healthy lunch for me right now", comment: ""))
+        } else if hour < 19 {
+            pool.append(NSLocalizedString("What should I have for dinner tonight?", comment: ""))
+        } else {
+            pool.append(NSLocalizedString("What's a light snack before bed?", comment: ""))
+        }
+
+        // Goal-based prompt
+        switch user.primaryGoal {
+        case .loseWeight:
+            pool.append(NSLocalizedString("How do I stay in a deficit without feeling hungry?", comment: ""))
+        case .buildMuscle:
+            pool.append(NSLocalizedString("What should I eat to maximise muscle growth today?", comment: ""))
+        case .improveEnergy:
+            pool.append(NSLocalizedString("Which foods give me sustained energy throughout the day?", comment: ""))
+        case .manageCondition:
+            pool.append(NSLocalizedString("Give me nutrition advice for my health conditions", comment: ""))
+        default:
+            pool.append(NSLocalizedString("What should I eat to hit my protein goal today?", comment: ""))
+        }
+
+        // Hydration nudge
+        if user.todayWaterMl < user.dailyWaterGoalMl / 2 {
+            pool.append(NSLocalizedString("Tips to drink more water throughout the day", comment: ""))
+        } else {
+            pool.append(NSLocalizedString("Am I missing any key nutrients this week?", comment: ""))
+        }
+
+        // Streak or first-meal prompt
+        if user.currentStreak >= 7 {
+            pool.append(String(format: NSLocalizedString("I'm on a %d-day streak! What's next for me?", comment: ""), user.currentStreak))
+        } else if user.todayMealCount == 0 {
+            pool.append(NSLocalizedString("What should I log for my first meal today?", comment: ""))
+        } else {
+            pool.append(NSLocalizedString("Create a meal plan for me this week", comment: ""))
+        }
+
+        return Array(pool.prefix(4))
+    }
 
     var body: some View {
         VStack(spacing: 16) {
@@ -310,7 +415,7 @@ private struct WelcomeBubble: View {
                     .overlay(Circle().stroke(Color(UIColor.systemBackground), lineWidth: 2))
                     .offset(x: 3, y: 3)
             }
-            Text("Hi \(name)! I'm your Sana coach.")
+            Text("Hi \(firstName)! I'm your Sana coach.")
                 .font(SanaTheme.Font.headline())
                 .multilineTextAlignment(.center)
             Text("Ask me anything about your nutrition, get meal suggestions, or learn how to hit your health goals.")

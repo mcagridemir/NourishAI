@@ -13,7 +13,7 @@ final class ThemeManager: ObservableObject {
     }
 
     var primaryColor: Color {
-        Color(hex: accentHex) ?? Color("PrimaryGreen")
+        Color(hex: accentHex) ?? Color("Primary")
     }
 
     /// Preset palettes
