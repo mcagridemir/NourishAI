@@ -39,6 +39,7 @@ struct DashboardView: View {
                     quickActionsRow
                     dailyScoreSection
                     aiInsightSection
+                    smartSuggestionSection
                     todayMealsSection
                     hydrationFastingRow
                     healthMetricsSection
@@ -49,6 +50,10 @@ struct DashboardView: View {
                 .padding(.bottom, 32)
                 .frame(maxWidth: isIPad ? 720 : .infinity)
                 .frame(maxWidth: .infinity, alignment: .center)
+            }
+            .refreshable {
+                await healthKit.refreshAll()
+                await vm.retryInsights()
             }
             .background(SanaTheme.Color.background)
             .toolbar(.hidden, for: .navigationBar)
@@ -288,6 +293,14 @@ struct DashboardView: View {
                 .padding(.horizontal, SanaTheme.Spacing.lg)
                 .padding(.bottom, SanaTheme.Spacing.lg)
         }
+    }
+
+    // MARK: Smart Meal Suggestion (local, offline)
+
+    private var smartSuggestionSection: some View {
+        SmartSuggestionCard(user: user)
+            .padding(.horizontal, SanaTheme.Spacing.lg)
+            .padding(.bottom, SanaTheme.Spacing.lg)
     }
 
     // MARK: Today's Meals

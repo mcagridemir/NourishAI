@@ -31,6 +31,7 @@ struct GroceryListView: View {
             }
         }
         .task { vm.loadList() }
+        .onDisappear { vm.saveCurrentState() }
     }
 
     private var groceryListContent: some View {

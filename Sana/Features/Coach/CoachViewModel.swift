@@ -123,11 +123,14 @@ final class CoachViewModel: ObservableObject {
     func dismissPendingPlan() { pendingPlanResponse = nil }
 
     func clearHistory() {
-        messages.removeAll()
-        inputText = ""
         streamTask?.cancel()
         isStreaming = false
+        streamingBuffer = ""
+        messages.removeAll()
+        user.chatMessages.removeAll()   // also erase from SwiftData so next launch starts fresh
+        inputText = ""
         pendingPlanResponse = nil
         savedPlanBanner = nil
+        error = nil
     }
 }

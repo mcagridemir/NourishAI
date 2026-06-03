@@ -121,6 +121,35 @@ struct EditProfileView: View {
             : String(format: "%.1f lbs", kg * 2.20462)
     }
 
+    private var waterGoalLabel: String {
+        unitSystem == .imperial
+            ? String(format: "%.0f fl oz", Double(dailyWaterGoalMl) * 0.033814)
+            : "\(dailyWaterGoalMl) ml"
+    }
+
+    // Slider bindings that convert between metric storage and display unit
+    private var heightBinding: Binding<Double> {
+        Binding(
+            get: { unitSystem == .imperial ? heightCm / 2.54 : heightCm },
+            set: { v in heightCm = unitSystem == .imperial ? v * 2.54 : v }
+        )
+    }
+    private var weightBinding: Binding<Double> {
+        Binding(
+            get: { unitSystem == .imperial ? weightKg * 2.20462 : weightKg },
+            set: { v in weightKg = unitSystem == .imperial ? v / 2.20462 : v }
+        )
+    }
+    private var targetWeightBinding: Binding<Double> {
+        Binding(
+            get: { unitSystem == .imperial ? targetWeightKg * 2.20462 : targetWeightKg },
+            set: { v in targetWeightKg = unitSystem == .imperial ? v / 2.20462 : v }
+        )
+    }
+    private var heightRange: ClosedRange<Double>  { unitSystem == .imperial ? 55...87 : 140...220 }
+    private var weightRange: ClosedRange<Double>  { unitSystem == .imperial ? 88...353 : 40...160 }
+    private var weightStep:  Double               { unitSystem == .imperial ? 1.0 : 0.5 }
+
     private var dobAge: Int? {
         guard hasDOB else { return nil }
         return Calendar.current.dateComponents([.year], from: dateOfBirth, to: .now).year
@@ -161,7 +190,7 @@ struct EditProfileView: View {
                 Text("Height: \(heightLabel)")
                     .font(SanaTheme.Font.caption())
                     .foregroundStyle(.secondary)
-                Slider(value: $heightCm, in: 140...220, step: 1)
+                Slider(value: heightBinding, in: heightRange, step: 1)
                     .tint(SanaTheme.Color.primary)
             }
             .padding(.vertical, 4)
@@ -170,7 +199,7 @@ struct EditProfileView: View {
                 Text("Weight: \(weightLabel(weightKg))")
                     .font(SanaTheme.Font.caption())
                     .foregroundStyle(.secondary)
-                Slider(value: $weightKg, in: 40...160, step: 0.5)
+                Slider(value: weightBinding, in: weightRange, step: weightStep)
                     .tint(SanaTheme.Color.primary)
             }
             .padding(.vertical, 4)
@@ -193,7 +222,7 @@ struct EditProfileView: View {
                     Text("Target: \(weightLabel(targetWeightKg))")
                         .font(SanaTheme.Font.caption())
                         .foregroundStyle(.secondary)
-                    Slider(value: $targetWeightKg, in: 40...160, step: 0.5)
+                    Slider(value: targetWeightBinding, in: weightRange, step: weightStep)
                         .tint(SanaTheme.Color.primary)
                 }
                 .padding(.vertical, 4)
@@ -335,7 +364,7 @@ struct EditProfileView: View {
     private var waterSection: some View {
         Section("Water goal") {
             VStack(alignment: .leading, spacing: 4) {
-                Text("Daily target: \(dailyWaterGoalMl) ml")
+                Text("Daily target: \(waterGoalLabel)")
                     .font(SanaTheme.Font.caption())
                     .foregroundStyle(.secondary)
                 Slider(value: Binding(

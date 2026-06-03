@@ -20,10 +20,25 @@ final class GroceryListViewModel: ObservableObject {
     var totalCount: Int { sections.flatMap { $0.items }.count }
     var progress: Double { guard totalCount > 0 else { return 0 }; return Double(checkedCount) / Double(totalCount) }
 
+    // MARK: - Persistence helpers
+
+    private var activePlanKey: String? {
+        guard let plan = user.mealPlans.first(where: { $0.isActive }) else { return nil }
+        return "groceryList.\(plan.id.uuidString)"
+    }
+
     func loadList() {
-        if let list = user.mealPlans.first(where: { $0.isActive }), !list.groceryItems.isEmpty {
-            // Reconstruct from saved data if available
-        }
+        guard let key = activePlanKey,
+              let data = UserDefaults.standard.data(forKey: key),
+              let saved = try? JSONDecoder().decode([GrocerySection].self, from: data)
+        else { return }
+        sections = saved
+    }
+
+    func saveCurrentState() {
+        guard let key = activePlanKey,
+              let data = try? JSONEncoder().encode(sections) else { return }
+        UserDefaults.standard.set(data, forKey: key)
     }
 
     func generate() async {
@@ -41,6 +56,7 @@ final class GroceryListViewModel: ObservableObject {
                     totalCalories: day.totalCalories)
             })
             sections = try await ClaudeService.shared.generateGroceryList(from: planResp)
+            saveCurrentState()
         } catch {
             self.error = error.localizedDescription
         }
@@ -52,6 +68,7 @@ final class GroceryListViewModel: ObservableObject {
                 sections[i].items[j].isChecked = false
             }
         }
+        saveCurrentState()
     }
 
     func shareList() {

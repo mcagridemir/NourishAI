@@ -48,7 +48,8 @@ final class DashboardViewModel: ObservableObject {
         fireGoalNudge()
         scheduleStreakRecovery()
         guard weeklyInsight == nil else { return }
-        guard !user.detectedDeficiencies.isEmpty || todayMeals.count >= 3 else { return }
+        // Show insights when user has logged any meals ever (not just today)
+        guard !user.mealEntries.isEmpty else { return }
         isLoadingInsights = true
         insightError = nil
         defer { isLoadingInsights = false }
