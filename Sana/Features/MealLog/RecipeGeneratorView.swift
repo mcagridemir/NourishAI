@@ -85,12 +85,19 @@ struct RecipeGeneratorView: View {
     private var inputSection: some View {
         VStack(alignment: .leading, spacing: SanaTheme.Spacing.md) {
             // Hero
-            VStack(spacing: 10) {
-                Image(systemName: "frying.pan.fill")
-                    .font(.system(size: 44))
-                    .foregroundStyle(SanaTheme.Color.primary)
+            VStack(spacing: 12) {
+                ZStack {
+                    Circle()
+                        .fill(SanaTheme.Color.primary.opacity(0.12))
+                        .frame(width: 80, height: 80)
+                    Image(systemName: "frying.pan.fill")
+                        .font(.system(size: 32, weight: .semibold))
+                        .foregroundStyle(SanaTheme.Color.primary)
+                }
+                .shadow(color: SanaTheme.Color.primary.opacity(0.18), radius: 14, y: 6)
                 Text("What's in your kitchen?")
-                    .font(SanaTheme.Font.headline(20))
+                    .font(.system(size: 22, weight: .bold, design: .rounded))
+                    .kerning(-0.5)
                 Text("Add ingredients and Claude will craft a healthy recipe tailored to your goals.")
                     .font(SanaTheme.Font.body(14))
                     .foregroundStyle(.secondary)
@@ -117,7 +124,7 @@ struct RecipeGeneratorView: View {
                         Image(systemName: "plus.circle.fill")
                             .font(.system(size: 28))
                             .foregroundStyle(ingredientInput.trimmingCharacters(in: .whitespaces).isEmpty
-                                             ? SanaTheme.Color.primaryLight
+                                             ? SanaTheme.Color.primary.opacity(0.25)
                                              : SanaTheme.Color.primary)
                     }
                     .disabled(ingredientInput.trimmingCharacters(in: .whitespaces).isEmpty)
@@ -280,7 +287,7 @@ struct RecipeGeneratorView: View {
                 .foregroundStyle(SanaTheme.Color.primary)
             ForEach(recipe.ingredients, id: \.self) { item in
                 HStack(alignment: .top, spacing: 10) {
-                    Circle().fill(SanaTheme.Color.primaryLight)
+                    Circle().fill(SanaTheme.Color.primary)
                         .frame(width: 6, height: 6)
                         .padding(.top, 6)
                     Text(item).font(SanaTheme.Font.body(14))
