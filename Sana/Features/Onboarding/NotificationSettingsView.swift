@@ -48,11 +48,21 @@ struct NotificationSettingsView: View {
     private var permissionSection: some View {
         Section {
             if hasPermission {
-                Label("Notifications are enabled", systemImage: "checkmark.circle.fill")
-                    .foregroundStyle(SanaTheme.Color.primary)
-                    .font(SanaTheme.Font.body())
+                HStack(spacing: 12) {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(SanaTheme.Color.primaryLight).frame(width: 32, height: 32)
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.system(size: 13, weight: .semibold))
+                            .foregroundStyle(SanaTheme.Color.primary)
+                    }
+                    Text("Notifications are enabled")
+                        .font(SanaTheme.Font.body())
+                        .foregroundStyle(SanaTheme.Color.primary)
+                }
+                .padding(.vertical, 2)
             } else {
-                VStack(alignment: .leading, spacing: 8) {
+                VStack(alignment: .leading, spacing: 10) {
                     Text("Enable notifications to get meal reminders and weekly nutrition summaries.")
                         .font(SanaTheme.Font.body(14))
                         .foregroundStyle(.secondary)
@@ -61,7 +71,7 @@ struct NotificationSettingsView: View {
                     }
                     .buttonStyle(NourishButtonStyle())
                     if requestFailed {
-                        Text("Go to Settings > Sana to enable notifications.")
+                        Label("Open Settings > Sana to enable notifications.", systemImage: "gear")
                             .font(SanaTheme.Font.caption())
                             .foregroundStyle(.secondary)
                     }
@@ -80,12 +90,12 @@ struct NotificationSettingsView: View {
             .tint(SanaTheme.Color.primary)
 
             if mealsEnabled {
-                timeRow(label: "Breakfast", image: "sunrise", date: breakfastDate)
-                timeRow(label: "Lunch",     image: "sun.max",  date: lunchDate)
-                timeRow(label: "Dinner",    image: "moon.stars", date: dinnerDate)
+                timeRow(label: "Breakfast", image: "sunrise.fill",   color: .orange, date: breakfastDate)
+                timeRow(label: "Lunch",     image: "sun.max.fill",   color: .teal,   date: lunchDate)
+                timeRow(label: "Dinner",    image: "moon.stars.fill", color: .indigo, date: dinnerDate)
             }
         } header: {
-            Text("Meal reminders")
+            Label("Meal reminders", systemImage: "fork.knife")
         }
     }
 
@@ -104,12 +114,19 @@ struct NotificationSettingsView: View {
                 }
             }
             if hydrationEnabled {
-                Text("Reminds you every 2 hours from 8 AM to 9 PM")
-                    .font(SanaTheme.Font.caption())
-                    .foregroundStyle(.secondary)
+                HStack(spacing: 10) {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 7).fill(Color.blue.opacity(0.10)).frame(width: 28, height: 28)
+                        Image(systemName: "clock.fill").font(.system(size: 11, weight: .medium)).foregroundStyle(.blue)
+                    }
+                    Text("Every 2 hours, 8 AM – 9 PM")
+                        .font(SanaTheme.Font.caption())
+                        .foregroundStyle(.secondary)
+                }
+                .padding(.vertical, 2)
             }
         } header: {
-            Text("Hydration")
+            Label("Hydration", systemImage: "drop.fill")
         }
     }
 
@@ -121,19 +138,30 @@ struct NotificationSettingsView: View {
             }
             .tint(SanaTheme.Color.primary)
             if weeklyEnabled {
-                Text("Sent every Sunday at 7:00 PM")
-                    .font(SanaTheme.Font.caption())
-                    .foregroundStyle(.secondary)
+                HStack(spacing: 10) {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 7).fill(SanaTheme.Color.primaryLight).frame(width: 28, height: 28)
+                        Image(systemName: "calendar").font(.system(size: 11, weight: .medium))
+                            .foregroundStyle(SanaTheme.Color.primary)
+                    }
+                    Text("Every Sunday at 7:00 PM")
+                        .font(SanaTheme.Font.caption())
+                        .foregroundStyle(.secondary)
+                }
+                .padding(.vertical, 2)
             }
         } header: {
-            Text("Weekly summary")
+            Label("Weekly summary", systemImage: "chart.bar.fill")
         }
     }
 
-    private func timeRow(label: String, image: String, date: Binding<Date>) -> some View {
-        HStack {
-            Label(label, systemImage: image)
-                .font(SanaTheme.Font.body())
+    private func timeRow(label: String, image: String, color: Color, date: Binding<Date>) -> some View {
+        HStack(spacing: 12) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 8).fill(color.opacity(0.12)).frame(width: 32, height: 32)
+                Image(systemName: image).font(.system(size: 13, weight: .semibold)).foregroundStyle(color)
+            }
+            Text(label).font(SanaTheme.Font.body())
             Spacer()
             DatePicker("", selection: date, displayedComponents: .hourAndMinute)
                 .labelsHidden()
