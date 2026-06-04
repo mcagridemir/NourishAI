@@ -155,10 +155,10 @@ struct InsightsView: View {
 
     private var summaryCards: some View {
         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
-            StatCard(label: "Avg calories", value: avgCalories, unit: "kcal", icon: "flame.fill", color: .orange)
-            StatCard(label: "Meals logged", value: "\(entries.count)", unit: "", icon: "fork.knife", color: SanaTheme.Color.primary)
-            StatCard(label: "Avg health score", value: "\(avgHealthScore)", unit: "/100", icon: "heart.fill", color: .red)
-            StatCard(label: "Avg protein", value: "\(Int(avgProtein))", unit: "g", icon: "bolt.fill", color: .blue)
+            StatCard(label: "Avg calories",     value: avgCalories,       unit: "kcal", icon: "flame.fill", color: SanaTheme.Color.accent)
+            StatCard(label: "Meals logged",     value: "\(entries.count)", unit: "",     icon: "fork.knife", color: SanaTheme.Color.primary)
+            StatCard(label: "Avg health score", value: "\(avgHealthScore)", unit: "/100", icon: "heart.fill", color: SanaTheme.Color.healthScore(avgHealthScore))
+            StatCard(label: "Avg protein",      value: "\(Int(avgProtein))", unit: "g",  icon: "bolt.fill",  color: SanaTheme.Color.macro(.protein))
         }
     }
 

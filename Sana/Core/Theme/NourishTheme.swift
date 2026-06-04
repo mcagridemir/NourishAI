@@ -16,25 +16,40 @@ enum SanaTheme {
         static let softBg         = SwiftUI.Color("SoftBg")           // #F1EEE7 / #181B1A
         static let background     = SwiftUI.Color("Background")        // #FAF8F4 / #0E100E
 
-        static let success        = SwiftUI.Color.green
-        static let warning        = SwiftUI.Color.orange
-        static let danger         = SwiftUI.Color.red
+        // Semantic status colors — use themed values, not system .green/.orange/.red,
+        // so they honour dynamic color (dark mode) and match the design spec exactly.
+        static let success        = primary                         // #2D9E75 green
+        static let warning        = SwiftUI.Color("MacroCarbs")    // #E6A93E amber
+        static let danger         = SwiftUI.Color("MacroFat")      // #E66B5C coral
+
+        // Hairline borders — equivalent to rgba(20,22,25,0.07/0.12)
+        static let hairline       = SwiftUI.Color(.label).opacity(0.07)
+        static let hairlineStrong = SwiftUI.Color(.label).opacity(0.12)
 
         static func healthScore(_ score: Int) -> SwiftUI.Color {
             switch score {
-            case 75...100: return .green
-            case 50..<75:  return .orange
-            default:       return .red
+            case 75...100: return primary
+            case 50..<75:  return accent
+            default:       return danger
+            }
+        }
+
+        /// Background fill for a health score badge (tinted soft version of the score color).
+        static func healthScoreBg(_ score: Int) -> SwiftUI.Color {
+            switch score {
+            case 75...100: return primaryLight
+            case 50..<75:  return accentSoft
+            default:       return danger.opacity(0.12)
             }
         }
 
         static func macro(_ macro: MacroType) -> SwiftUI.Color {
             switch macro {
-            case .calories: return .orange
-            case .protein:  return SwiftUI.Color("MacroProtein")   // blue
-            case .carbs:    return SwiftUI.Color("MacroCarbs")     // amber
-            case .fat:      return SwiftUI.Color("MacroFat")       // coral
-            case .fiber:    return SwiftUI.Color("MacroFiber")     // green
+            case .calories: return accent                          // orange #F0853A
+            case .protein:  return SwiftUI.Color("MacroProtein")  // blue   #4A7CFF
+            case .carbs:    return SwiftUI.Color("MacroCarbs")    // amber  #E6A93E
+            case .fat:      return SwiftUI.Color("MacroFat")      // coral  #E66B5C
+            case .fiber:    return SwiftUI.Color("MacroFiber")    // green  #2D9E75
             }
         }
     }
@@ -121,6 +136,13 @@ enum SanaTheme {
                 ? .linear(duration: 0.15)
                 : .easeInOut(duration: 0.6)
         }
+        /// Springy bounce — used on macro rings and progress arcs so they ease
+        /// slightly past their target then settle back (design spec: response 0.8, damping 0.6).
+        static var bouncy: SwiftUI.Animation {
+            UIAccessibility.isReduceMotionEnabled
+                ? .linear(duration: 0.2)
+                : .spring(response: 0.8, dampingFraction: 0.6)
+        }
     }
 }
 
@@ -158,11 +180,11 @@ enum MacroType: String, CaseIterable, Identifiable {
 
     var detailColor: SwiftUI.Color {
         switch self {
-        case .calories: return .orange
-        case .protein:  return SwiftUI.Color("MacroProtein")
-        case .carbs:    return SwiftUI.Color("MacroCarbs")
-        case .fat:      return SwiftUI.Color("MacroFat")
-        case .fiber:    return SwiftUI.Color("MacroFiber")
+        case .calories: return SanaTheme.Color.accent              // orange
+        case .protein:  return SwiftUI.Color("MacroProtein")       // blue
+        case .carbs:    return SwiftUI.Color("MacroCarbs")         // amber
+        case .fat:      return SwiftUI.Color("MacroFat")           // coral
+        case .fiber:    return SwiftUI.Color("MacroFiber")         // green
         }
     }
 
@@ -195,6 +217,11 @@ struct NourishCardStyle: ViewModifier {
             .padding(SanaTheme.Spacing.md)
             .background(SanaTheme.Color.surface)
             .clipShape(RoundedRectangle(cornerRadius: SanaTheme.Radius.lg))
+            // Design spec: 0.5px hairline border on all cards
+            .overlay(
+                RoundedRectangle(cornerRadius: SanaTheme.Radius.lg)
+                    .stroke(SanaTheme.Color.hairline, lineWidth: 0.5)
+            )
     }
 }
 
@@ -207,7 +234,8 @@ struct NourishButtonStyle: ButtonStyle {
             .frame(maxWidth: .infinity)
             .padding(.vertical, 16)
             .background(isPrimary ? SanaTheme.Color.primary : SanaTheme.Color.primaryLight)
-            .clipShape(RoundedRectangle(cornerRadius: SanaTheme.Radius.xl))
+            // Design spec: primary buttons are full-pill (radius 999), not just xl (28)
+            .clipShape(Capsule())
             .scaleEffect(configuration.isPressed ? 0.97 : 1)
             .animation(SanaTheme.Animation.snappy, value: configuration.isPressed)
     }

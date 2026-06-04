@@ -50,14 +50,14 @@ struct FastingTrackerView: View {
                         .stroke(SanaTheme.Color.primaryLight, lineWidth: 8)
                     Circle()
                         .trim(from: 0, to: progress)
-                        .stroke(isDone ? Color.orange : SanaTheme.Color.primary,
+                        .stroke(isDone ? SanaTheme.Color.accent : SanaTheme.Color.primary,
                                 style: StrokeStyle(lineWidth: 8, lineCap: .round))
                         .rotationEffect(.degrees(-90))
-                        .animation(SanaTheme.Animation.smooth, value: progress)
+                        .animation(SanaTheme.Animation.bouncy, value: progress)
                     VStack(spacing: 2) {
                         Text(isActive ? timeString(elapsed) : "--:--:--")
                             .font(.system(size: 15, weight: .bold, design: .monospaced))
-                            .foregroundStyle(isDone ? .orange : SanaTheme.Color.primary)
+                            .foregroundStyle(isDone ? SanaTheme.Color.accent : SanaTheme.Color.primary)
                         Text(isActive ? "elapsed" : "not started")
                             .font(SanaTheme.Font.caption(10))
                             .foregroundStyle(.secondary)
@@ -121,7 +121,7 @@ struct FastingTrackerView: View {
         HStack(spacing: 6) {
             Image(systemName: icon)
                 .font(.system(size: 12))
-                .foregroundStyle(accent ? .orange : SanaTheme.Color.primary)
+                .foregroundStyle(accent ? SanaTheme.Color.accent : SanaTheme.Color.primary)
                 .frame(width: 16)
             VStack(alignment: .leading, spacing: 1) {
                 Text(label)

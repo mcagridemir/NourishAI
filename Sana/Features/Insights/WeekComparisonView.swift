@@ -50,11 +50,11 @@ struct WeekComparisonView: View {
 
     // higherIsBetter: false for Calories (lower = more disciplined), true for all nutrition quality metrics
     private var metrics: [(label: String, icon: String, color: Color, this: Double, last: Double, unit: String, higherIsBetter: Bool)] {[
-        ("Calories",     "flame.fill",  .orange, avgCal(thisWeek), avgCal(lastWeek), "kcal", false),
+        ("Calories",     "flame.fill",  SanaTheme.Color.accent, avgCal(thisWeek), avgCal(lastWeek), "kcal", false),
         ("Protein",      "bolt.fill",   SanaTheme.Color.macro(.protein), avg(thisWeek, \.protein), avg(lastWeek, \.protein), "g", true),
         ("Carbs",        "leaf.fill",   SanaTheme.Color.macro(.carbs),   avg(thisWeek, \.carbohydrates), avg(lastWeek, \.carbohydrates), "g", true),
         ("Fat",          "drop.fill",   SanaTheme.Color.macro(.fat),     avg(thisWeek, \.fat), avg(lastWeek, \.fat), "g", true),
-        ("Health score", "heart.fill",  .red,    avgHealthScore(thisWeek), avgHealthScore(lastWeek), "/100", true),
+        ("Health score", "heart.fill",  SanaTheme.Color.danger,  avgHealthScore(thisWeek), avgHealthScore(lastWeek), "/100", true),
         ("Fiber",        "list.bullet.circle.fill", SanaTheme.Color.macro(.fiber), avg(thisWeek, \.fiber), avg(lastWeek, \.fiber), "g", true),
     ]}
 

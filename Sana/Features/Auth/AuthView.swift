@@ -89,7 +89,7 @@ struct AuthView: View {
                 if let error = auth.authError {
                     Text(error)
                         .font(SanaTheme.Font.caption(12))
-                        .foregroundStyle(.red)
+                        .foregroundStyle(SanaTheme.Color.danger)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, SanaTheme.Spacing.lg)
                         .padding(.top, 12)
@@ -224,7 +224,7 @@ struct EmailAuthView: View {
                     if let error = auth.authError {
                         Text(error)
                             .font(SanaTheme.Font.caption(13))
-                            .foregroundStyle(.red)
+                            .foregroundStyle(SanaTheme.Color.danger)
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
 

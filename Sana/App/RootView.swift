@@ -36,13 +36,13 @@ struct RootView: View {
         .overlay(alignment: .top) {
             if AppContainer.shared.storageIsTemporary {
                 HStack(spacing: 8) {
-                    Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(.orange)
+                    Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(SanaTheme.Color.warning)
                     Text("Storage unavailable — data won't be saved this session.")
                         .font(SanaTheme.Font.caption(12))
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 10)
-                .background(Color.orange.opacity(0.15))
+                .background(SanaTheme.Color.warning.opacity(0.15))
                 .clipShape(RoundedRectangle(cornerRadius: SanaTheme.Radius.md))
                 .padding(.top, 8)
             }

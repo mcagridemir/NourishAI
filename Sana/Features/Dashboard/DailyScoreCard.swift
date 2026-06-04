@@ -52,14 +52,8 @@ struct DailyScoreCard: View {
             Double(activityScore) * 0.10)
     }
 
-    private var scoreColor: Color {
-        switch totalScore {
-        case 80...100: return .green
-        case 60..<80: return SanaTheme.Color.primary
-        case 40..<60: return .orange
-        default: return .red
-        }
-    }
+    // Aligned with design spec: 75+ green, 50+ orange, else coral
+    private var scoreColor: Color { SanaTheme.Color.healthScore(totalScore) }
 
     private var scoreGrade: String {
         switch totalScore {
@@ -72,11 +66,11 @@ struct DailyScoreCard: View {
     }
 
     private var pillars: [(label: String, icon: String, score: Int, color: Color)] {[
-        ("Calories",   "flame.fill",         calorieScore,  .orange),
-        ("Protein",    "bolt.fill",           proteinScore,  SanaTheme.Color.macro(.protein)),
-        ("Hydration",  "drop.fill",           hydrationScore, .blue),
-        ("Meal quality","heart.fill",          qualityScore,  .red),
-        ("Activity",   "figure.walk",         activityScore, .teal),
+        ("Calories",    "flame.fill",    calorieScore,   SanaTheme.Color.accent),
+        ("Protein",     "bolt.fill",     proteinScore,   SanaTheme.Color.macro(.protein)),
+        ("Hydration",   "drop.fill",     hydrationScore, Color(hex: "#4A7CFF") ?? .blue),
+        ("Meal quality","heart.fill",    qualityScore,   SanaTheme.Color.danger),
+        ("Activity",    "figure.walk",   activityScore,  SanaTheme.Color.primary),
     ]}
 
     var body: some View {
@@ -105,10 +99,11 @@ struct DailyScoreCard: View {
                         .stroke(scoreColor, style: StrokeStyle(lineWidth: 12, lineCap: .round))
                         .rotationEffect(.degrees(-90))
                         .frame(width: 90, height: 90)
-                        .animation(SanaTheme.Animation.slow, value: totalScore)
+                        .animation(SanaTheme.Animation.bouncy, value: totalScore)
                     VStack(spacing: 0) {
                         Text("\(totalScore)")
                             .font(.system(size: 28, weight: .bold, design: .rounded))
+                            .monospacedDigit()
                             .foregroundStyle(scoreColor)
                         Text("/ 100")
                             .font(SanaTheme.Font.caption(10))

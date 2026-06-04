@@ -217,12 +217,13 @@ struct DailySummaryShareCard: View {
         .padding(.vertical, 12)
     }
 
+    // Share card uses explicit hex colors so it renders correctly off-screen (ImageRenderer).
+    // Deliberately not using SanaTheme here since the card always renders on a dark bg.
     private var scoreColor: Color {
         switch dailyScore {
-        case 80...100: return .green
-        case 60..<80:  return Self.green
-        case 40..<60:  return .orange
-        default:       return .red
+        case 75...100: return Self.green                           // #2D9E75
+        case 50..<75:  return Color(hex: "#F0853A") ?? .orange    // accent
+        default:       return Color(hex: "#E66B5C") ?? .red       // danger coral
         }
     }
 

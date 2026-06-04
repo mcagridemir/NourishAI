@@ -82,11 +82,11 @@ struct SanaErrorView: View {
             // Icon blob
             ZStack {
                 Circle()
-                    .fill(Color.orange.opacity(0.10))
+                    .fill(SanaTheme.Color.warning.opacity(0.10))
                     .frame(width: 100, height: 100)
                 Image(systemName: "wifi.exclamationmark")
                     .font(.system(size: 44, weight: .light))
-                    .foregroundStyle(.orange)
+                    .foregroundStyle(SanaTheme.Color.warning)
             }
             .accessibilityHidden(true)
 

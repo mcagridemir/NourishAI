@@ -96,7 +96,7 @@ struct WeeklyReportView: View {
         reportSection(
             title: "Room to improve",
             icon: "arrow.up.circle.fill",
-            color: .orange,
+            color: SanaTheme.Color.accent,
             items: report.improvements
         )
 
@@ -132,10 +132,10 @@ struct WeeklyReportView: View {
 
     private var statsGrid: some View {
         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
-            weekStatCard(label: "Avg calories", value: "\(stats.avgCalories)", unit: "kcal", color: .orange)
+            weekStatCard(label: "Avg calories", value: "\(stats.avgCalories)", unit: "kcal", color: SanaTheme.Color.accent)
             weekStatCard(label: "Meals logged", value: "\(stats.mealCount)", unit: "meals", color: SanaTheme.Color.primary)
-            weekStatCard(label: "Avg protein",  value: "\(stats.avgProtein)g", unit: "/ day", color: .blue)
-            weekStatCard(label: "Health score", value: "\(stats.avgHealthScore)", unit: "/ 100", color: .green)
+            weekStatCard(label: "Avg protein",  value: "\(stats.avgProtein)g", unit: "/ day", color: SanaTheme.Color.macro(.protein))
+            weekStatCard(label: "Health score", value: "\(stats.avgHealthScore)", unit: "/ 100", color: SanaTheme.Color.healthScore(stats.avgHealthScore))
         }
     }
 

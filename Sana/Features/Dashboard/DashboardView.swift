@@ -177,7 +177,7 @@ struct DashboardView: View {
                 .stroke(SanaTheme.Color.primary, style: StrokeStyle(lineWidth: 12, lineCap: .round))
                 .frame(width: 130, height: 130)
                 .rotationEffect(.degrees(-90))
-                .animation(SanaTheme.Animation.smooth, value: progress)
+                .animation(SanaTheme.Animation.bouncy, value: progress)
             VStack(spacing: 1) {
                 Text("Left")
                     .font(.system(size: 11, weight: .medium))
@@ -186,6 +186,7 @@ struct DashboardView: View {
                     .kerning(1)
                 Text(Int(remaining).formatted())
                     .font(.system(size: 30, weight: .bold, design: .rounded))
+                    .monospacedDigit()
                     .foregroundStyle(.white)
                     .kerning(-1)
                     .minimumScaleFactor(0.7)

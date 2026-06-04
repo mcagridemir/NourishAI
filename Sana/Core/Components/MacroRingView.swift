@@ -18,10 +18,12 @@ struct MacroRingView: View {
                 .trim(from: 0, to: progress)
                 .stroke(SanaTheme.Color.primary, style: StrokeStyle(lineWidth: 12, lineCap: .round))
                 .rotationEffect(.degrees(-90))
-                .animation(SanaTheme.Animation.slow, value: progress)
+                // Design spec: spring bounce so the arc slightly overshoots then settles
+                .animation(SanaTheme.Animation.bouncy, value: progress)
             VStack(spacing: 2) {
                 Text("\(calories)")
                     .font(SanaTheme.Font.numeric)
+                    .monospacedDigit()          // tabular numerics per design spec
                     .foregroundStyle(SanaTheme.Color.primary)
                 Text("kcal")
                     .font(SanaTheme.Font.caption())
@@ -78,11 +80,14 @@ struct HealthScoreBadge: View {
     var size: CGFloat = 44
 
     private var color: Color { SanaTheme.Color.healthScore(score) }
+    private var bgColor: Color { SanaTheme.Color.healthScoreBg(score) }
+
+    // Labels aligned to design score thresholds (75 / 50)
     private var label: String {
         switch score {
-        case 80...100: return "Excellent"
-        case 60..<80:  return "Good"
-        case 40..<60:  return "Fair"
+        case 75...100: return "Excellent"
+        case 50..<75:  return "Good"
+        case 30..<50:  return "Fair"
         default:       return "Poor"
         }
     }
@@ -90,9 +95,10 @@ struct HealthScoreBadge: View {
     var body: some View {
         VStack(spacing: 2) {
             ZStack {
-                Circle().fill(color.opacity(0.15))
+                Circle().fill(bgColor)
                 Text("\(score)")
                     .font(SanaTheme.Font.headline(13))
+                    .monospacedDigit()
                     .foregroundStyle(color)
             }
             .frame(width: size, height: size)

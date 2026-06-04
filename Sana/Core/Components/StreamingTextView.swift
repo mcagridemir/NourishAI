@@ -142,7 +142,7 @@ struct ErrorBanner: View {
     var body: some View {
         HStack(spacing: 10) {
             Image(systemName: "exclamationmark.triangle.fill")
-                .foregroundStyle(.orange)
+                .foregroundStyle(SanaTheme.Color.warning)
                 .accessibilityHidden(true)
             Text(message)
                 .font(SanaTheme.Font.body(14))
@@ -169,7 +169,7 @@ struct ErrorBanner: View {
         }
         .padding(.horizontal, SanaTheme.Spacing.lg)
         .padding(.vertical, SanaTheme.Spacing.sm)
-        .background(Color.orange.opacity(0.10))
+        .background(SanaTheme.Color.warning.opacity(0.10))
         .clipShape(RoundedRectangle(cornerRadius: SanaTheme.Radius.md))
         .accessibilityElement(children: .combine)
     }
