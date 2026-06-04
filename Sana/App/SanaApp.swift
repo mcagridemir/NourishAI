@@ -116,8 +116,15 @@ struct SanaApp: App {
                 }
         }
         .onChange(of: scenePhase) { _, newPhase in
-            if newPhase == .active && healthKit.isAuthorized {
-                Task { await healthKit.refreshAll() }
+            if newPhase == .active {
+                if healthKit.isAuthorized {
+                    Task { await healthKit.refreshAll() }
+                }
+                // Submit (or re-submit) the background refresh task each time the app
+                // comes to the foreground. BGTaskScheduler replaces any pending request
+                // with the same identifier, so this is idempotent. Without this, the
+                // very first background-refresh run is never scheduled.
+                scheduleBackgroundRefresh()
             }
         }
         .backgroundTask(.appRefresh(bgTaskID)) {

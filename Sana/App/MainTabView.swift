@@ -5,6 +5,7 @@ import SwiftUI
 struct MainTabView: View {
     @Environment(\.modelContext) private var context
     @EnvironmentObject private var router: AppRouter
+    @EnvironmentObject private var subscription: SubscriptionService
     @Environment(\.horizontalSizeClass) private var hSizeClass
 
     let user: User
@@ -34,12 +35,23 @@ struct MainTabView: View {
     }
 
     var body: some View {
-        if hSizeClass == .regular {
-            // iPad / large-screen: NavigationSplitView sidebar
-            iPadLayout
-        } else {
-            // iPhone: standard tab bar
-            phoneLayout
+        Group {
+            if hSizeClass == .regular {
+                // iPad / large-screen: NavigationSplitView sidebar
+                iPadLayout
+            } else {
+                // iPhone: standard tab bar
+                phoneLayout
+            }
+        }
+        // Keep user.subscriptionTier in sync with StoreKit ground truth.
+        // user.subscriptionTier is what all feature gates read; SubscriptionService.isPremium
+        // is updated by StoreKit. Without this sync, a paying user is treated as free.
+        .onAppear {
+            user.subscriptionTier = subscription.isPremium ? .premium : .free
+        }
+        .onChange(of: subscription.isPremium) { _, isPremium in
+            user.subscriptionTier = isPremium ? .premium : .free
         }
     }
 
