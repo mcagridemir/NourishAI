@@ -406,7 +406,7 @@ struct InsightsView: View {
                 VStack(spacing: 8) {
                     Image(systemName: "chart.line.uptrend.xyaxis")
                         .font(.system(size: 32))
-                        .foregroundStyle(SanaTheme.Color.primaryLight)
+                        .foregroundStyle(SanaTheme.Color.primary)
                         .accessibilityHidden(true)
                     Text("Log your weight to see your trend")
                         .font(SanaTheme.Font.body(13))
@@ -440,7 +440,7 @@ struct InsightsView: View {
         VStack(spacing: 16) {
             Image(systemName: "chart.bar.xaxis.ascending.badge.clock")
                 .font(.system(size: 38))
-                .foregroundStyle(SanaTheme.Color.primaryLight)
+                .foregroundStyle(SanaTheme.Color.primary)
                 .accessibilityHidden(true)
             Text("No data yet")
                 .font(SanaTheme.Font.headline())

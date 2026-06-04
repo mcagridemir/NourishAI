@@ -76,7 +76,7 @@ struct LogWeightSheet: View {
                 } label: {
                     Image(systemName: "minus.circle.fill")
                         .font(.system(size: 44))
-                        .foregroundStyle(SanaTheme.Color.primaryLight)
+                        .foregroundStyle(SanaTheme.Color.primary)
                 }
                 Spacer()
                 Button {

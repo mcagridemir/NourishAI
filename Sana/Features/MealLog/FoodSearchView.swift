@@ -98,7 +98,7 @@ struct FoodSearchView: View {
         VStack(spacing: 12) {
             Image(systemName: "magnifyingglass")
                 .font(.system(size: 36))
-                .foregroundStyle(SanaTheme.Color.primaryLight)
+                .foregroundStyle(SanaTheme.Color.primary)
             Text("Type at least 2 characters to search\nthe Open Food Facts database")
                 .font(SanaTheme.Font.body(14))
                 .foregroundStyle(.secondary)
@@ -113,7 +113,7 @@ struct FoodSearchView: View {
         VStack(spacing: 12) {
             Image(systemName: "tray")
                 .font(.system(size: 36))
-                .foregroundStyle(SanaTheme.Color.primaryLight)
+                .foregroundStyle(SanaTheme.Color.primary)
             Text("No results for \"\(query)\"")
                 .font(SanaTheme.Font.headline())
             Text("Try a different name or use the barcode scanner")

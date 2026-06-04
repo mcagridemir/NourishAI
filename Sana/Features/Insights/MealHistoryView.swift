@@ -150,7 +150,7 @@ struct MealHistoryView: View {
                 VStack(spacing: 12) {
                     Image(systemName: "photo.on.rectangle.angled")
                         .font(.system(size: 48))
-                        .foregroundStyle(SanaTheme.Color.primaryLight)
+                        .foregroundStyle(SanaTheme.Color.primary)
                     Text("No meal photos yet")
                         .font(SanaTheme.Font.headline())
                         .foregroundStyle(.secondary)
