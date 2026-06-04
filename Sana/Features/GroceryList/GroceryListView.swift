@@ -48,13 +48,19 @@ struct GroceryListView: View {
             .padding(.vertical, 8)
             GeometryReader { geo in
                 ZStack(alignment: .leading) {
-                    Rectangle().fill(SanaTheme.Color.primaryLight).frame(height: 3)
-                    Rectangle().fill(SanaTheme.Color.primary)
-                        .frame(width: geo.size.width * vm.progress, height: 3)
-                        .animation(SanaTheme.Animation.smooth, value: vm.progress)
+                    Capsule().fill(SanaTheme.Color.primaryLight).frame(height: 4)
+                    Capsule().fill(
+                        vm.progress >= 1
+                            ? LinearGradient(colors: [SanaTheme.Color.primary, SanaTheme.Color.primaryDeep],
+                                             startPoint: .leading, endPoint: .trailing)
+                            : LinearGradient(colors: [SanaTheme.Color.primary, SanaTheme.Color.primary],
+                                             startPoint: .leading, endPoint: .trailing)
+                    )
+                    .frame(width: max(4, geo.size.width * vm.progress), height: 4)
+                    .animation(SanaTheme.Animation.smooth, value: vm.progress)
                 }
             }
-            .frame(height: 3)
+            .frame(height: 4)
             Divider()
 
             List {
@@ -78,32 +84,65 @@ struct GroceryListView: View {
 
 private struct GroceryItemRow: View {
     @Binding var item: GroceryItem
+
     var body: some View {
-        HStack {
-            Image(systemName: item.isChecked ? "checkmark.circle.fill" : "circle")
-                .foregroundStyle(item.isChecked ? SanaTheme.Color.primary : .secondary)
-                .font(.title3)
-                .onTapGesture { withAnimation { item.isChecked.toggle() } }
-            VStack(alignment: .leading, spacing: 2) {
-                Text(item.name)
-                    .font(SanaTheme.Font.body())
-                    .strikethrough(item.isChecked, color: .secondary)
-                    .foregroundStyle(item.isChecked ? .secondary : .primary)
-                Text(item.formattedQuantity)
-                    .font(SanaTheme.Font.caption()).foregroundStyle(.secondary)
+        Button {
+            HapticService.selection()
+            withAnimation(SanaTheme.Animation.snappy) { item.isChecked.toggle() }
+        } label: {
+            HStack(spacing: 14) {
+                Image(systemName: item.isChecked ? "checkmark.circle.fill" : "circle")
+                    .foregroundStyle(item.isChecked ? SanaTheme.Color.primary : .secondary)
+                    .font(.system(size: 22, weight: .light))
+                    .contentTransition(.symbolEffect(.replace))
+                    .animation(SanaTheme.Animation.snappy, value: item.isChecked)
+
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(item.name)
+                        .font(SanaTheme.Font.body())
+                        .strikethrough(item.isChecked, color: .secondary)
+                        .foregroundStyle(item.isChecked ? .secondary : .primary)
+                    Text(item.formattedQuantity)
+                        .font(SanaTheme.Font.caption(11))
+                        .foregroundStyle(.secondary)
+                }
+                Spacer()
             }
+            .contentShape(Rectangle())
         }
+        .buttonStyle(.plain)
     }
 }
 
 private struct EmptyGroceryView: View {
     let onGenerate: () -> Void
+
     var body: some View {
-        VStack(spacing: 24) {
-            Image(systemName: "cart.badge.plus").font(.system(size: 60)).foregroundStyle(SanaTheme.Color.primaryLight)
-            Text("No grocery list yet").font(SanaTheme.Font.headline(22))
-            Text("Generate a smart shopping list from your active meal plan.").font(SanaTheme.Font.body()).foregroundStyle(.secondary).multilineTextAlignment(.center).padding(.horizontal)
-            Button("Generate from meal plan", action: onGenerate).buttonStyle(NourishButtonStyle()).padding(.horizontal, 40)
+        VStack(spacing: 0) {
+            Spacer()
+            VStack(spacing: 20) {
+                ZStack {
+                    Circle()
+                        .fill(SanaTheme.Color.primaryLight)
+                        .frame(width: 96, height: 96)
+                    Image(systemName: "cart.badge.plus")
+                        .font(.system(size: 40, weight: .medium))
+                        .foregroundStyle(SanaTheme.Color.primary)
+                }
+                VStack(spacing: 8) {
+                    Text("No grocery list yet")
+                        .font(SanaTheme.Font.headline(22))
+                    Text("Generate a smart shopping list\nfrom your active meal plan.")
+                        .font(SanaTheme.Font.body())
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                }
+                Button("Generate from meal plan", action: onGenerate)
+                    .buttonStyle(NourishButtonStyle())
+                    .padding(.horizontal, 40)
+            }
+            Spacer()
         }
+        .padding()
     }
 }

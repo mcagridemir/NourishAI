@@ -123,23 +123,30 @@ struct PaywallView: View {
     }
 
     private var featuresSection: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 10) {
             ForEach(features, id: \.0) { feature in
                 HStack(spacing: 14) {
                     ZStack {
-                        Circle().fill(SanaTheme.Color.primaryLight).frame(width: 40, height: 40)
-                        Image(systemName: feature.1).foregroundStyle(SanaTheme.Color.primary).font(.system(size: 16))
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(SanaTheme.Color.primaryLight).frame(width: 40, height: 40)
+                        Image(systemName: feature.1)
+                            .foregroundStyle(SanaTheme.Color.primary)
+                            .font(.system(size: 16, weight: .semibold))
                     }
                     VStack(alignment: .leading, spacing: 2) {
                         Text(feature.0).font(SanaTheme.Font.headline(14))
                         Text(feature.2).font(SanaTheme.Font.caption()).foregroundStyle(.secondary)
                     }
                     Spacer()
-                    Image(systemName: "checkmark.circle.fill").foregroundStyle(SanaTheme.Color.primary)
+                    Image(systemName: "checkmark.circle.fill")
+                        .foregroundStyle(SanaTheme.Color.primary)
+                        .font(.system(size: 16))
                 }
                 .padding(12)
                 .background(SanaTheme.Color.surface)
                 .clipShape(RoundedRectangle(cornerRadius: SanaTheme.Radius.md))
+                .overlay(RoundedRectangle(cornerRadius: SanaTheme.Radius.md)
+                    .stroke(SanaTheme.Color.hairline, lineWidth: 0.5))
             }
         }
     }
@@ -176,13 +183,25 @@ struct PaywallView: View {
             Button {
                 Task { await purchase() }
             } label: {
-                HStack {
-                    if subscription.isLoading { ProgressView().tint(.white) }
-                    Text("Start free trial").font(SanaTheme.Font.headline())
+                HStack(spacing: 8) {
+                    if subscription.isLoading {
+                        ProgressView().tint(.white)
+                    } else {
+                        Image(systemName: "sparkles")
+                        Text("Start free trial").font(SanaTheme.Font.headline())
+                    }
                 }
             }
             .buttonStyle(NourishButtonStyle())
             .disabled(selectedProduct == nil || subscription.isLoading)
+            .onAppear {
+                if selectedProduct == nil, let yearly = subscription.yearlyProduct {
+                    selectedProduct = yearly.id
+                }
+            }
+            .onChange(of: subscription.yearlyProduct) { _, product in
+                if selectedProduct == nil, let product { selectedProduct = product.id }
+            }
         }
     }
 
@@ -267,26 +286,38 @@ private struct PricingCard: View {
         Button(action: onTap) {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
-                    HStack {
+                    HStack(spacing: 6) {
                         Text(title).font(SanaTheme.Font.headline())
                         if let badge {
-                            Text(badge).font(SanaTheme.Font.caption(10)).padding(.horizontal, 8).padding(.vertical, 3)
-                                .background(SanaTheme.Color.primary).foregroundStyle(.white).clipShape(Capsule())
+                            Text(badge)
+                                .font(SanaTheme.Font.caption(10))
+                                .padding(.horizontal, 8).padding(.vertical, 3)
+                                .background(SanaTheme.Color.primary)
+                                .foregroundStyle(.white)
+                                .clipShape(Capsule())
                         }
                     }
                     Text(subtitle).font(SanaTheme.Font.caption()).foregroundStyle(.secondary)
                 }
                 Spacer()
-                Text(price).font(SanaTheme.Font.headline(17)).foregroundStyle(SanaTheme.Color.primary)
+                Text(price)
+                    .font(SanaTheme.Font.headline(17))
+                    .foregroundStyle(SanaTheme.Color.primary)
                 Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
                     .foregroundStyle(isSelected ? SanaTheme.Color.primary : .secondary)
                     .padding(.leading, 8)
             }
             .padding()
-            .background(SanaTheme.Color.surface)
+            .background(isRecommended ? SanaTheme.Color.primaryLight : SanaTheme.Color.surface)
             .clipShape(RoundedRectangle(cornerRadius: SanaTheme.Radius.lg))
-            .overlay(RoundedRectangle(cornerRadius: SanaTheme.Radius.lg)
-                .stroke(isSelected ? SanaTheme.Color.primary : Color.clear, lineWidth: 2))
+            .overlay(
+                RoundedRectangle(cornerRadius: SanaTheme.Radius.lg)
+                    .stroke(
+                        isSelected ? SanaTheme.Color.primary :
+                        isRecommended ? SanaTheme.Color.primary.opacity(0.3) : SanaTheme.Color.hairline,
+                        lineWidth: isSelected ? 2 : 0.5
+                    )
+            )
         }
         .buttonStyle(.plain)
     }
