@@ -290,7 +290,7 @@ struct DashboardView: View {
                 .padding(.horizontal, SanaTheme.Spacing.lg)
                 .padding(.bottom, SanaTheme.Spacing.lg)
         } else if let insight = vm.weeklyInsight {
-            AIInsightCard(insight: insight)
+            AIInsightCard(insight: insight, onAskCoach: { router.selectedTab = .coach })
                 .padding(.horizontal, SanaTheme.Spacing.lg)
                 .padding(.bottom, SanaTheme.Spacing.lg)
         }
@@ -330,6 +330,26 @@ struct DashboardView: View {
                             }
                         }
                 }
+                // Design spec: dashed "Add meal" stub at bottom of list
+                Button {
+                    HapticService.impact(.light)
+                    router.showingMealLog = true
+                } label: {
+                    HStack(spacing: 8) {
+                        Image(systemName: "plus").font(.system(size: 15, weight: .medium))
+                        Text("Add meal").font(SanaTheme.Font.headline(14))
+                    }
+                    .foregroundStyle(.secondary)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 52)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: SanaTheme.Radius.md)
+                            .stroke(style: StrokeStyle(lineWidth: 1.5, dash: [6, 4]))
+                            .foregroundStyle(SanaTheme.Color.hairlineStrong)
+                    )
+                }
+                .buttonStyle(.plain)
+                .padding(.top, 4)
             }
         }
         .padding(SanaTheme.Spacing.lg)
@@ -339,10 +359,10 @@ struct DashboardView: View {
         .padding(.bottom, SanaTheme.Spacing.lg)
     }
 
-    // MARK: Hydration + Fasting (2-column)
+    // MARK: Hydration + Fasting (2-column side-by-side — design spec)
 
     private var hydrationFastingRow: some View {
-        VStack(spacing: 10) {
+        HStack(alignment: .top, spacing: 10) {
             WaterTrackerView(user: user)
             FastingTrackerView()
         }
@@ -631,6 +651,7 @@ private struct QuickActionCard: View {
 
 private struct AIInsightCard: View {
     let insight: String
+    var onAskCoach: (() -> Void)? = nil
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -656,6 +677,37 @@ private struct AIInsightCard: View {
                     .lineSpacing(2)
                     .kerning(-0.3)
                     .fixedSize(horizontal: false, vertical: true)
+
+                // Design spec: action pill buttons
+                HStack(spacing: 8) {
+                    Button {
+                        HapticService.selection()
+                        onAskCoach?()
+                    } label: {
+                        Text("Show snack ideas")
+                            .font(.system(size: 12, weight: .semibold))
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, 14)
+                            .padding(.vertical, 8)
+                            .background(Color.white.opacity(0.22))
+                            .clipShape(Capsule())
+                    }
+                    .buttonStyle(.plain)
+
+                    Button {
+                        HapticService.selection()
+                        onAskCoach?()
+                    } label: {
+                        Text("Ask coach")
+                            .font(.system(size: 12, weight: .semibold))
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, 14)
+                            .padding(.vertical, 8)
+                            .overlay(Capsule().stroke(Color.white.opacity(0.4), lineWidth: 1))
+                    }
+                    .buttonStyle(.plain)
+                }
+                .padding(.top, 4)
             }
             .padding(SanaTheme.Spacing.lg)
             .frame(maxWidth: .infinity, alignment: .leading)

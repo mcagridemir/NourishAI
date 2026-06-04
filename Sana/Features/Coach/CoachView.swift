@@ -202,30 +202,69 @@ struct CoachView: View {
         }
     }
 
-    // MARK: - Input bar
+    // MARK: - Input bar (design spec: attachment button + pill container with mic + send)
 
     private var inputBar: some View {
-        HStack(spacing: 10) {
-            TextField("Ask your coach…", text: $vm.inputText, axis: .vertical)
-                .font(SanaTheme.Font.body())
-                .lineLimit(1...5)
-                .padding(12)
-                .background(SanaTheme.Color.surface)
-                .clipShape(RoundedRectangle(cornerRadius: SanaTheme.Radius.xl))
-
-            Button {
-                Task { await vm.sendMessage() }
-            } label: {
-                Image(systemName: vm.isStreaming ? "stop.circle.fill" : "arrow.up.circle.fill")
-                    .font(.system(size: 36))
-                    .foregroundStyle(vm.canSend ? SanaTheme.Color.primary : Color.secondary)
+        HStack(spacing: 8) {
+            // Attachment / plus button
+            Button { } label: {
+                Image(systemName: "plus")
+                    .font(.system(size: 20, weight: .medium))
+                    .foregroundStyle(.primary)
+                    .frame(width: 40, height: 40)
+                    .background(SanaTheme.Color.elevated)
+                    .clipShape(Circle())
             }
-            .disabled(!vm.canSend && !vm.isStreaming)
-            .animation(SanaTheme.Animation.snappy, value: vm.isStreaming)
-            .accessibilityLabel(vm.isStreaming ? "Stop response" : "Send message")
+            .accessibilityLabel("Attach")
+
+            // Input pill: text field + mic + send
+            HStack(spacing: 4) {
+                TextField("Ask your coach anything…", text: $vm.inputText, axis: .vertical)
+                    .font(.system(size: 15))
+                    .lineLimit(1...5)
+                    .padding(.leading, 4)
+
+                if !vm.isStreaming {
+                    Button { } label: {
+                        Image(systemName: "mic")
+                            .font(.system(size: 16))
+                            .foregroundStyle(.secondary)
+                            .frame(width: 32, height: 32)
+                            .contentShape(Rectangle())
+                    }
+                    .accessibilityLabel("Voice input")
+                }
+
+                // Send / Stop circle button
+                Button {
+                    Task { await vm.sendMessage() }
+                } label: {
+                    Image(systemName: vm.isStreaming ? "stop.fill" : "arrow.up")
+                        .font(.system(size: 13, weight: .bold))
+                        .foregroundStyle(.white)
+                        .frame(width: 36, height: 36)
+                        .background(
+                            (vm.canSend || vm.isStreaming)
+                                ? SanaTheme.Color.primary
+                                : SanaTheme.Color.hairlineStrong
+                        )
+                        .clipShape(Circle())
+                        .animation(SanaTheme.Animation.snappy, value: vm.canSend)
+                }
+                .disabled(!vm.canSend && !vm.isStreaming)
+                .accessibilityLabel(vm.isStreaming ? "Stop response" : "Send message")
+            }
+            .padding(.vertical, 4)
+            .padding(.leading, 16)
+            .padding(.trailing, 4)
+            .frame(maxWidth: .infinity)
+            .background(SanaTheme.Color.surface)
+            .clipShape(RoundedRectangle(cornerRadius: 22))
+            .overlay(RoundedRectangle(cornerRadius: 22).stroke(SanaTheme.Color.hairlineStrong, lineWidth: 0.5))
         }
-        .padding(.horizontal, SanaTheme.Spacing.lg)
-        .padding(.vertical, 10)
+        .padding(.horizontal, SanaTheme.Spacing.md)
+        .padding(.top, 8)
+        .padding(.bottom, 22)
         .background(SanaTheme.Color.background)
     }
 }
@@ -277,20 +316,21 @@ struct ChatBubble: View {
     }
 }
 
+/// Design spec: user 22/22/6/22, assistant 6/22/22/22 (top-leading, top-trailing, bottom-trailing, bottom-leading)
 struct BubbleShape: Shape {
     let isUser: Bool
     func path(in rect: CGRect) -> Path {
-        let r: CGFloat = 18
-        let tail: CGFloat = 6
-        var path = Path()
         if isUser {
-            path.addRoundedRect(in: CGRect(x: rect.minX, y: rect.minY, width: rect.width - tail, height: rect.height),
-                                cornerSize: CGSize(width: r, height: r))
+            UnevenRoundedRectangle(
+                topLeadingRadius: 22, bottomLeadingRadius: 22,
+                bottomTrailingRadius: 6, topTrailingRadius: 22
+            ).path(in: rect)
         } else {
-            path.addRoundedRect(in: CGRect(x: rect.minX + tail, y: rect.minY, width: rect.width - tail, height: rect.height),
-                                cornerSize: CGSize(width: r, height: r))
+            UnevenRoundedRectangle(
+                topLeadingRadius: 6, bottomLeadingRadius: 22,
+                bottomTrailingRadius: 22, topTrailingRadius: 22
+            ).path(in: rect)
         }
-        return path
     }
 }
 

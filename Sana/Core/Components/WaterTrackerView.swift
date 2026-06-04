@@ -5,35 +5,79 @@ import SwiftData
 struct WaterTrackerView: View {
 
     @Bindable var user: User
-    @Environment(\.modelContext) private var context
-    @EnvironmentObject private var healthKit: HealthKitService
-
-    /// Quick-add amounts always stored in ml; displayed in the user's chosen unit.
-    private let quickAmountsML = [150, 250, 350, 500]
-
-    private func quickAmountLabel(_ ml: Int) -> String {
-        user.unitSystem == .imperial
-            ? "+\(String(format: "%.0f", Double(ml) * 0.033814)) fl oz"
-            : "+\(ml)"
-    }
 
     private var progress: Double {
         min(1.0, Double(user.todayWaterMl) / Double(max(1, user.dailyWaterGoalMl)))
     }
 
-    private var progressColor: Color {
-        switch progress {
-        case 0.75...: return SanaTheme.Color.primary
-        case 0.4...:  return .blue
-        default:      return .blue
-        }
-    }
+    // MARK: - Design spec: glass-segment layout
+
+    /// Blue used for hydration — same hex as macro protein (#4A7CFF)
+    private static let hydrationBlue = Color(hex: "#4A7CFF") ?? Color("MacroProtein")
 
     var body: some View {
-        VStack(alignment: .leading, spacing: SanaTheme.Spacing.sm) {
-            headerRow
-            progressBar
-            quickAddRow
+        VStack(alignment: .leading, spacing: 0) {
+            // Header row
+            HStack(spacing: 8) {
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(Self.hydrationBlue.opacity(0.12))
+                    .frame(width: 28, height: 28)
+                    .overlay(
+                        Image(systemName: "drop.fill")
+                            .font(.system(size: 13))
+                            .foregroundStyle(Self.hydrationBlue)
+                    )
+                Text("Hydration")
+                    .font(.system(size: 12, weight: .semibold))
+                Spacer()
+                if progress >= 1.0 {
+                    Image(systemName: "checkmark.circle.fill")
+                        .foregroundStyle(SanaTheme.Color.primary)
+                        .font(.caption)
+                }
+            }
+
+            // Big number display
+            HStack(alignment: .firstTextBaseline, spacing: 4) {
+                Text(user.formatWater(user.todayWaterMl))
+                    .font(.system(size: 28, weight: .bold, design: .rounded))
+                    .monospacedDigit()
+                    .kerning(-0.6)
+                Text("/ \(user.formatWater(user.dailyWaterGoalMl))")
+                    .font(.system(size: 11))
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)
+            }
+            .padding(.top, 14)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Water: \(user.formatWater(user.todayWaterMl)) of \(user.formatWater(user.dailyWaterGoalMl)). \(Int(progress * 100)) percent.")
+
+            // Glass segments (8 cells)
+            HStack(spacing: 4) {
+                ForEach(0..<8, id: \.self) { i in
+                    RoundedRectangle(cornerRadius: 6)
+                        .fill(Double(i) < progress * 8 ? Self.hydrationBlue : SanaTheme.Color.hairline)
+                        .frame(height: 22)
+                        .animation(SanaTheme.Animation.smooth, value: progress)
+                }
+            }
+            .padding(.top, 10)
+
+            // Add glass CTA
+            Button {
+                addWater(250)
+            } label: {
+                Text("+ Add glass")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundStyle(Self.hydrationBlue)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 8)
+                    .background(Self.hydrationBlue.opacity(0.10))
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+            }
+            .accessibilityLabel("Add one glass of water (250 ml)")
+            .padding(.top, 10)
         }
         .padding()
         .nourishCard()
@@ -47,59 +91,6 @@ struct WaterTrackerView: View {
         guard pending > 0 else { return }
         defaults?.removeObject(forKey: "siri.pendingWaterMl")
         addWater(pending)
-    }
-
-    private var headerRow: some View {
-        HStack {
-            Label("Water", systemImage: "drop.fill")
-                .font(SanaTheme.Font.headline())
-                .foregroundStyle(.blue)
-            Spacer()
-            Text("\(user.formatWater(user.todayWaterMl)) / \(user.formatWater(user.dailyWaterGoalMl))")
-                .font(SanaTheme.Font.caption())
-                .foregroundStyle(.secondary)
-            if progress >= 1.0 {
-                Image(systemName: "checkmark.circle.fill")
-                    .foregroundStyle(SanaTheme.Color.primary)
-                    .font(.caption)
-            }
-        }
-    }
-
-    private var progressBar: some View {
-        GeometryReader { geo in
-            ZStack(alignment: .leading) {
-                RoundedRectangle(cornerRadius: SanaTheme.Radius.sm)
-                    .fill(Color.blue.opacity(0.12))
-                    .frame(height: 10)
-                RoundedRectangle(cornerRadius: SanaTheme.Radius.sm)
-                    .fill(progressColor)
-                    .frame(width: geo.size.width * progress, height: 10)
-                    .animation(SanaTheme.Animation.smooth, value: progress)
-            }
-        }
-        .frame(height: 10)
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Water progress: \(user.formatWater(user.todayWaterMl)) of \(user.formatWater(user.dailyWaterGoalMl)). \(Int(progress * 100)) percent.")
-        .accessibilityValue("\(Int(progress * 100))%")
-    }
-
-    private var quickAddRow: some View {
-        HStack(spacing: SanaTheme.Spacing.xs) {
-            ForEach(quickAmountsML, id: \.self) { ml in
-                Button(quickAmountLabel(ml)) {
-                    addWater(ml)
-                }
-                .accessibilityLabel("Add \(quickAmountLabel(ml)) of water")
-                .font(SanaTheme.Font.caption(12))
-                .padding(.horizontal, 10)
-                .padding(.vertical, 6)
-                .background(Color.blue.opacity(0.1))
-                .foregroundStyle(.blue)
-                .clipShape(Capsule())
-            }
-            Spacer()
-        }
     }
 
     private func addWater(_ ml: Int) {
@@ -125,7 +116,6 @@ private struct WaterTrackerPreview: View {
     }
     var body: some View {
         WaterTrackerView(user: user)
-            .environmentObject(HealthKitService.shared)
             .modelContainer(container)
             .padding()
             .background(SanaTheme.Color.background)

@@ -313,30 +313,96 @@ struct MealLogView: View {
     }
 }
 
-// MARK: - Analyzing view
+// MARK: - Analyzing view (design spec: progress ring + step ticker)
 
 struct AnalyzingView: View {
-    @State private var dots = ""
-    let messages = ["Identifying ingredients…", "Estimating portions…", "Calculating macros…", "Generating insights…"]
-    @State private var messageIndex = 0
-    private let timer = Timer.publish(every: 1.5, on: .main, in: .common).autoconnect()
+    @State private var progress: Double = 0
+    @State private var stepIndex = 0
+    private let steps = ["Detecting items", "Identifying portions", "Calculating macros", "Scoring meal quality"]
+    private let ticker = Timer.publish(every: 0.05, on: .main, in: .common).autoconnect()
 
     var body: some View {
-        VStack(spacing: 20) {
-            ProgressView().scaleEffect(1.4).tint(SanaTheme.Color.primary)
-            Text(messages[messageIndex])
-                .font(SanaTheme.Font.headline())
-                .foregroundStyle(SanaTheme.Color.primary)
-                .animation(SanaTheme.Animation.smooth, value: messageIndex)
-            Text("Claude is analysing your meal")
+        VStack(spacing: 0) {
+            // Progress ring with pulsing sparkle center
+            ZStack {
+                Circle()
+                    .stroke(SanaTheme.Color.hairline, lineWidth: 6)
+                    .frame(width: 140, height: 140)
+                Circle()
+                    .trim(from: 0, to: progress / 100)
+                    .stroke(SanaTheme.Color.primary, style: StrokeStyle(lineWidth: 6, lineCap: .round))
+                    .rotationEffect(.degrees(-90))
+                    .frame(width: 140, height: 140)
+                    .animation(.linear(duration: 0.08), value: progress)
+                VStack(spacing: 6) {
+                    ZStack {
+                        Circle()
+                            .fill(SanaTheme.Color.primaryLight)
+                            .frame(width: 60, height: 60)
+                        Image(systemName: "sparkles")
+                            .font(.system(size: 24, weight: .semibold))
+                            .foregroundStyle(SanaTheme.Color.primary)
+                    }
+                    Text("\(Int(progress))%")
+                        .font(.system(size: 20, weight: .bold, design: .rounded))
+                        .monospacedDigit()
+                        .foregroundStyle(.primary)
+                }
+            }
+
+            Spacer().frame(height: 28)
+
+            Text("Analyzing your meal")
+                .font(.system(size: 20, weight: .bold, design: .rounded))
+                .kerning(-0.5)
+            Text("This usually takes 4–6 seconds")
                 .font(SanaTheme.Font.body(13))
                 .foregroundStyle(.secondary)
+                .padding(.top, 4)
+
+            Spacer().frame(height: 24)
+
+            // Step ticker
+            VStack(alignment: .leading, spacing: 10) {
+                ForEach(Array(steps.enumerated()), id: \.0) { i, step in
+                    HStack(spacing: 12) {
+                        ZStack {
+                            Circle()
+                                .fill(i < stepIndex
+                                    ? SanaTheme.Color.primary
+                                    : i == stepIndex
+                                        ? SanaTheme.Color.primaryLight
+                                        : SanaTheme.Color.hairline)
+                                .frame(width: 22, height: 22)
+                            if i < stepIndex {
+                                Image(systemName: "checkmark")
+                                    .font(.system(size: 10, weight: .bold))
+                                    .foregroundStyle(.white)
+                            } else if i == stepIndex {
+                                Circle()
+                                    .fill(SanaTheme.Color.primary)
+                                    .frame(width: 8, height: 8)
+                            }
+                        }
+                        Text(step)
+                            .font(SanaTheme.Font.body(14))
+                            .fontWeight(i == stepIndex ? .semibold : .regular)
+                            .foregroundStyle(i <= stepIndex ? .primary : .tertiary)
+                    }
+                    .animation(SanaTheme.Animation.smooth, value: stepIndex)
+                }
+            }
+            .frame(maxWidth: 260, alignment: .leading)
         }
         .frame(maxWidth: .infinity)
-        .padding(.vertical, 60)
+        .padding(.vertical, 40)
         .nourishCard()
-        .onReceive(timer) { _ in
-            messageIndex = (messageIndex + 1) % messages.count
+        .onReceive(ticker) { _ in
+            guard progress < 100 else { return }
+            withAnimation(.linear(duration: 0.05)) {
+                progress = min(100, progress + 1.5)
+            }
+            stepIndex = min(steps.count - 1, Int(progress / (100.0 / Double(steps.count))))
         }
     }
 }
