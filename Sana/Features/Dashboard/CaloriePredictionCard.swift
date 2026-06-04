@@ -129,6 +129,41 @@ struct CaloriePredictionCard: View {
             .frame(height: 8)
             .animation(SanaTheme.Animation.smooth, value: predictedTotal)
 
+            // Cumulative calorie sparkline
+            if !todayMeals.isEmpty {
+                let lineColor: Color = isOverBudget ? .orange : SanaTheme.Color.primary
+                Chart {
+                    ForEach(todayHourlyData, id: \.hour) { point in
+                        LineMark(
+                            x: .value("Hour", point.hour),
+                            y: .value("kcal", point.calories)
+                        )
+                        .foregroundStyle(lineColor)
+                        .interpolationMethod(.catmullRom)
+                        AreaMark(
+                            x: .value("Hour", point.hour),
+                            y: .value("kcal", point.calories)
+                        )
+                        .foregroundStyle(lineColor.opacity(0.10))
+                        .interpolationMethod(.catmullRom)
+                    }
+                    if user.dailyCalorieTarget > 0 {
+                        RuleMark(y: .value("Goal", user.dailyCalorieTarget))
+                            .foregroundStyle(Color.secondary.opacity(0.4))
+                            .lineStyle(StrokeStyle(lineWidth: 1, dash: [4]))
+                            .annotation(position: .top, alignment: .trailing) {
+                                Text("Goal \(user.dailyCalorieTarget) kcal")
+                                    .font(SanaTheme.Font.caption(9))
+                                    .foregroundStyle(.secondary)
+                            }
+                    }
+                }
+                .chartXAxis(.hidden)
+                .chartYAxis(.hidden)
+                .frame(height: 72)
+                .animation(SanaTheme.Animation.smooth, value: todayCalories)
+            }
+
             // Forecast message
             Text(forecastMessage)
                 .font(SanaTheme.Font.caption(12))
