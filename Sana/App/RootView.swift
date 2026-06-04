@@ -14,12 +14,34 @@ struct RootView: View {
         Group {
             switch auth.state {
             case .loading:
-                // Brief splash while Keychain / Apple credential check runs
                 ZStack {
                     SanaTheme.Color.background.ignoresSafeArea()
-                    ProgressView()
-                        .tint(SanaTheme.Color.primary)
-                        .scaleEffect(1.2)
+                    VStack(spacing: 14) {
+                        ZStack {
+                            Circle()
+                                .fill(SanaTheme.Color.primaryLight)
+                                .frame(width: 96, height: 96)
+                            Circle()
+                                .fill(LinearGradient(
+                                    colors: [SanaTheme.Color.primary, SanaTheme.Color.primaryDeep],
+                                    startPoint: .topLeading, endPoint: .bottomTrailing
+                                ))
+                                .frame(width: 80, height: 80)
+                            Image(systemName: "leaf.fill")
+                                .font(.system(size: 36, weight: .semibold))
+                                .foregroundStyle(.white)
+                        }
+                        .shadow(color: SanaTheme.Color.primary.opacity(0.25), radius: 16, y: 8)
+                        Text("Sana")
+                            .font(.system(size: 28, weight: .bold, design: .rounded))
+                            .kerning(-0.6)
+                    }
+                    VStack {
+                        Spacer()
+                        ProgressView()
+                            .tint(SanaTheme.Color.primary)
+                            .padding(.bottom, 60)
+                    }
                 }
 
             case .signedOut:

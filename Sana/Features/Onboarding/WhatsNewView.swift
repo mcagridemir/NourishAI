@@ -63,16 +63,32 @@ struct WhatsNewView: View {
             ScrollView {
                 VStack(spacing: 0) {
                     // Hero
-                    VStack(spacing: 12) {
-                        Image(systemName: "sparkles")
-                            .font(.system(size: 48))
-                            .foregroundStyle(SanaTheme.Color.primary)
+                    VStack(spacing: 14) {
+                        ZStack {
+                            Circle()
+                                .fill(LinearGradient(
+                                    colors: [SanaTheme.Color.primary, SanaTheme.Color.accent],
+                                    startPoint: .topLeading, endPoint: .bottomTrailing
+                                ))
+                                .frame(width: 80, height: 80)
+                            Image(systemName: "sparkles")
+                                .font(.system(size: 32, weight: .semibold))
+                                .foregroundStyle(.white)
+                        }
+                        .shadow(color: SanaTheme.Color.primary.opacity(0.25), radius: 16, y: 8)
+
                         Text("What's new in Sana")
-                            .font(SanaTheme.Font.title(26))
+                            .font(.system(size: 26, weight: .bold, design: .rounded))
                             .multilineTextAlignment(.center)
+                            .kerning(-0.5)
+
                         Text("Version \(currentVersion)")
-                            .font(SanaTheme.Font.caption())
+                            .font(SanaTheme.Font.caption(11))
                             .foregroundStyle(.secondary)
+                            .padding(.horizontal, 10).padding(.vertical, 4)
+                            .background(SanaTheme.Color.surface)
+                            .clipShape(Capsule())
+                            .overlay(Capsule().stroke(SanaTheme.Color.hairline, lineWidth: 0.5))
                     }
                     .padding(.top, 32)
                     .padding(.bottom, 24)
