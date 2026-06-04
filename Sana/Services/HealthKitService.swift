@@ -187,4 +187,29 @@ final class HealthKitService: ObservableObject {
             store.execute(query)
         }
     }
+
+    /// Returns the end time of the most recent asleep sample from the last 24 h —
+    /// i.e. approximately when the user woke up. Returns nil if no sleep data is available.
+    func fetchWakeTime() async -> Date? {
+        guard let type = HKObjectType.categoryType(forIdentifier: .sleepAnalysis) else { return nil }
+        let start = Calendar.current.date(byAdding: .hour, value: -24, to: .now) ?? .now
+        let predicate = HKQuery.predicateForSamples(withStart: start, end: .now)
+        let sort = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
+        let asleepValues: Set<Int> = [
+            HKCategoryValueSleepAnalysis.asleepUnspecified.rawValue,
+            HKCategoryValueSleepAnalysis.asleepCore.rawValue,
+            HKCategoryValueSleepAnalysis.asleepDeep.rawValue,
+            HKCategoryValueSleepAnalysis.asleepREM.rawValue
+        ]
+        return await withCheckedContinuation { continuation in
+            let query = HKSampleQuery(sampleType: type, predicate: predicate, limit: 20, sortDescriptors: [sort]) { _, samples, _ in
+                // Most recent end of an asleep stage = wake time
+                let wakeTime = (samples as? [HKCategorySample])?
+                    .first { asleepValues.contains($0.value) }?
+                    .endDate
+                continuation.resume(returning: wakeTime)
+            }
+            self.store.execute(query)
+        }
+    }
 }

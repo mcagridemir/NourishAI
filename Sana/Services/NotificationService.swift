@@ -31,6 +31,28 @@ final class NotificationService {
         }
     }
 
+    // Schedule meal reminders relative to a known wake time (sleep-aware scheduling).
+    // Breakfast = wake + 1 h, Lunch = wake + 4.5 h, Dinner = wake + 10 h.
+    func scheduleSmartMealReminders(wakeTime: Date) {
+        cancelAll(withPrefix: "meal_")
+        let cal = Calendar.current
+        let offsets: [(String, String, Int)] = [
+            ("meal_breakfast", "Time to log breakfast 🌅",          60),   // +1 h
+            ("meal_lunch",     "Don't forget to log lunch 🥗",       270),  // +4.5 h
+            ("meal_dinner",    "Log your dinner to hit your goals 🌙", 600)  // +10 h
+        ]
+        for (id, body, minuteOffset) in offsets {
+            guard let fireDate = cal.date(byAdding: .minute, value: minuteOffset, to: wakeTime) else { continue }
+            let comps = cal.dateComponents([.hour, .minute], from: fireDate)
+            let content = UNMutableNotificationContent()
+            content.title = "Sana"
+            content.body  = body
+            content.sound = .default
+            let trigger = UNCalendarNotificationTrigger(dateMatching: comps, repeats: true)
+            UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: id, content: content, trigger: trigger))
+        }
+    }
+
     // Deficiency alert
     func sendDeficiencyAlert(nutrient: String) {
         let content = UNMutableNotificationContent()
