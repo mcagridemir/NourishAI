@@ -321,10 +321,25 @@ struct OnboardingStep<Content: View>: View {
     var body: some View {
         ScrollView {
             VStack(spacing: SanaTheme.Spacing.lg) {
-                VStack(spacing: 12) {
-                    Image(systemName: icon).font(.system(size: 44)).foregroundStyle(iconColor).padding(.top, 24)
-                    Text(title).font(SanaTheme.Font.title(24)).multilineTextAlignment(.center)
-                    Text(subtitle).font(SanaTheme.Font.body()).foregroundStyle(.secondary).multilineTextAlignment(.center)
+                VStack(spacing: 14) {
+                    ZStack {
+                        Circle()
+                            .fill(iconColor.opacity(0.12))
+                            .frame(width: 80, height: 80)
+                        Image(systemName: icon)
+                            .font(.system(size: 32, weight: .semibold))
+                            .foregroundStyle(iconColor)
+                    }
+                    .shadow(color: iconColor.opacity(0.18), radius: 14, y: 6)
+                    .padding(.top, 24)
+                    Text(title)
+                        .font(.system(size: 26, weight: .bold, design: .rounded))
+                        .multilineTextAlignment(.center)
+                        .kerning(-0.5)
+                    Text(subtitle)
+                        .font(SanaTheme.Font.body())
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
                 }
                 content()
                 Spacer(minLength: 20)

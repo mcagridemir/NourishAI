@@ -11,32 +11,66 @@ struct AuthView: View {
         ZStack {
             SanaTheme.Color.background.ignoresSafeArea()
 
+            // Decorative blobs
+            Circle()
+                .fill(SanaTheme.Color.primary.opacity(0.06))
+                .frame(width: 320, height: 320)
+                .offset(x: -80, y: -320)
+                .ignoresSafeArea()
+            Circle()
+                .fill(SanaTheme.Color.accent.opacity(0.05))
+                .frame(width: 200, height: 200)
+                .offset(x: 120, y: -280)
+                .ignoresSafeArea()
+
             VStack(spacing: 0) {
                 Spacer()
 
                 // MARK: - Brand
-                VStack(spacing: 16) {
+                VStack(spacing: 12) {
                     ZStack {
+                        Circle()
+                            .fill(SanaTheme.Color.primaryLight)
+                            .frame(width: 88, height: 88)
                         Circle()
                             .fill(LinearGradient(
                                 colors: [SanaTheme.Color.primary, SanaTheme.Color.primaryDeep],
                                 startPoint: .topLeading, endPoint: .bottomTrailing
                             ))
-                            .frame(width: 80, height: 80)
+                            .frame(width: 72, height: 72)
                         Image(systemName: "leaf.fill")
-                            .font(.system(size: 36, weight: .semibold))
+                            .font(.system(size: 32, weight: .semibold))
                             .foregroundStyle(.white)
                     }
+                    .shadow(color: SanaTheme.Color.primary.opacity(0.25), radius: 16, y: 8)
+
                     Text("Sana")
-                        .font(SanaTheme.Font.title(34))
+                        .font(.system(size: 34, weight: .bold, design: .rounded))
+                        .kerning(-0.8)
                     Text("Your personal AI nutrition coach")
                         .font(SanaTheme.Font.body())
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
                 }
-                .padding(.bottom, 56)
+                .padding(.bottom, 28)
 
-                Spacer()
+                // MARK: - Feature highlights
+                VStack(spacing: 8) {
+                    AuthFeatureRow(icon: "camera.viewfinder",
+                                   color: SanaTheme.Color.primary,
+                                   title: "Snap any meal",
+                                   sub: "AI estimates calories & macros instantly")
+                    AuthFeatureRow(icon: "sparkles",
+                                   color: SanaTheme.Color.accent,
+                                   title: "AI nutrition coach",
+                                   sub: "Personalised plans, goals & weekly insights")
+                    AuthFeatureRow(icon: "heart.fill",
+                                   color: .pink,
+                                   title: "Apple Health sync",
+                                   sub: "Steps, sleep & activity in one view")
+                }
+                .padding(.horizontal, SanaTheme.Spacing.lg)
+                .padding(.bottom, 28)
 
                 // MARK: - Sign-in buttons
                 VStack(spacing: 12) {
@@ -115,6 +149,39 @@ struct AuthView: View {
         .sheet(isPresented: $showingEmailAuth) {
             EmailAuthView()
         }
+    }
+}
+
+// MARK: - Auth feature row
+
+private struct AuthFeatureRow: View {
+    let icon: String; let color: Color; let title: String; let sub: String
+
+    var body: some View {
+        HStack(spacing: 14) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(color.opacity(0.12))
+                    .frame(width: 40, height: 40)
+                Image(systemName: icon)
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundStyle(color)
+            }
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .font(SanaTheme.Font.headline(14))
+                    .foregroundStyle(.primary)
+                Text(sub)
+                    .font(SanaTheme.Font.caption(12))
+                    .foregroundStyle(.secondary)
+            }
+            Spacer()
+        }
+        .padding(12)
+        .background(SanaTheme.Color.surface)
+        .clipShape(RoundedRectangle(cornerRadius: SanaTheme.Radius.md))
+        .overlay(RoundedRectangle(cornerRadius: SanaTheme.Radius.md)
+            .stroke(SanaTheme.Color.hairline, lineWidth: 0.5))
     }
 }
 

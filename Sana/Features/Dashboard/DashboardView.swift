@@ -756,7 +756,7 @@ private struct EmptyMealsPrompt: View {
         VStack(spacing: 8) {
             Image(systemName: "fork.knife.circle")
                 .font(.system(size: 36))
-                .foregroundStyle(SanaTheme.Color.primaryLight)
+                .foregroundStyle(SanaTheme.Color.primary)
                 .accessibilityHidden(true)
             Text("No meals logged yet")
                 .font(SanaTheme.Font.headline())
