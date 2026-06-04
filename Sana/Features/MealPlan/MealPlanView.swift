@@ -114,21 +114,40 @@ private struct WeekPlanView: View {
 
 private struct DayTab: View {
     let day: MealPlanDay; let isSelected: Bool; let action: () -> Void
+
+    private var completionDots: [Bool] {
+        [
+            day.breakfastMeal?.isCompleted == true,
+            day.lunchMeal?.isCompleted == true,
+            day.dinnerMeal?.isCompleted == true
+        ]
+    }
+
     var body: some View {
         Button {
             HapticService.selection()
             action()
         } label: {
-            VStack(spacing: 3) {
+            VStack(spacing: 4) {
                 Text(day.dayName.prefix(3))
                     .font(SanaTheme.Font.caption(11))
                     .foregroundStyle(isSelected ? SanaTheme.Color.primary : .secondary)
                 Text(day.date.formatted(.dateTime.day()))
                     .font(SanaTheme.Font.headline(15))
                     .foregroundStyle(isSelected ? .white : .primary)
-                    .frame(width: 32, height: 32)
+                    .frame(width: 34, height: 34)
                     .background(isSelected ? SanaTheme.Color.primary : Color.clear)
                     .clipShape(Circle())
+                    .overlay(
+                        Circle().stroke(isSelected ? Color.clear : Color.secondary.opacity(0.15), lineWidth: 1)
+                    )
+                HStack(spacing: 3) {
+                    ForEach(completionDots.indices, id: \.self) { i in
+                        Circle()
+                            .fill(completionDots[i] ? Color.green : Color.secondary.opacity(0.2))
+                            .frame(width: 4, height: 4)
+                    }
+                }
             }
         }
         .accessibilityLabel(day.dayName + ", " + day.date.formatted(.dateTime.month().day()))
@@ -138,12 +157,22 @@ private struct DayTab: View {
 
 private struct DayCalorieSummary: View {
     let day: MealPlanDay; let target: Int
+
+    private var totalProtein: Int { Int(day.allMeals.map { $0.protein }.reduce(0, +)) }
+    private var totalCarbs: Int { Int(day.allMeals.map { $0.carbohydrates }.reduce(0, +)) }
+    private var totalFat: Int { Int(day.allMeals.map { $0.fat }.reduce(0, +)) }
+
     var body: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 4) {
+        HStack(alignment: .top) {
+            VStack(alignment: .leading, spacing: 8) {
                 Text(day.dayName).font(SanaTheme.Font.headline(18))
                 Text("\(day.totalCalories) kcal planned")
                     .font(SanaTheme.Font.body(14)).foregroundStyle(.secondary)
+                HStack(spacing: 6) {
+                    macroPill("P", value: totalProtein, color: SanaTheme.Color.macro(.protein))
+                    macroPill("C", value: totalCarbs, color: SanaTheme.Color.macro(.carbs))
+                    macroPill("F", value: totalFat, color: SanaTheme.Color.macro(.fat))
+                }
             }
             Spacer()
             CircleProgress(value: Double(day.totalCalories), total: Double(target), color: SanaTheme.Color.primary)
@@ -151,6 +180,21 @@ private struct DayCalorieSummary: View {
         }
         .padding()
         .nourishCard()
+    }
+
+    private func macroPill(_ label: String, value: Int, color: Color) -> some View {
+        HStack(spacing: 3) {
+            Text(label)
+                .font(SanaTheme.Font.caption(10))
+                .foregroundStyle(color)
+                .fontWeight(.semibold)
+            Text("\(value)g")
+                .font(SanaTheme.Font.caption(10))
+                .foregroundStyle(.secondary)
+        }
+        .padding(.horizontal, 6).padding(.vertical, 3)
+        .background(color.opacity(0.1))
+        .clipShape(Capsule())
     }
 }
 
@@ -180,24 +224,45 @@ private struct PlannedMealCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             // Header row
-            HStack {
-                VStack(alignment: .leading, spacing: 4) {
+            HStack(spacing: 12) {
+                // Meal type icon
+                ZStack {
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(meal.mealType.planColor.opacity(0.12))
+                        .frame(width: 42, height: 42)
+                    Image(systemName: meal.mealType.icon)
+                        .font(.system(size: 17, weight: .medium))
+                        .foregroundStyle(meal.mealType.planColor)
+                }
+                .accessibilityHidden(true)
+
+                VStack(alignment: .leading, spacing: 3) {
                     HStack(spacing: 6) {
                         Text(meal.mealType.localizedName)
-                            .font(SanaTheme.Font.caption())
-                            .foregroundStyle(SanaTheme.Color.primary)
+                            .font(SanaTheme.Font.caption(11))
+                            .foregroundStyle(meal.mealType.planColor)
                         if meal.isCompleted {
                             Image(systemName: "checkmark.circle.fill")
-                                .foregroundStyle(.green).font(.caption)
+                                .foregroundStyle(.green).font(.caption2)
                         }
                     }
-                    Text(meal.name).font(SanaTheme.Font.headline())
-                    Text("\(meal.calories) kcal · \(meal.prepTimeMinutes) min")
-                        .font(SanaTheme.Font.caption()).foregroundStyle(.secondary)
+                    Text(meal.name).font(SanaTheme.Font.headline()).lineLimit(2)
+                    HStack(spacing: 6) {
+                        Text("\(meal.calories) kcal")
+                            .font(SanaTheme.Font.caption(11))
+                            .foregroundStyle(.orange)
+                        Text("·")
+                            .font(SanaTheme.Font.caption(11))
+                            .foregroundStyle(.tertiary)
+                        Text("P \(Int(meal.protein))g · C \(Int(meal.carbohydrates))g · F \(Int(meal.fat))g")
+                            .font(SanaTheme.Font.caption(11))
+                            .foregroundStyle(.secondary)
+                    }
                 }
+
                 Spacer()
+
                 HStack(spacing: 12) {
-                    // Replace button
                     Button {
                         HapticService.selection()
                         showingReplace = true
@@ -409,6 +474,18 @@ struct FlowLayout<T: Hashable, Content: View>: View {
     var body: some View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 80))], alignment: .leading, spacing: 6) {
             ForEach(items, id: \.self) { content($0) }
+        }
+    }
+}
+
+private extension MealType {
+    var planColor: Color {
+        switch self {
+        case .breakfast: return .orange
+        case .lunch: return .teal
+        case .dinner: return .indigo
+        case .snack: return .green
+        case .drink: return .blue
         }
     }
 }

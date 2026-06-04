@@ -52,15 +52,19 @@ struct InsightsView: View {
                     insightsHeader
                     rangePicker
                     summaryCards
-                    MealHeatmapView(mealEntries: user.mealEntries)
-                    if !dailyCalories.isEmpty { calorieChart }
-                    if !dailyCalories.isEmpty { calorieBalanceChart }
-                    macroBreakdownChart
-                    WeekComparisonView(user: user)
-                    healthScoreChart
-                    MealTimingView(mealEntries: user.mealEntries)
-                    SleepNutritionCard(user: user)
-                    HydrationTrendView(user: user)
+                    if entries.isEmpty {
+                        emptyInsightsCard
+                    } else {
+                        MealHeatmapView(mealEntries: user.mealEntries)
+                        if !dailyCalories.isEmpty { calorieChart }
+                        if !dailyCalories.isEmpty { calorieBalanceChart }
+                        macroBreakdownChart
+                        WeekComparisonView(user: user)
+                        healthScoreChart
+                        MealTimingView(mealEntries: user.mealEntries)
+                        SleepNutritionCard(user: user)
+                        HydrationTrendView(user: user)
+                    }
                     weightSection
                     deficiencySection
                 }
@@ -164,7 +168,9 @@ struct InsightsView: View {
 
     private var calorieChart: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Daily calories").font(SanaTheme.Font.headline())
+            Label("Daily calories", systemImage: "flame.fill")
+                .font(SanaTheme.Font.headline())
+                .foregroundStyle(.orange)
             Chart(dailyCalories, id: \.0) { day in
                 BarMark(x: .value("Day", day.0, unit: .day), y: .value("Calories", day.1))
                     .foregroundStyle(SanaTheme.Color.primary.gradient)
@@ -172,6 +178,11 @@ struct InsightsView: View {
                 RuleMark(y: .value("Target", user.dailyCalorieTarget))
                     .foregroundStyle(.secondary)
                     .lineStyle(StrokeStyle(lineWidth: 1, dash: [4]))
+                    .annotation(position: .top, alignment: .trailing) {
+                        Text("Goal")
+                            .font(SanaTheme.Font.caption(9))
+                            .foregroundStyle(.secondary)
+                    }
             }
             .frame(height: 160)
             .accessibilityLabel("Daily calories bar chart. Target line at \(user.dailyCalorieTarget) kcal.")
@@ -183,11 +194,13 @@ struct InsightsView: View {
     private var calorieBalanceChart: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Text("Calorie balance").font(SanaTheme.Font.headline())
+                Label("Calorie balance", systemImage: "scalemass.fill")
+                    .font(SanaTheme.Font.headline())
+                    .foregroundStyle(.indigo)
                 Spacer()
                 HStack(spacing: 12) {
-                    legendDot(color: SanaTheme.Color.primary, label: "Surplus")
-                    legendDot(color: .orange, label: "Deficit")
+                    legendDot(color: SanaTheme.Color.primary, label: "Over")
+                    legendDot(color: .orange, label: "Under")
                 }
             }
             Chart(dailyCalories, id: \.0) { day in
@@ -201,7 +214,7 @@ struct InsightsView: View {
                     .lineStyle(StrokeStyle(lineWidth: 1, dash: [4]))
             }
             .frame(height: 140)
-            Text("Positive = ate more than target · Negative = deficit")
+            Text("vs. your \(user.dailyCalorieTarget) kcal goal · green = over · orange = under")
                 .font(SanaTheme.Font.caption(11))
                 .foregroundStyle(.secondary)
         }
@@ -220,24 +233,31 @@ struct InsightsView: View {
 
     private var macroBreakdownChart: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Macro average").font(SanaTheme.Font.headline())
+            Label("Macro split", systemImage: "chart.pie.fill")
+                .font(SanaTheme.Font.headline())
+                .foregroundStyle(SanaTheme.Color.primary)
             let data: [(String, Double, Color)] = [
                 ("Protein", avgProtein, SanaTheme.Color.macro(.protein)),
                 ("Carbs",   avgCarbs,   SanaTheme.Color.macro(.carbs)),
                 ("Fat",     avgFat,     SanaTheme.Color.macro(.fat))
             ]
             Chart(data, id: \.0) { item in
-                SectorMark(angle: .value("g", item.1), innerRadius: .ratio(0.6))
+                SectorMark(angle: .value("g", max(item.1, 1)), innerRadius: .ratio(0.58))
                     .foregroundStyle(item.2)
+                    .cornerRadius(3)
             }
             .frame(height: 140)
-            HStack {
+            HStack(spacing: 16) {
                 ForEach(data, id: \.0) { item in
-                    HStack(spacing: 4) {
+                    HStack(spacing: 6) {
                         Circle().fill(item.2).frame(width: 8, height: 8)
                             .accessibilityHidden(true)
-                        Text(item.0).font(SanaTheme.Font.caption(11))
+                        VStack(alignment: .leading, spacing: 0) {
+                            Text(item.0).font(SanaTheme.Font.caption(11)).foregroundStyle(.primary)
+                            Text("\(Int(item.1))g").font(SanaTheme.Font.caption(10)).foregroundStyle(.secondary)
+                        }
                     }
+                    .accessibilityElement(children: .combine)
                 }
             }
         }
@@ -247,13 +267,26 @@ struct InsightsView: View {
 
     private var healthScoreChart: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Health score trend").font(SanaTheme.Font.headline())
+            HStack {
+                Label("Health score", systemImage: "heart.fill")
+                    .font(SanaTheme.Font.headline())
+                    .foregroundStyle(.pink)
+                Spacer()
+                if avgHealthScore > 0 {
+                    HStack(alignment: .firstTextBaseline, spacing: 2) {
+                        Text("\(avgHealthScore)")
+                            .font(.system(size: 20, weight: .bold, design: .rounded))
+                            .foregroundStyle(SanaTheme.Color.healthScore(avgHealthScore))
+                        Text("avg").font(SanaTheme.Font.caption(11)).foregroundStyle(.secondary)
+                    }
+                }
+            }
             Chart(entries) { entry in
                 LineMark(x: .value("Day", entry.loggedAt), y: .value("Score", entry.healthScore))
-                    .foregroundStyle(SanaTheme.Color.primary)
+                    .foregroundStyle(Color.pink)
                     .interpolationMethod(.catmullRom)
                 AreaMark(x: .value("Day", entry.loggedAt), y: .value("Score", entry.healthScore))
-                    .foregroundStyle(SanaTheme.Color.primary.opacity(0.1))
+                    .foregroundStyle(Color.pink.opacity(0.08))
                     .interpolationMethod(.catmullRom)
             }
             .chartYScale(domain: 0...100)
@@ -267,20 +300,40 @@ struct InsightsView: View {
         Group {
             if !user.detectedDeficiencies.isEmpty {
                 VStack(alignment: .leading, spacing: 12) {
-                    Label("Detected deficiencies", systemImage: "exclamationmark.triangle.fill")
-                        .font(SanaTheme.Font.headline()).foregroundStyle(.orange)
+                    HStack {
+                        Label("Nutrient gaps", systemImage: "exclamationmark.triangle.fill")
+                            .font(SanaTheme.Font.headline()).foregroundStyle(.orange)
+                        Spacer()
+                        Text("\(user.detectedDeficiencies.count)")
+                            .font(SanaTheme.Font.caption(11))
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, 8).padding(.vertical, 3)
+                            .background(Color.orange)
+                            .clipShape(Capsule())
+                    }
                     ForEach(user.detectedDeficiencies, id: \.self) { nutrient in
-                        HStack {
-                            Image(systemName: "arrow.down.circle.fill").foregroundStyle(.orange)
+                        HStack(spacing: 10) {
+                            ZStack {
+                                Circle()
+                                    .fill(Color.orange.opacity(0.1))
+                                    .frame(width: 28, height: 28)
+                                Image(systemName: "arrow.down.circle.fill")
+                                    .font(.system(size: 13))
+                                    .foregroundStyle(.orange)
+                            }
                             Text("Low \(nutrient)").font(SanaTheme.Font.body(14))
                             Spacer()
-                            Text("Below target").font(SanaTheme.Font.caption()).foregroundStyle(.orange)
+                            Text("Below target").font(SanaTheme.Font.caption(11)).foregroundStyle(.orange)
                         }
                     }
                 }
                 .padding()
                 .background(Color.orange.opacity(0.05))
                 .clipShape(RoundedRectangle(cornerRadius: SanaTheme.Radius.lg))
+                .overlay(
+                    RoundedRectangle(cornerRadius: SanaTheme.Radius.lg)
+                        .stroke(Color.orange.opacity(0.2), lineWidth: 0.5)
+                )
             }
         }
     }
@@ -288,7 +341,9 @@ struct InsightsView: View {
     private var weightSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Text("Weight").font(SanaTheme.Font.headline())
+                Label("Body weight", systemImage: "figure.stand")
+                    .font(SanaTheme.Font.headline())
+                    .foregroundStyle(.teal)
                 Spacer()
                 Button {
                     HapticService.selection()
@@ -380,6 +435,25 @@ struct InsightsView: View {
         return (weights.min() ?? defLo) - margin ... (weights.max() ?? defHi) + margin
     }
 
+    // MARK: - Empty state
+    private var emptyInsightsCard: some View {
+        VStack(spacing: 16) {
+            Image(systemName: "chart.bar.xaxis.ascending.badge.clock")
+                .font(.system(size: 38))
+                .foregroundStyle(SanaTheme.Color.primaryLight)
+                .accessibilityHidden(true)
+            Text("No data yet")
+                .font(SanaTheme.Font.headline())
+            Text("Log meals to see calorie trends, macro breakdowns, and health score history.")
+                .font(SanaTheme.Font.body(14))
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 40)
+        .nourishCard()
+    }
+
     // MARK: - Computed stats
     private var avgCalories: String { entries.isEmpty ? "–" : "\(entries.map { $0.calories }.reduce(0, +) / entries.count)" }
     private var avgHealthScore: Int { entries.isEmpty ? 0 : entries.map { $0.healthScore }.reduce(0, +) / entries.count }
@@ -393,19 +467,33 @@ struct InsightsView: View {
 private struct StatCard: View {
     let label: String; let value: String; let unit: String; let icon: String; let color: Color
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Image(systemName: icon).foregroundStyle(color)
-                .accessibilityHidden(true)
-            HStack(alignment: .firstTextBaseline, spacing: 2) {
-                Text(value).font(SanaTheme.Font.numeric).foregroundStyle(.primary)
-                Text(unit).font(SanaTheme.Font.caption()).foregroundStyle(.secondary)
+        VStack(alignment: .leading, spacing: 10) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(color.opacity(0.12))
+                    .frame(width: 36, height: 36)
+                Image(systemName: icon)
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundStyle(color)
+                    .accessibilityHidden(true)
             }
-            Text(label).font(SanaTheme.Font.caption()).foregroundStyle(.secondary)
+            HStack(alignment: .firstTextBaseline, spacing: 2) {
+                Text(value)
+                    .font(.system(size: 26, weight: .bold, design: .rounded))
+                    .foregroundStyle(.primary)
+                    .minimumScaleFactor(0.75)
+                    .lineLimit(1)
+                if !unit.isEmpty {
+                    Text(unit).font(SanaTheme.Font.caption(11)).foregroundStyle(.secondary)
+                }
+            }
+            Text(label)
+                .font(SanaTheme.Font.caption(11))
+                .foregroundStyle(.secondary)
+                .lineLimit(2)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding()
-        .background(color.opacity(0.07))
-        .clipShape(RoundedRectangle(cornerRadius: SanaTheme.Radius.md))
+        .nourishCard()
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(label): \(value)\(unit.isEmpty ? "" : " \(unit)")")
     }
