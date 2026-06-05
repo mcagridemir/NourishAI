@@ -2,6 +2,15 @@
   "originHash" : "a07c51c1cf7cbbefcc14c170b9a3ed1687239f623c4016de8662b0e7c569f24f",
   "pins" : [
     {
+      "identity" : "firebase-ios-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/firebase/firebase-ios-sdk",
+      "state" : {
+        "revision" : "d10045cace0b4c335c4efa8f7df7e9a9fc5a7c60",
+        "version" : "12.13.0"
+      }
+    },
+    {
       "identity" : "abseil-cpp-binary",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/abseil-cpp-binary.git",

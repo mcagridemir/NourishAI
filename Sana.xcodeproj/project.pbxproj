@@ -434,7 +434,7 @@
 			mainGroup = 8583E0212FC1E602006ACF1B;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				66D26217927B46FF987A697A /* XCLocalSwiftPackageReference "../../firebase-ios-sdk-local" */,
+				66D26217927B46FF987A697A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 8583E02B2FC1E602006ACF1B /* Products */;
@@ -523,7 +523,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"${CONFIGURATION}\" = \"Release\" ] && [ \"${PLATFORM_NAME}\" != \"iphonesimulator\" ]; then\n  \"$HOME/firebase-ios-sdk-local/Crashlytics/run\" \"${PROJECT_DIR}/GoogleService-Info.plist\" || true\nfi\n";
+			shellScript = "if [ \"${CONFIGURATION}\" = \"Release\" ] && [ \"${PLATFORM_NAME}\" != \"iphonesimulator\" ]; then\n  \"${BUILD_DIR%Build/*}SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\" \"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH}\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1186,22 +1186,26 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		66D26217927B46FF987A697A /* XCLocalSwiftPackageReference "../../firebase-ios-sdk-local" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = "../../firebase-ios-sdk-local";
+/* Begin XCRemoteSwiftPackageReference section */
+		66D26217927B46FF987A697A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = "12.0.0";
+			};
 		};
-/* End XCLocalSwiftPackageReference section */
+/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		26DA5C2107B148F7875EBE26 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 66D26217927B46FF987A697A /* XCLocalSwiftPackageReference "../../firebase-ios-sdk-local" */;
+			package = 66D26217927B46FF987A697A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAnalytics;
 		};
 		D41F98939C17491FA4A522F9 /* FirebaseCrashlytics */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 66D26217927B46FF987A697A /* XCLocalSwiftPackageReference "../../firebase-ios-sdk-local" */;
+			package = 66D26217927B46FF987A697A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseCrashlytics;
 		};
 /* End XCSwiftPackageProductDependency section */
