@@ -57,7 +57,7 @@ final class MealPlanDay {
     // Use PlannedMeal.mealType to distinguish breakfast / lunch / dinner / snack.
     @Relationship(deleteRule: .cascade, inverse: \PlannedMeal.day) var meals: [PlannedMeal]
 
-    @Relationship(inverse: \MealPlan.days) var plan: MealPlan?
+    var plan: MealPlan?
 
     // Computed accessors — call sites stay the same
     var breakfastMeal: PlannedMeal? { meals.first { $0.mealType == .breakfast } }
