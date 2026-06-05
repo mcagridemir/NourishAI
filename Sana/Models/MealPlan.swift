@@ -16,7 +16,7 @@ final class MealPlan {
     var title: String
     var isActive: Bool
 
-    @Relationship(deleteRule: .cascade)
+    @Relationship(deleteRule: .cascade, inverse: \MealPlanDay.plan)
     var days: [MealPlanDay]
 
     @Relationship(inverse: \User.mealPlans)
@@ -57,7 +57,7 @@ final class MealPlanDay {
     // Use PlannedMeal.mealType to distinguish breakfast / lunch / dinner / snack.
     @Relationship(deleteRule: .cascade, inverse: \PlannedMeal.day) var meals: [PlannedMeal]
 
-    var plan: MealPlan?
+    @Relationship(inverse: \MealPlan.days) var plan: MealPlan?
 
     // Computed accessors — call sites stay the same
     var breakfastMeal: PlannedMeal? { meals.first { $0.mealType == .breakfast } }

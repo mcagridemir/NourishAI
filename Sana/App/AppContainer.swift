@@ -48,8 +48,16 @@ final class AppContainer {
         }
 
         // 4. Absolute last resort: in-memory (data lost on restart)
-        modelContainer = try! ModelContainer(for: schema, configurations: [memoryConfig])
-        storageIsTemporary = true
+        do {
+            modelContainer = try ModelContainer(for: schema, configurations: [memoryConfig])
+            storageIsTemporary = true
+        } catch {
+            // Log the full error so we can diagnose schema issues in Xcode console
+            print("❌ AppContainer: ALL configurations failed.")
+            print("❌ Final error: \(error)")
+            print("❌ Full detail: \(String(reflecting: error))")
+            fatalError("AppContainer: could not create any ModelContainer — \(error)")
+        }
     }
 
     private static func wipeSQLiteStore() {
