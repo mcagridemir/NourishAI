@@ -14,6 +14,7 @@ struct DashboardView: View {
     @State private var showingMilestone = false
     @State private var showingGoals = false
     @State private var showingPaywall = false
+    @State private var showingMacroDetail: MacroType?
     @State private var shareImage: UIImage?
     @State private var showingShare = false
 
@@ -35,6 +36,7 @@ struct DashboardView: View {
                 VStack(spacing: 0) {
                     dashboardHeader
                     heroDailySummaryCard
+                    macroPillsSection
                     weightGoalSection
                     quickActionsRow
                     dailyScoreSection
@@ -45,6 +47,7 @@ struct DashboardView: View {
                     healthMetricsSection
                     supplementSection
                     predictionSection
+                    dailyTipSection
                     premiumNudge
                 }
                 .padding(.bottom, 32)
@@ -62,6 +65,7 @@ struct DashboardView: View {
         .task(id: user.currentStreak) { checkStreakMilestone() }
         .sheet(isPresented: $showingGoals) { NutritionGoalsView(user: user) }
         .sheet(isPresented: $showingPaywall) { PaywallView() }
+        .sheet(item: $showingMacroDetail) { macro in MacroDetailView(user: user, macro: macro) }
         .sheet(isPresented: $showingShare) {
             if let image = shareImage { ShareSheet(items: [image]) }
         }
@@ -417,6 +421,69 @@ struct DashboardView: View {
 
     private var supplementSection: some View {
         SupplementDashboardCard()
+            .padding(.horizontal, SanaTheme.Spacing.lg)
+            .padding(.bottom, SanaTheme.Spacing.lg)
+    }
+
+    // MARK: Macro Pills (tappable → MacroDetailView drill-down)
+
+    private var macroPillsSection: some View {
+        HStack(spacing: SanaTheme.Spacing.sm) {
+            ForEach([MacroType.protein, .carbs, .fat, .fiber], id: \.self) { macro in
+                let value: Double = {
+                    switch macro {
+                    case .protein: return vm.todayProtein
+                    case .carbs:   return vm.todayCarbs
+                    case .fat:     return vm.todayFat
+                    case .fiber:   return vm.todayFiber
+                    default:       return 0
+                    }
+                }()
+                let target = macro.target(for: user)
+                let progress = min(1, value / max(1, target))
+
+                Button { HapticService.selection(); showingMacroDetail = macro } label: {
+                    VStack(spacing: 5) {
+                        ZStack {
+                            Circle()
+                                .stroke(macro.color.opacity(0.15), lineWidth: 3)
+                                .frame(width: 36, height: 36)
+                            Circle()
+                                .trim(from: 0, to: progress)
+                                .stroke(macro.color, style: StrokeStyle(lineWidth: 3, lineCap: .round))
+                                .rotationEffect(.degrees(-90))
+                                .frame(width: 36, height: 36)
+                                .animation(SanaTheme.Animation.bouncy, value: progress)
+                            Image(systemName: macro.icon)
+                                .font(.system(size: 12, weight: .semibold))
+                                .foregroundStyle(macro.color)
+                        }
+                        Text("\(Int(value))g")
+                            .font(.system(size: 13, weight: .bold, design: .rounded))
+                            .foregroundStyle(.primary)
+                            .monospacedDigit()
+                        Text(macro.localizedName)
+                            .font(SanaTheme.Font.caption(10))
+                            .foregroundStyle(.secondary)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .background(SanaTheme.Color.surface)
+                    .clipShape(RoundedRectangle(cornerRadius: SanaTheme.Radius.md))
+                    .overlay(RoundedRectangle(cornerRadius: SanaTheme.Radius.md).stroke(SanaTheme.Color.hairline, lineWidth: 0.5))
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("\(macro.localizedName): \(Int(value)) of \(Int(target)) grams. Tap to view details.")
+            }
+        }
+        .padding(.horizontal, SanaTheme.Spacing.lg)
+        .padding(.bottom, SanaTheme.Spacing.lg)
+    }
+
+    // MARK: Daily Tip
+
+    private var dailyTipSection: some View {
+        DailyTipCard()
             .padding(.horizontal, SanaTheme.Spacing.lg)
             .padding(.bottom, SanaTheme.Spacing.lg)
     }
