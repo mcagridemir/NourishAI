@@ -16,8 +16,8 @@ DAILY_AI_QUOTA        = "100"   # per user-ID AI calls per UTC day
 #
 [[kv_namespaces]]
 binding    = "RATE_KV"
-id         = "REPLACE_WITH_ID_FROM_wrangler_kv_namespace_create"
-preview_id = "REPLACE_WITH_PREVIEW_ID_FROM_wrangler_kv_namespace_create_preview"
+id         = "28ba92327d3d401a9aff6cb036b4a67a"
+preview_id = "e980c0f617304713a0da0b49cc1ff1d1"
 
 # ── Secrets (never stored here — set via CLI) ─────────────────────────────────
 #
