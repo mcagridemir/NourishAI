@@ -52,10 +52,10 @@ final class MealPlanDay {
     var date: Date
     var dayIndex: Int    // 0 = Monday
 
-    // Single relationship to PlannedMeal — multiple optional @Relationships to the
-    // same @Model type without inverses breaks SwiftData's schema validation.
+    // Single relationship to PlannedMeal with explicit inverse — Core Data requires
+    // every relationship to have a resolvable inverse, even unidirectional ones.
     // Use PlannedMeal.mealType to distinguish breakfast / lunch / dinner / snack.
-    @Relationship(deleteRule: .cascade) var meals: [PlannedMeal]
+    @Relationship(deleteRule: .cascade, inverse: \PlannedMeal.day) var meals: [PlannedMeal]
 
     var plan: MealPlan?
 
@@ -94,6 +94,9 @@ final class PlannedMeal {
     var recipeSteps: String
     var isCompleted: Bool   // user ticked it off
     var mealType: MealType
+
+    // Back-reference required by Core Data / SwiftData for relationship inverse resolution.
+    var day: MealPlanDay?
 
     init(from suggestion: MealSuggestion, mealType: MealType) {
         self.id = UUID()

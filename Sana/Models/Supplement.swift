@@ -15,7 +15,7 @@ final class Supplement {
     var createdAt: Date
     var color: String         // hex string for tint
 
-    @Relationship(deleteRule: .cascade) var logs: [SupplementLog]
+    @Relationship(deleteRule: .cascade, inverse: \SupplementLog.supplement) var logs: [SupplementLog]
 
     var dosageDisplay: String {
         let d = dosage == dosage.rounded() ? "\(Int(dosage))" : String(format: "%.1f", dosage)
@@ -66,6 +66,9 @@ final class Supplement {
 final class SupplementLog {
     var id: UUID
     var loggedAt: Date
+
+    // Back-reference required by Core Data / SwiftData for relationship inverse resolution.
+    var supplement: Supplement?
 
     init() {
         self.id = UUID()
