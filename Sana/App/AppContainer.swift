@@ -23,26 +23,33 @@ final class AppContainer {
                              WaterEntry.self, WeightEntry.self,
                              Supplement.self, SupplementLog.self])
 
-        // CloudKit sync: flip BackendConfig.cloudKitEnabled to true once your
-        // Apple Developer account is fully activated (can take 24-48h after first activation).
-        let config = BackendConfig.cloudKitEnabled
-            ? ModelConfiguration(schema: schema, cloudKitDatabase: .automatic)
-            : ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+        let cloudConfig = ModelConfiguration(schema: schema, cloudKitDatabase: .automatic)
+        let localConfig = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+        let memoryConfig = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
 
-        if let container = try? ModelContainer(for: schema, configurations: [config]) {
+        // 1. Preferred: CloudKit sync (requires iCloud.com.cagri.Sana to be provisioned)
+        if BackendConfig.cloudKitEnabled,
+           let container = try? ModelContainer(for: schema, configurations: [cloudConfig]) {
             modelContainer = container
-        } else {
-            // Schema changed — wipe and retry with a fresh local store
-            Self.wipeSQLiteStore()
-            if let container = try? ModelContainer(for: schema, configurations: [config]) {
-                modelContainer = container
-            } else {
-                // Last resort: in-memory so the app never crashes on launch
-                let fallback = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
-                modelContainer = try! ModelContainer(for: schema, configurations: [fallback])
-                storageIsTemporary = true
-            }
+            return
         }
+
+        // 2. CloudKit unavailable / disabled — use persisted local store
+        if let container = try? ModelContainer(for: schema, configurations: [localConfig]) {
+            modelContainer = container
+            return
+        }
+
+        // 3. Schema migration needed — wipe SQLite and retry local
+        Self.wipeSQLiteStore()
+        if let container = try? ModelContainer(for: schema, configurations: [localConfig]) {
+            modelContainer = container
+            return
+        }
+
+        // 4. Absolute last resort: in-memory (data lost on restart)
+        modelContainer = try! ModelContainer(for: schema, configurations: [memoryConfig])
+        storageIsTemporary = true
     }
 
     private static func wipeSQLiteStore() {

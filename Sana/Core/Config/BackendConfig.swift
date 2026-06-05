@@ -17,6 +17,8 @@ enum BackendConfig {
 
     // MARK: - CloudKit
 
-    // Developer account active — CloudKit is enabled.
+    // iCloud.com.cagri.Sana is provisioned. After first run on device the
+    // SwiftData schema will be pushed to CloudKit Development environment.
+    // Run "Deploy Schema to Production" in CloudKit Console before App Store release.
     static let cloudKitEnabled: Bool = true
 }
