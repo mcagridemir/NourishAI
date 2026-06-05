@@ -115,9 +115,15 @@ actor ClaudeService {
     private let model = "claude-sonnet-4-6"
     private let directURL = URL(string: "https://api.anthropic.com/v1/messages")!
     private let decoder = JSONDecoder()
+    /// Set by AuthService after sign-in/out; forwarded as X-User-ID on proxy requests.
+    private var currentUserID: String?
 
     private init() {
         self.apiKey = APIKeyStore.claudeAPIKey
+    }
+
+    func setUserID(_ id: String?) {
+        currentUserID = id
     }
 
     // MARK: - Meal photo analysis
@@ -450,6 +456,9 @@ actor ClaudeService {
         req.setValue("2023-06-01", forHTTPHeaderField: "anthropic-version")
         if BackendConfig.proxyURL != nil {
             req.setValue(BackendConfig.appSecret, forHTTPHeaderField: "X-App-Secret")
+            if let userID = currentUserID {
+                req.setValue(userID, forHTTPHeaderField: "X-User-ID")
+            }
         } else {
             guard !apiKey.isEmpty else {
                 fatalError("Claude API key missing. Run Scripts/generate_api_key.py and update APIKeyStore.swift, or configure BackendConfig.proxyURL.")

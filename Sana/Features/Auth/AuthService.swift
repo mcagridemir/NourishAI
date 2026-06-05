@@ -8,7 +8,20 @@ import CryptoKit
 final class AuthService: ObservableObject {
 
     static let shared = AuthService()
-    private init() {}
+    private var stateCancellable: AnyCancellable?
+
+    private init() {
+        // Keep ClaudeService in sync with auth state so every proxy request
+        // carries the correct X-User-ID header for per-user quota enforcement.
+        stateCancellable = $state
+            .dropFirst() // skip the initial .loading emission on subscribe
+            .sink { newState in
+                let userID: String? = {
+                    if case .signedIn(let id, _) = newState { return id } else { return nil }
+                }()
+                Task { await ClaudeService.shared.setUserID(userID) }
+            }
+    }
 
     // MARK: - State
 

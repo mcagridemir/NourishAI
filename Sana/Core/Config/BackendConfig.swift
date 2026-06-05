@@ -17,7 +17,6 @@ enum BackendConfig {
 
     // MARK: - CloudKit
 
-    // Set to true once your Apple Developer account is fully activated.
-    // CloudKit provisioning can take 24-48h after first activation.
-    static let cloudKitEnabled: Bool = false
+    // Developer account active — CloudKit is enabled.
+    static let cloudKitEnabled: Bool = true
 }

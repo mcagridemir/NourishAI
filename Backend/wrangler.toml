@@ -1,16 +1,28 @@
-name            = "sana-ai-proxy"
-main            = "worker.js"
+name               = "sana-ai-proxy"
+main               = "worker.js"
 compatibility_date = "2024-09-23"
-compatibility_flags = ["nodejs_compat"]
+# nodejs_compat removed — worker uses only standard Web APIs (fetch, atob, URL, etc.)
 
-# Optional per-IP rate limit (requests per minute per IP).
+# ── Environment variables ────────────────────────────────────────────────────
 [vars]
-RATE_LIMIT_PER_MINUTE = "30"
+RATE_LIMIT_PER_MINUTE = "30"    # per-IP requests per minute
+DAILY_AI_QUOTA        = "100"   # per user-ID AI calls per UTC day
 
-# Secrets are never stored in this file — set them once via CLI:
+# ── KV namespace ─────────────────────────────────────────────────────────────
+# Create once, then paste the returned IDs below:
+#
+#   wrangler kv namespace create "RATE_KV"
+#   wrangler kv namespace create "RATE_KV" --preview
+#
+[[kv_namespaces]]
+binding    = "RATE_KV"
+id         = "REPLACE_WITH_ID_FROM_wrangler_kv_namespace_create"
+preview_id = "REPLACE_WITH_PREVIEW_ID_FROM_wrangler_kv_namespace_create_preview"
+
+# ── Secrets (never stored here — set via CLI) ─────────────────────────────────
 #
 #   wrangler secret put ANTHROPIC_API_KEY
 #   wrangler secret put APP_SECRET
 #
 # APP_SECRET must match BackendConfig.appSecret in the iOS app.
-# Generate a good one: python3 -c "import secrets; print(secrets.token_hex(32))"
+# Generate a strong token: python3 -c "import secrets; print(secrets.token_hex(32))"
