@@ -161,6 +161,7 @@ struct FastingTrackerView: View {
                 )
             }
         }
+        syncFastingToAppGroup()
     }
 
     private func restart() {
@@ -178,5 +179,14 @@ struct FastingTrackerView: View {
                 zone: "Digesting"
             )
         }
+        syncFastingToAppGroup()
+    }
+
+    /// Mirror fasting state into the shared App Group so the Watch app can read it.
+    private func syncFastingToAppGroup() {
+        guard let shared = UserDefaults(suiteName: "group.com.cagri.Sana") else { return }
+        shared.set(isActive,     forKey: "fasting.isActive")
+        shared.set(startDateRef, forKey: "fasting.startDate")
+        shared.set(targetHours,  forKey: "fasting.targetHours")
     }
 }

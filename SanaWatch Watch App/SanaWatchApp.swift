@@ -1,17 +1,12 @@
-//
-//  SanaWatchApp.swift
-//  SanaWatch Watch App
-//
-//  Created by cagri.demir on 24.05.2026.
-//
-
+// Sana — SanaWatchApp.swift
+// watchOS 10 companion app entry point.
 import SwiftUI
 
 @main
-struct SanaWatch_Watch_AppApp: App {
+struct SanaWatchApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            WatchRootView()
         }
     }
 }
