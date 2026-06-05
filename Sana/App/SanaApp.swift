@@ -173,6 +173,8 @@ struct SanaApp: App {
                 // with the same identifier, so this is idempotent. Without this, the
                 // very first background-refresh run is never scheduled.
                 scheduleBackgroundRefresh()
+                // Drain any Siri intent side-effects written to the App Group.
+                drainSiriIntentFlags()
             }
         }
         .backgroundTask(.appRefresh(bgTaskID)) {
@@ -182,6 +184,19 @@ struct SanaApp: App {
                 WidgetDataStore.save(user.widgetData)
             }
             scheduleBackgroundRefresh()
+        }
+    }
+
+    /// Consume one-shot flags written to the App Group by Siri App Intents
+    /// (e.g. LogMealIntent) and translate them into in-app deep links.
+    private func drainSiriIntentFlags() {
+        let defaults = UserDefaults(suiteName: "group.com.cagri.Sana")
+        if defaults?.bool(forKey: "siri.openMealLog") == true {
+            defaults?.removeObject(forKey: "siri.openMealLog")
+            // Small delay so the app's window is fully active before routing.
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                router.handle(URL(string: "sana://log")!)
+            }
         }
     }
 

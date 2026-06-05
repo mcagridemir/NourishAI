@@ -72,6 +72,44 @@ struct CheckStreakIntent: AppIntent {
     }
 }
 
+// MARK: - Check Today's Macros Intent
+
+struct CheckMacrosIntent: AppIntent {
+    static let title: LocalizedStringResource = "Check Today's Macros"
+    static let description = IntentDescription("See your protein, carbs, and fat progress today in Sana.")
+    static let openAppWhenRun = false
+
+    func perform() async throws -> some ProvidesDialog {
+        let data = await MainActor.run { WidgetDataStore.load() }
+        let protPct  = Int(data.proteinProgress  * 100)
+        let carbsPct = Int(data.carbsProgress    * 100)
+        let fatPct   = Int(data.fatProgress      * 100)
+        return .result(dialog: """
+            Today in Sana — \
+            Protein: \(Int(data.protein)) of \(Int(data.proteinTarget))g (\(protPct)%), \
+            Carbs: \(Int(data.carbs)) of \(Int(data.carbsTarget))g (\(carbsPct)%), \
+            Fat: \(Int(data.fat)) of \(Int(data.fatTarget))g (\(fatPct)%).
+            """)
+    }
+}
+
+// MARK: - Log Meal Intent (opens app to the log sheet)
+
+struct LogMealIntent: AppIntent {
+    static let title: LocalizedStringResource = "Log a Meal"
+    static let description = IntentDescription("Open Sana ready to log your current meal.")
+    static let openAppWhenRun = true
+
+    func perform() async throws -> some ProvidesDialog {
+        // Signal the app to open the meal log sheet when it becomes active.
+        await MainActor.run {
+            UserDefaults(suiteName: "group.com.cagri.Sana")?
+                .set(true, forKey: "siri.openMealLog")
+        }
+        return .result(dialog: "Opening Sana to log your meal. 🍽️")
+    }
+}
+
 // MARK: - App Shortcuts (appear automatically in Siri & Shortcuts app)
 
 struct SanaShortcuts: AppShortcutsProvider {
@@ -103,6 +141,24 @@ struct SanaShortcuts: AppShortcutsProvider {
             ],
             shortTitle: "My Streak",
             systemImageName: "flame.fill"
+        )
+        AppShortcut(
+            intent: CheckMacrosIntent(),
+            phrases: [
+                "Check my macros in \(.applicationName)",
+                "How's my protein today in \(.applicationName)"
+            ],
+            shortTitle: "Today's Macros",
+            systemImageName: "chart.pie.fill"
+        )
+        AppShortcut(
+            intent: LogMealIntent(),
+            phrases: [
+                "Log a meal in \(.applicationName)",
+                "Add food in \(.applicationName)"
+            ],
+            shortTitle: "Log a Meal",
+            systemImageName: "fork.knife"
         )
     }
 }

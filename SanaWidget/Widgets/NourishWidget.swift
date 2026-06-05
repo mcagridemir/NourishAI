@@ -1,6 +1,7 @@
 // Sana — SanaWidget.swift
 import WidgetKit
 import SwiftUI
+import AppIntents
 
 // MARK: - Shared data types (widget-local — reads from App Group UserDefaults)
 
@@ -78,6 +79,21 @@ struct SanaEntry: TimelineEntry {
     let data: SanaWidgetData
 }
 
+// MARK: - Interactive intent (runs inside the widget extension — no app launch required)
+
+struct LogWaterWidgetIntent: AppIntent {
+    static let title: LocalizedStringResource = "Log 250 ml Water"
+    /// Not discoverable — this intent is only for widget buttons, not Siri/Shortcuts.
+    static let isDiscoverable: Bool = false
+
+    func perform() async throws -> some IntentResult {
+        let defaults = UserDefaults(suiteName: "group.com.cagri.Sana")
+        let current  = defaults?.integer(forKey: "siri.pendingWaterMl") ?? 0
+        defaults?.set(current + 250, forKey: "siri.pendingWaterMl")
+        return .result()
+    }
+}
+
 // MARK: - Colors (hardcoded — asset catalog not available in widget target)
 
 private extension Color {
@@ -100,20 +116,23 @@ private enum WidgetLink {
 struct SmallWidgetView: View {
     let data: SanaWidgetData
 
+    /// Green normally; turns orange when over the calorie budget.
+    private var ringColor: Color { data.calorieProgress >= 1.0 ? .orange : .nourishGreen }
+
     var body: some View {
         VStack(spacing: 6) {
             ZStack {
                 Circle()
                     .stroke(Color.nourishGreenLight, lineWidth: 8)
                 Circle()
-                    .trim(from: 0, to: data.calorieProgress)
-                    .stroke(Color.nourishGreen, style: StrokeStyle(lineWidth: 8, lineCap: .round))
+                    .trim(from: 0, to: min(data.calorieProgress, 1.0))
+                    .stroke(ringColor, style: StrokeStyle(lineWidth: 8, lineCap: .round))
                     .rotationEffect(.degrees(-90))
                     .animation(.easeOut(duration: 0.4), value: data.calorieProgress)
                 VStack(spacing: 1) {
                     Text("\(data.calories)")
                         .font(.system(size: 20, weight: .bold, design: .rounded))
-                        .foregroundStyle(Color.nourishGreen)
+                        .foregroundStyle(ringColor)
                     Text("kcal")
                         .font(.system(size: 10, weight: .medium))
                         .foregroundStyle(.secondary)
@@ -140,6 +159,9 @@ struct SmallWidgetView: View {
 struct MediumWidgetView: View {
     let data: SanaWidgetData
 
+    /// Green normally; turns orange when over the calorie budget.
+    private var ringColor: Color { data.calorieProgress >= 1.0 ? .orange : .nourishGreen }
+
     var body: some View {
         HStack(spacing: 16) {
             // Calorie ring
@@ -147,14 +169,16 @@ struct MediumWidgetView: View {
                 Circle()
                     .stroke(Color.nourishGreenLight, lineWidth: 8)
                 Circle()
-                    .trim(from: 0, to: data.calorieProgress)
-                    .stroke(Color.nourishGreen, style: StrokeStyle(lineWidth: 8, lineCap: .round))
+                    .trim(from: 0, to: min(data.calorieProgress, 1.0))
+                    .stroke(ringColor, style: StrokeStyle(lineWidth: 8, lineCap: .round))
                     .rotationEffect(.degrees(-90))
                 VStack(spacing: 1) {
-                    Text("\(data.caloriesRemaining)")
+                    Text(data.calorieProgress >= 1.0
+                         ? "+\(data.calories - data.calorieTarget)"
+                         : "\(data.caloriesRemaining)")
                         .font(.system(size: 18, weight: .bold, design: .rounded))
-                        .foregroundStyle(Color.nourishGreen)
-                    Text("left")
+                        .foregroundStyle(ringColor)
+                    Text(data.calorieProgress >= 1.0 ? "over" : "left")
                         .font(.system(size: 9, weight: .medium))
                         .foregroundStyle(.secondary)
                 }
@@ -169,11 +193,22 @@ struct MediumWidgetView: View {
                         .foregroundStyle(.orange)
                 }
 
+                // Water row — interactive log button (iOS 17+)
                 VStack(alignment: .leading, spacing: 3) {
                     HStack(spacing: 4) {
                         Image(systemName: "drop.fill").foregroundStyle(.blue).font(.system(size: 10))
                         Text("\(data.formatWater(data.waterMl)) / \(data.formatWater(data.waterGoalMl))")
                             .font(.system(size: 11, weight: .medium))
+                        Spacer(minLength: 0)
+                        Button(intent: LogWaterWidgetIntent()) {
+                            Text("+ 250ml")
+                                .font(.system(size: 9, weight: .semibold))
+                                .foregroundStyle(.white)
+                                .padding(.horizontal, 6).padding(.vertical, 2)
+                                .background(.blue)
+                                .clipShape(Capsule())
+                        }
+                        .buttonStyle(.plain)
                     }
                     ProgressView(value: data.waterProgress)
                         .tint(.blue)
@@ -249,15 +284,15 @@ struct LargeWidgetView: View {
             Circle()
                 .stroke(Color.nourishGreenLight, lineWidth: 13)
             Circle()
-                .trim(from: 0, to: data.calorieProgress)
-                .stroke(Color.nourishGreen,
+                .trim(from: 0, to: min(data.calorieProgress, 1.0))
+                .stroke(data.calorieProgress >= 1.0 ? Color.orange : Color.nourishGreen,
                         style: StrokeStyle(lineWidth: 13, lineCap: .round))
                 .rotationEffect(.degrees(-90))
                 .animation(.easeOut(duration: 0.5), value: data.calorieProgress)
             VStack(spacing: 3) {
                 Text("\(data.calories)")
                     .font(.system(size: 32, weight: .bold, design: .rounded))
-                    .foregroundStyle(Color.nourishGreen)
+                    .foregroundStyle(data.calorieProgress >= 1.0 ? Color.orange : Color.nourishGreen)
                 Text("of \(data.calorieTarget) kcal")
                     .font(.system(size: 11))
                     .foregroundStyle(.secondary)
@@ -321,19 +356,29 @@ struct LargeWidgetView: View {
 
     private var waterSection: some View {
         VStack(alignment: .leading, spacing: 5) {
-            Link(destination: WidgetLink.water) {
-                HStack(spacing: 5) {
-                    Image(systemName: "drop.fill")
-                        .font(.system(size: 12))
-                        .foregroundStyle(.blue)
-                    Text("Water  \(data.formatWater(data.waterMl)) / \(data.formatWater(data.waterGoalMl))")
-                        .font(.system(size: 12, weight: .medium))
-                        .foregroundStyle(.primary)
-                    Spacer()
-                    Text("\(Int(data.waterProgress * 100))%")
-                        .font(.system(size: 11))
-                        .foregroundStyle(.blue)
+            HStack(spacing: 5) {
+                // Tapping the label deep-links into the water tab
+                Link(destination: WidgetLink.water) {
+                    HStack(spacing: 5) {
+                        Image(systemName: "drop.fill")
+                            .font(.system(size: 12))
+                            .foregroundStyle(.blue)
+                        Text("Water  \(data.formatWater(data.waterMl)) / \(data.formatWater(data.waterGoalMl))")
+                            .font(.system(size: 12, weight: .medium))
+                            .foregroundStyle(.primary)
+                    }
                 }
+                Spacer()
+                // Interactive button — logs 250 ml without opening the app (iOS 17+)
+                Button(intent: LogWaterWidgetIntent()) {
+                    Label("+ 250ml", systemImage: "plus.circle.fill")
+                        .font(.system(size: 10, weight: .semibold))
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 8).padding(.vertical, 4)
+                        .background(.blue)
+                        .clipShape(Capsule())
+                }
+                .buttonStyle(.plain)
             }
             ProgressView(value: data.waterProgress)
                 .tint(.blue)
