@@ -2,6 +2,46 @@
 // Composite daily nutrition score (0-100) with per-pillar breakdown.
 import SwiftUI
 
+// MARK: - Score persistence (7-day history via UserDefaults)
+
+private enum ScoreHistory {
+    private static let key = "sana.dailyScoreHistory"  // [dateKey: score]
+
+    static func save(_ score: Int, for date: Date = .now) {
+        var history = load()
+        history[dayKey(date)] = score
+        // Keep only last 30 days
+        let cutoff = Calendar.current.date(byAdding: .day, value: -31, to: date) ?? date
+        history = history.filter { dayKey(cutoff) <= $0.key }
+        UserDefaults.standard.set(history, forKey: key)
+    }
+
+    /// Returns scores sorted oldest → newest for the last `days` days
+    static func recent(days: Int = 7) -> [Int] {
+        let history = load()
+        return (0..<days).reversed().compactMap { offset -> Int? in
+            guard let d = Calendar.current.date(byAdding: .day, value: -offset, to: Calendar.current.startOfDay(for: .now))
+            else { return nil }
+            return history[dayKey(d)]
+        }
+    }
+
+    /// Score for yesterday, or nil if not recorded
+    static func yesterday() -> Int? {
+        guard let d = Calendar.current.date(byAdding: .day, value: -1, to: .now) else { return nil }
+        return load()[dayKey(d)]
+    }
+
+    private static func load() -> [String: Int] {
+        UserDefaults.standard.dictionary(forKey: key) as? [String: Int] ?? [:]
+    }
+
+    private static func dayKey(_ date: Date) -> String {
+        let c = Calendar.current.dateComponents([.year, .month, .day], from: date)
+        return "\(c.year ?? 0)-\(c.month ?? 0)-\(c.day ?? 0)"
+    }
+}
+
 struct DailyScoreCard: View {
 
     let user: User
@@ -80,12 +120,25 @@ struct DailyScoreCard: View {
                     .font(SanaTheme.Font.headline())
                     .foregroundStyle(.yellow)
                 Spacer()
-                Text(scoreGrade)
-                    .font(SanaTheme.Font.caption(12))
-                    .foregroundStyle(scoreColor)
-                    .padding(.horizontal, 8).padding(.vertical, 3)
-                    .background(scoreColor.opacity(0.12))
-                    .clipShape(Capsule())
+                // "vs yesterday" delta badge
+                if let yesterday = ScoreHistory.yesterday() {
+                    let delta = totalScore - yesterday
+                    let sign = delta >= 0 ? "↑" : "↓"
+                    let badgeColor: Color = delta >= 0 ? SanaTheme.Color.primary : SanaTheme.Color.danger
+                    Text("\(sign) \(abs(delta)) vs yesterday")
+                        .font(SanaTheme.Font.caption(11))
+                        .foregroundStyle(badgeColor)
+                        .padding(.horizontal, 8).padding(.vertical, 3)
+                        .background(badgeColor.opacity(0.10))
+                        .clipShape(Capsule())
+                } else {
+                    Text(scoreGrade)
+                        .font(SanaTheme.Font.caption(12))
+                        .foregroundStyle(scoreColor)
+                        .padding(.horizontal, 8).padding(.vertical, 3)
+                        .background(scoreColor.opacity(0.12))
+                        .clipShape(Capsule())
+                }
             }
 
             HStack(alignment: .center, spacing: SanaTheme.Spacing.lg) {
@@ -118,9 +171,35 @@ struct DailyScoreCard: View {
                     }
                 }
             }
+
+            // 7-day sparkline
+            let history = ScoreHistory.recent(days: 7)
+            if history.count >= 2 {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("7-day trend")
+                        .font(SanaTheme.Font.caption(10))
+                        .foregroundStyle(.secondary)
+                    HStack(alignment: .bottom, spacing: 4) {
+                        let maxVal = max(1, history.max() ?? 1)
+                        ForEach(Array(history.enumerated()), id: \.0) { i, val in
+                            let barH = max(4, CGFloat(val) / CGFloat(maxVal) * 28)
+                            let isToday = i == history.count - 1
+                            RoundedRectangle(cornerRadius: 3)
+                                .fill(isToday ? scoreColor : scoreColor.opacity(0.35))
+                                .frame(maxWidth: .infinity)
+                                .frame(height: barH)
+                        }
+                    }
+                    .frame(height: 28)
+                }
+            }
         }
         .padding()
         .nourishCard()
+        .task(id: totalScore) {
+            // Persist today's score whenever it changes (runs on appear too)
+            ScoreHistory.save(totalScore)
+        }
     }
 
     private func pillarRow(_ p: (label: String, icon: String, score: Int, color: Color)) -> some View {
