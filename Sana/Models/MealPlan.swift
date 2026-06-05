@@ -52,22 +52,21 @@ final class MealPlanDay {
     var date: Date
     var dayIndex: Int    // 0 = Monday
 
-    @Relationship(deleteRule: .cascade) var breakfastMeal: PlannedMeal?
-    @Relationship(deleteRule: .cascade) var lunchMeal: PlannedMeal?
-    @Relationship(deleteRule: .cascade) var dinnerMeal: PlannedMeal?
-    @Relationship(deleteRule: .cascade) var snackMeals: [PlannedMeal]
+    // Single relationship to PlannedMeal — multiple optional @Relationships to the
+    // same @Model type without inverses breaks SwiftData's schema validation.
+    // Use PlannedMeal.mealType to distinguish breakfast / lunch / dinner / snack.
+    @Relationship(deleteRule: .cascade) var meals: [PlannedMeal]
 
     var plan: MealPlan?
 
-    var totalCalories: Int {
-        let meals: [PlannedMeal?] = [breakfastMeal, lunchMeal, dinnerMeal]
-        return meals.compactMap { $0?.calories }.reduce(0, +)
-             + snackMeals.map { $0.calories }.reduce(0, +)
-    }
+    // Computed accessors — call sites stay the same
+    var breakfastMeal: PlannedMeal? { meals.first { $0.mealType == .breakfast } }
+    var lunchMeal: PlannedMeal?     { meals.first { $0.mealType == .lunch     } }
+    var dinnerMeal: PlannedMeal?    { meals.first { $0.mealType == .dinner    } }
+    var snackMeals: [PlannedMeal]   { meals.filter { $0.mealType == .snack   } }
 
-    var allMeals: [PlannedMeal] {
-        [breakfastMeal, lunchMeal, dinnerMeal].compactMap { $0 } + snackMeals
-    }
+    var totalCalories: Int { meals.map { $0.calories }.reduce(0, +) }
+    var allMeals: [PlannedMeal] { meals }
 
     var dayName: String {
         date.formatted(.dateTime.weekday(.wide))
@@ -77,7 +76,7 @@ final class MealPlanDay {
         self.id = UUID()
         self.date = date
         self.dayIndex = dayIndex
-        self.snackMeals = []
+        self.meals = []
     }
 }
 

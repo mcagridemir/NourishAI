@@ -37,10 +37,11 @@ final class MealPlanViewModel: ObservableObject {
             for dayResp in response.days {
                 let date = Calendar.current.date(byAdding: .day, value: dayResp.dayIndex, to: monday) ?? monday
                 let day = MealPlanDay(date: date, dayIndex: dayResp.dayIndex)
-                day.breakfastMeal = PlannedMeal(from: dayResp.breakfast, mealType: .breakfast)
-                day.lunchMeal     = PlannedMeal(from: dayResp.lunch,     mealType: .lunch)
-                day.dinnerMeal    = PlannedMeal(from: dayResp.dinner,    mealType: .dinner)
-                day.snackMeals    = dayResp.snacks.map { PlannedMeal(from: $0, mealType: .snack) }
+                day.meals = [
+                    PlannedMeal(from: dayResp.breakfast, mealType: .breakfast),
+                    PlannedMeal(from: dayResp.lunch,     mealType: .lunch),
+                    PlannedMeal(from: dayResp.dinner,    mealType: .dinner)
+                ] + dayResp.snacks.map { PlannedMeal(from: $0, mealType: .snack) }
                 plan.days.append(day)
             }
 
@@ -93,10 +94,11 @@ final class MealPlanViewModel: ObservableObject {
         for dayResp in response.days {
             let date = Calendar.current.date(byAdding: .day, value: dayResp.dayIndex, to: monday) ?? monday
             let day  = MealPlanDay(date: date, dayIndex: dayResp.dayIndex)
-            day.breakfastMeal = PlannedMeal(from: dayResp.breakfast, mealType: .breakfast)
-            day.lunchMeal     = PlannedMeal(from: dayResp.lunch,     mealType: .lunch)
-            day.dinnerMeal    = PlannedMeal(from: dayResp.dinner,    mealType: .dinner)
-            day.snackMeals    = dayResp.snacks.map { PlannedMeal(from: $0, mealType: .snack) }
+            day.meals = [
+                PlannedMeal(from: dayResp.breakfast, mealType: .breakfast),
+                PlannedMeal(from: dayResp.lunch,     mealType: .lunch),
+                PlannedMeal(from: dayResp.dinner,    mealType: .dinner)
+            ] + dayResp.snacks.map { PlannedMeal(from: $0, mealType: .snack) }
             plan.days.append(day)
         }
         user.mealPlans.forEach { $0.isActive = false }
