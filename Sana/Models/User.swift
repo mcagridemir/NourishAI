@@ -273,6 +273,10 @@ final class User {
             streak: currentStreak,
             protein: todayMeals.map { $0.protein }.reduce(0, +),
             proteinTarget: dailyProteinTarget,
+            carbs: todayMeals.map { $0.carbohydrates }.reduce(0, +),
+            carbsTarget: dailyCarbTarget,
+            fat: todayMeals.map { $0.fat }.reduce(0, +),
+            fatTarget: dailyFatTarget,
             updatedAt: .now,
             isImperial: unitSystem == .imperial
         )

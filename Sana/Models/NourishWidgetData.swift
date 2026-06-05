@@ -10,6 +10,11 @@ struct SanaWidgetData: Codable {
     var streak: Int
     var protein: Double
     var proteinTarget: Double
+    // Added in v1.1 — default values keep old stored JSON decodable.
+    var carbs: Double = 0
+    var carbsTarget: Double = 250
+    var fat: Double = 0
+    var fatTarget: Double = 65
     var updatedAt: Date
     var isImperial: Bool = false
 
@@ -22,9 +27,11 @@ struct SanaWidgetData: Codable {
     )
 
     var calorieProgress: Double { min(1.0, Double(calories) / Double(max(1, calorieTarget))) }
-    var waterProgress: Double { min(1.0, Double(waterMl) / Double(max(1, waterGoalMl))) }
+    var waterProgress: Double   { min(1.0, Double(waterMl)  / Double(max(1, waterGoalMl))) }
     var proteinProgress: Double { min(1.0, protein / max(1, proteinTarget)) }
-    var caloriesRemaining: Int { max(0, calorieTarget - calories) }
+    var carbsProgress: Double   { min(1.0, carbs   / max(1, carbsTarget)) }
+    var fatProgress: Double     { min(1.0, fat     / max(1, fatTarget)) }
+    var caloriesRemaining: Int  { max(0, calorieTarget - calories) }
 
     func formatWater(_ ml: Int) -> String {
         if isImperial {

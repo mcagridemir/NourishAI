@@ -13,7 +13,37 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         UNUserNotificationCenter.current().delegate = self
+        Self.registerNotificationCategories()
         return true
+    }
+
+    // MARK: - Notification categories with action buttons
+
+    static func registerNotificationCategories() {
+        let logNowAction = UNNotificationAction(
+            identifier: "LOG_NOW",
+            title: "Log meal",
+            options: .foreground          // opens the app
+        )
+        let snoozeAction = UNNotificationAction(
+            identifier: "SNOOZE_15",
+            title: "Remind me in 15 min",
+            options: []                   // background — no app launch
+        )
+
+        let mealCategory = UNNotificationCategory(
+            identifier: "MEAL_REMINDER",
+            actions: [logNowAction, snoozeAction],
+            intentIdentifiers: [],
+            options: []
+        )
+        let streakCategory = UNNotificationCategory(
+            identifier: "STREAK_RECOVERY",
+            actions: [logNowAction],
+            intentIdentifiers: [],
+            options: []
+        )
+        UNUserNotificationCenter.current().setNotificationCategories([mealCategory, streakCategory])
     }
 
     func application(_ application: UIApplication,
@@ -26,12 +56,30 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
 
-    // Route notification taps to the appropriate tab.
+    // Route notification taps and action buttons.
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
-        let url = Self.deepLinkURL(for: response.notification.request.identifier)
-        NotificationCenter.default.post(name: .sanaDeepLink, object: url)
+        switch response.actionIdentifier {
+        case "LOG_NOW":
+            // Foreground action — deep-link straight to the log sheet.
+            NotificationCenter.default.post(name: .sanaDeepLink,
+                                            object: URL(string: "sana://log")!)
+        case "SNOOZE_15":
+            // Background action — reschedule the same notification 15 minutes later.
+            let original = response.notification.request
+            let newContent = original.content.mutableCopy() as! UNMutableNotificationContent
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 15 * 60, repeats: false)
+            let newID = original.identifier + "_snooze"
+            center.removePendingNotificationRequests(withIdentifiers: [newID])
+            center.add(UNNotificationRequest(identifier: newID,
+                                             content: newContent,
+                                             trigger: trigger))
+        default:
+            // Default tap — use the identifier-based deep link.
+            let url = Self.deepLinkURL(for: response.notification.request.identifier)
+            NotificationCenter.default.post(name: .sanaDeepLink, object: url)
+        }
         completionHandler()
     }
 

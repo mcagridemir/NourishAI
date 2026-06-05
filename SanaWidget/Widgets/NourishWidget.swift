@@ -12,6 +12,11 @@ struct SanaWidgetData: Codable {
     var streak: Int
     var protein: Double
     var proteinTarget: Double
+    // v1.1 additions — defaults keep old stored JSON decodable.
+    var carbs: Double = 0
+    var carbsTarget: Double = 250
+    var fat: Double = 0
+    var fatTarget: Double = 65
     var updatedAt: Date
     var isImperial: Bool = false
 
@@ -23,8 +28,10 @@ struct SanaWidgetData: Codable {
     )
 
     var calorieProgress: Double { min(1.0, Double(calories) / Double(max(1, calorieTarget))) }
-    var waterProgress: Double   { min(1.0, Double(waterMl) / Double(max(1, waterGoalMl))) }
+    var waterProgress: Double   { min(1.0, Double(waterMl)  / Double(max(1, waterGoalMl))) }
     var proteinProgress: Double { min(1.0, protein / max(1, proteinTarget)) }
+    var carbsProgress: Double   { min(1.0, carbs   / max(1, carbsTarget)) }
+    var fatProgress: Double     { min(1.0, fat     / max(1, fatTarget)) }
     var caloriesRemaining: Int  { max(0, calorieTarget - calories) }
 
     func formatWater(_ ml: Int) -> String {
@@ -59,7 +66,7 @@ struct SanaProvider: TimelineProvider {
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<SanaEntry>) -> Void) {
         let entry = SanaEntry(date: .now, data: WidgetDataStore.load())
-        // Refresh at midnight so streak and daily totals reset correctly
+        // Refresh at midnight so streak and daily totals reset correctly.
         let midnight = Calendar.current.startOfDay(for: .now).addingTimeInterval(86400)
         let timeline = Timeline(entries: [entry], policy: .after(midnight))
         completion(timeline)
@@ -76,6 +83,8 @@ struct SanaEntry: TimelineEntry {
 private extension Color {
     static let nourishGreen      = Color(red: 0.176, green: 0.620, blue: 0.459)  // #2D9E75
     static let nourishGreenLight = Color(red: 0.882, green: 0.961, blue: 0.933)  // #E1F5EE
+    static let macroCarbs        = Color(red: 0.94, green: 0.65, blue: 0.20)
+    static let macroFat          = Color(red: 0.98, green: 0.45, blue: 0.35)
 }
 
 // MARK: - Deep link URLs
@@ -126,7 +135,7 @@ struct SmallWidgetView: View {
     }
 }
 
-// MARK: - Medium Widget  (ring + water bar + protein)
+// MARK: - Medium Widget  (ring + water + protein)
 
 struct MediumWidgetView: View {
     let data: SanaWidgetData
@@ -154,33 +163,28 @@ struct MediumWidgetView: View {
 
             // Stats column
             VStack(alignment: .leading, spacing: 10) {
-                // Streak
                 if data.streak > 0 {
                     Label("\(data.streak) day streak", systemImage: "flame.fill")
                         .font(.system(size: 11, weight: .semibold))
                         .foregroundStyle(.orange)
                 }
 
-                // Water
                 VStack(alignment: .leading, spacing: 3) {
                     HStack(spacing: 4) {
                         Image(systemName: "drop.fill").foregroundStyle(.blue).font(.system(size: 10))
                         Text("\(data.formatWater(data.waterMl)) / \(data.formatWater(data.waterGoalMl))")
                             .font(.system(size: 11, weight: .medium))
-                            .foregroundStyle(.primary)
                     }
                     ProgressView(value: data.waterProgress)
                         .tint(.blue)
                         .scaleEffect(x: 1, y: 0.7)
                 }
 
-                // Protein
                 VStack(alignment: .leading, spacing: 3) {
                     HStack(spacing: 4) {
                         Image(systemName: "bolt.fill").foregroundStyle(.indigo).font(.system(size: 10))
                         Text("\(Int(data.protein))g / \(Int(data.proteinTarget))g protein")
                             .font(.system(size: 11, weight: .medium))
-                            .foregroundStyle(.primary)
                     }
                     ProgressView(value: data.proteinProgress)
                         .tint(.indigo)
@@ -196,9 +200,176 @@ struct MediumWidgetView: View {
     }
 }
 
-// Medium widget uses Link() so different regions deep-link differently
-extension MediumWidgetView {
-    // Water row taps → water tab, rest → dashboard (handled by widgetURL fallback)
+// MARK: - Large Widget  (full macro dashboard)
+
+struct LargeWidgetView: View {
+    let data: SanaWidgetData
+
+    var body: some View {
+        VStack(spacing: 0) {
+            header
+            calorieSection
+            Divider().padding(.horizontal, 16)
+            macroRow
+            Divider().padding(.horizontal, 16)
+            waterSection
+            footer
+        }
+        .widgetURL(WidgetLink.dashboard)
+        .containerBackground(for: .widget) {
+            Color(.systemBackground)
+        }
+    }
+
+    // MARK: Header
+
+    private var header: some View {
+        HStack {
+            HStack(spacing: 5) {
+                Image(systemName: "leaf.fill")
+                    .font(.system(size: 10, weight: .semibold))
+                    .foregroundStyle(Color.nourishGreen)
+                Text("Sana")
+                    .font(.system(size: 13, weight: .bold, design: .rounded))
+            }
+            Spacer()
+            Text(Date(), format: .dateTime.weekday(.abbreviated).month(.abbreviated).day())
+                .font(.system(size: 11))
+                .foregroundStyle(.secondary)
+        }
+        .padding(.horizontal, 16)
+        .padding(.top, 14)
+        .padding(.bottom, 10)
+    }
+
+    // MARK: Calorie ring
+
+    private var calorieSection: some View {
+        ZStack {
+            Circle()
+                .stroke(Color.nourishGreenLight, lineWidth: 13)
+            Circle()
+                .trim(from: 0, to: data.calorieProgress)
+                .stroke(Color.nourishGreen,
+                        style: StrokeStyle(lineWidth: 13, lineCap: .round))
+                .rotationEffect(.degrees(-90))
+                .animation(.easeOut(duration: 0.5), value: data.calorieProgress)
+            VStack(spacing: 3) {
+                Text("\(data.calories)")
+                    .font(.system(size: 32, weight: .bold, design: .rounded))
+                    .foregroundStyle(Color.nourishGreen)
+                Text("of \(data.calorieTarget) kcal")
+                    .font(.system(size: 11))
+                    .foregroundStyle(.secondary)
+                Text("\(Int(data.calorieProgress * 100))% of goal")
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundStyle(Color.nourishGreen.opacity(0.9))
+            }
+        }
+        .frame(width: 128, height: 128)
+        .padding(.vertical, 10)
+    }
+
+    // MARK: Macro mini-rings
+
+    private var macroRow: some View {
+        HStack(spacing: 0) {
+            macroRing(label: "Protein", value: data.protein,
+                      target: data.proteinTarget, progress: data.proteinProgress,
+                      color: .indigo)
+            macroRing(label: "Carbs", value: data.carbs,
+                      target: data.carbsTarget, progress: data.carbsProgress,
+                      color: Color.macroCarbs)
+            macroRing(label: "Fat", value: data.fat,
+                      target: data.fatTarget, progress: data.fatProgress,
+                      color: Color.macroFat)
+        }
+        .padding(.vertical, 12)
+        .padding(.horizontal, 6)
+    }
+
+    private func macroRing(label: String, value: Double, target: Double,
+                           progress: Double, color: Color) -> some View {
+        VStack(spacing: 5) {
+            ZStack {
+                Circle()
+                    .stroke(color.opacity(0.15), lineWidth: 5)
+                Circle()
+                    .trim(from: 0, to: progress)
+                    .stroke(color, style: StrokeStyle(lineWidth: 5, lineCap: .round))
+                    .rotationEffect(.degrees(-90))
+                Text("\(Int(value))")
+                    .font(.system(size: 13, weight: .bold, design: .rounded))
+                    .foregroundStyle(color)
+            }
+            .frame(width: 58, height: 58)
+            VStack(spacing: 1) {
+                Text("\(Int(value)) / \(Int(target))g")
+                    .font(.system(size: 10, weight: .medium))
+                    .foregroundStyle(.primary)
+                    .minimumScaleFactor(0.8)
+                    .lineLimit(1)
+                Text(label)
+                    .font(.system(size: 9))
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .frame(maxWidth: .infinity)
+    }
+
+    // MARK: Water
+
+    private var waterSection: some View {
+        VStack(alignment: .leading, spacing: 5) {
+            Link(destination: WidgetLink.water) {
+                HStack(spacing: 5) {
+                    Image(systemName: "drop.fill")
+                        .font(.system(size: 12))
+                        .foregroundStyle(.blue)
+                    Text("Water  \(data.formatWater(data.waterMl)) / \(data.formatWater(data.waterGoalMl))")
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundStyle(.primary)
+                    Spacer()
+                    Text("\(Int(data.waterProgress * 100))%")
+                        .font(.system(size: 11))
+                        .foregroundStyle(.blue)
+                }
+            }
+            ProgressView(value: data.waterProgress)
+                .tint(.blue)
+                .scaleEffect(x: 1, y: 0.75)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 10)
+    }
+
+    // MARK: Footer
+
+    private var footer: some View {
+        HStack {
+            if data.streak > 0 {
+                Label("\(data.streak) day streak", systemImage: "flame.fill")
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundStyle(.orange)
+            } else {
+                Text("No active streak — log a meal!")
+                    .font(.system(size: 11))
+                    .foregroundStyle(.secondary)
+            }
+            Spacer()
+            Link(destination: WidgetLink.log) {
+                HStack(spacing: 3) {
+                    Image(systemName: "plus.circle.fill")
+                    Text("Log meal")
+                }
+                .font(.system(size: 11, weight: .semibold))
+                .foregroundStyle(Color.nourishGreen)
+            }
+        }
+        .padding(.horizontal, 16)
+        .padding(.top, 8)
+        .padding(.bottom, 14)
+    }
 }
 
 // MARK: - Lock Screen: Circular (calorie ring)
@@ -262,6 +433,8 @@ struct SanaWidgetEntryView: View {
             SmallWidgetView(data: entry.data)
         case .systemMedium:
             MediumWidgetView(data: entry.data)
+        case .systemLarge:
+            LargeWidgetView(data: entry.data)
         case .accessoryCircular:
             AccessoryCircularView(data: entry.data)
                 .containerBackground(for: .widget) { Color.clear }
@@ -287,34 +460,39 @@ struct SanaWidget: Widget {
             SanaWidgetEntryView(entry: entry)
         }
         .configurationDisplayName("Sana")
-        .description("Track your daily calories, water, and streak at a glance.")
+        .description("Track your daily calories, macros, water, and streak at a glance.")
         .supportedFamilies([
-            .systemSmall, .systemMedium,
+            .systemSmall, .systemMedium, .systemLarge,
             .accessoryCircular, .accessoryRectangular, .accessoryInline
         ])
     }
 }
 
-// MARK: - Preview
+// MARK: - Previews
+
+private let sampleData = SanaWidgetData(
+    calories: 1240, calorieTarget: 2000,
+    waterMl: 1200, waterGoalMl: 2000,
+    streak: 5, protein: 78, proteinTarget: 120,
+    carbs: 160, carbsTarget: 250,
+    fat: 42, fatTarget: 65,
+    updatedAt: .now
+)
 
 #Preview(as: .systemSmall) {
     SanaWidget()
 } timeline: {
-    SanaEntry(date: .now, data: SanaWidgetData(
-        calories: 1240, calorieTarget: 2000,
-        waterMl: 1200, waterGoalMl: 2000,
-        streak: 5, protein: 78, proteinTarget: 120,
-        updatedAt: .now
-    ))
+    SanaEntry(date: .now, data: sampleData)
 }
 
 #Preview(as: .systemMedium) {
     SanaWidget()
 } timeline: {
-    SanaEntry(date: .now, data: SanaWidgetData(
-        calories: 1240, calorieTarget: 2000,
-        waterMl: 1200, waterGoalMl: 2000,
-        streak: 5, protein: 78, proteinTarget: 120,
-        updatedAt: .now
-    ))
+    SanaEntry(date: .now, data: sampleData)
+}
+
+#Preview(as: .systemLarge) {
+    SanaWidget()
+} timeline: {
+    SanaEntry(date: .now, data: sampleData)
 }

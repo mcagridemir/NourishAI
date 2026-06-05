@@ -25,6 +25,7 @@ final class NotificationService {
             content.title = "Sana"
             content.body = body
             content.sound = .default
+            content.categoryIdentifier = "MEAL_REMINDER"
             let trigger = UNCalendarNotificationTrigger(dateMatching: time, repeats: true)
             let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
             UNUserNotificationCenter.current().add(request)
@@ -48,6 +49,7 @@ final class NotificationService {
             content.title = "Sana"
             content.body  = body
             content.sound = .default
+            content.categoryIdentifier = "MEAL_REMINDER"
             let trigger = UNCalendarNotificationTrigger(dateMatching: comps, repeats: true)
             UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: id, content: content, trigger: trigger))
         }
