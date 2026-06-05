@@ -34,7 +34,15 @@ struct WaterTrackerView: View {
                     Image(systemName: "checkmark.circle.fill")
                         .foregroundStyle(SanaTheme.Color.primary)
                         .font(.caption)
+                        .padding(.trailing, 4)
                 }
+                // Trend link (design spec: hydration card navigates to HydrationTrendView)
+                NavigationLink(destination: HydrationTrendView(user: user)) {
+                    Image(systemName: "chart.line.uptrend.xyaxis")
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundStyle(Self.hydrationBlue.opacity(0.7))
+                }
+                .accessibilityLabel("View hydration trend")
             }
 
             // Big number display

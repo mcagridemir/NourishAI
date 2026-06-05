@@ -264,12 +264,16 @@ struct DashboardView: View {
         }
     }
 
-    // MARK: Daily Score
+    // MARK: Daily Score (tappable → WeeklyReportView, per design spec)
 
     private var dailyScoreSection: some View {
-        DailyScoreCard(user: user)
-            .padding(.horizontal, SanaTheme.Spacing.lg)
-            .padding(.bottom, SanaTheme.Spacing.lg)
+        NavigationLink(destination: WeeklyReportView(user: user)) {
+            DailyScoreCard(user: user)
+        }
+        .buttonStyle(.plain)
+        .padding(.horizontal, SanaTheme.Spacing.lg)
+        .padding(.bottom, SanaTheme.Spacing.lg)
+        .accessibilityHint("Opens your weekly nutrition report")
     }
 
     // MARK: AI Insight
@@ -388,13 +392,17 @@ struct DashboardView: View {
                         Text("Apple Health")
                             .font(SanaTheme.Font.headline(13))
                         Spacer()
-                        Text("Synced")
-                            .font(SanaTheme.Font.caption(11))
-                            .foregroundStyle(SanaTheme.Color.primary)
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 3)
-                            .background(SanaTheme.Color.primaryLight)
-                            .clipShape(Capsule())
+                        // Design spec: health metrics card navigates to BodyMetricsView
+                        NavigationLink(destination: BodyMetricsView(user: user)) {
+                            Text("Body metrics")
+                                .font(SanaTheme.Font.caption(11))
+                                .foregroundStyle(SanaTheme.Color.primary)
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 3)
+                                .background(SanaTheme.Color.primaryLight)
+                                .clipShape(Capsule())
+                        }
+                        .accessibilityLabel("Open body metrics")
                     }
                     HStack(spacing: 0) {
                         HealthMetricCell(label: "Steps",  value: healthKit.todaySteps.formatted(), unit: "/10k", color: SanaTheme.Color.primary)
