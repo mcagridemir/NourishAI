@@ -28,6 +28,7 @@ fastlane/test_output
 # Secrets / config
 *.xcconfig
 !Sana/Debug.xcconfig
+GoogleService-Info.plist
 
 # API key helper script output — never commit actual key values
 Scripts/generate_api_key.py.out

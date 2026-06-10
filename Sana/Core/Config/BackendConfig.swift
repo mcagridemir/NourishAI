@@ -13,7 +13,8 @@ enum BackendConfig {
     static let proxyURL: URL? = URL(string: "https://sana-ai-proxy.cagriidemirr.workers.dev")
 
     // Must match APP_SECRET set via `wrangler secret put APP_SECRET`.
-    static let appSecret: String = "f0a41d8b47e79f4ff7b39c966f49ec70018b3bcc967b8072b88c85ed204e71b0"
+    // Set via `wrangler secret put APP_SECRET` — never commit the real value here.
+    static let appSecret: String = ""
 
     // MARK: - CloudKit
 

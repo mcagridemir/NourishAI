@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>378332263294-542ov18aondgbs73t48mli20pcje1obf.apps.googleusercontent.com</string>
+	<string>YOUR_CLIENT_ID.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.378332263294-542ov18aondgbs73t48mli20pcje1obf</string>
+	<string>com.googleusercontent.apps.YOUR_CLIENT_ID</string>
 	<key>API_KEY</key>
-	<string>AIzaSyBYSnXkL0_9TpZnnyT2No46hVi93H44iJA</string>
+	<string>YOUR_FIREBASE_API_KEY</string>
 	<key>GCM_SENDER_ID</key>
-	<string>378332263294</string>
+	<string>YOUR_GCM_SENDER_ID</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.cagri.Sana</string>
 	<key>PROJECT_ID</key>
-	<string>sana-9ca63</string>
+	<string>YOUR_FIREBASE_PROJECT_ID</string>
 	<key>STORAGE_BUCKET</key>
-	<string>sana-9ca63.firebasestorage.app</string>
+	<string>YOUR_FIREBASE_PROJECT_ID.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:378332263294:ios:ca4eb58212374ba93bf92f</string>
+	<string>YOUR_GOOGLE_APP_ID</string>
 </dict>
 </plist>
