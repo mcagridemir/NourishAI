@@ -79,7 +79,7 @@ private struct WeekPlanView: View {
         VStack(spacing: 0) {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
-                    ForEach(plan.days.sorted(by: { $0.dayIndex < $1.dayIndex })) { day in
+                    ForEach((plan.days ?? []).sorted(by: { $0.dayIndex < $1.dayIndex })) { day in
                         DayTab(day: day, isSelected: selectedDayIndex == day.dayIndex) {
                             withAnimation(SanaTheme.Animation.snappy) { selectedDayIndex = day.dayIndex }
                         }
@@ -90,7 +90,7 @@ private struct WeekPlanView: View {
             }
             Divider()
 
-            if let day = plan.days.first(where: { $0.dayIndex == selectedDayIndex }) {
+            if let day = (plan.days ?? []).first(where: { $0.dayIndex == selectedDayIndex }) {
                 ScrollView {
                     VStack(spacing: SanaTheme.Spacing.md) {
                         DayCalorieSummary(day: day, target: vm.user.dailyCalorieTarget)
@@ -105,7 +105,7 @@ private struct WeekPlanView: View {
         }
         .onAppear {
             if selectedDayIndex == -1,
-               let first = plan.days.sorted(by: { $0.dayIndex < $1.dayIndex }).first {
+               let first = (plan.days ?? []).sorted(by: { $0.dayIndex < $1.dayIndex }).first {
                 selectedDayIndex = first.dayIndex
             }
         }

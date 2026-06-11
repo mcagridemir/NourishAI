@@ -399,7 +399,7 @@ private struct ResultView: View {
             VStack(alignment: .leading, spacing: 10) {
                 Text("How much did you eat?")
                     .font(SanaTheme.Font.headline(14))
-                Text("Label serving: \(result.servingSize)  ·  \(result.servingsPerContainer, specifier: "%.1f") servings per container")
+                Text(String(format: NSLocalizedString("Label serving: %@  ·  %.1f servings per container", comment: ""), result.servingSize, result.servingsPerContainer))
                     .font(SanaTheme.Font.caption(12))
                     .foregroundStyle(.secondary)
 

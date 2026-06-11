@@ -6,7 +6,9 @@ struct OnboardingFlowView: View {
 
     @Environment(\.modelContext) private var context
     @EnvironmentObject private var auth: AuthService
+    @EnvironmentObject private var subscription: SubscriptionService
     @State private var step = 0
+    @State private var showPaywall = false
     @State private var name = ""
     @State private var goal: NutritionGoal = .eatHealthier
     @State private var dietStyle: DietaryStyle = .noPreference
@@ -66,6 +68,10 @@ struct OnboardingFlowView: View {
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .animation(SanaTheme.Animation.smooth, value: step)
             }
+        }
+        .fullScreenCover(isPresented: $showPaywall) {
+            PaywallView()
+                .environmentObject(subscription)
         }
     }
 
@@ -306,6 +312,9 @@ struct OnboardingFlowView: View {
             NotificationService.shared.scheduleWeeklySummary()
             try? await HealthKitService.shared.requestAuthorization()
         }
+
+        // Show paywall immediately after onboarding (non-blocking — user can skip)
+        showPaywall = true
     }
 }
 

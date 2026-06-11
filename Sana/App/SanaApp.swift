@@ -3,6 +3,7 @@ import SwiftUI
 import SwiftData
 import BackgroundTasks
 import FirebaseCore
+internal import FirebaseCrashlytics
 internal import Combine
 internal import UIKit
 
@@ -68,7 +69,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         case "SNOOZE_15":
             // Background action — reschedule the same notification 15 minutes later.
             let original = response.notification.request
-            let newContent = original.content.mutableCopy() as! UNMutableNotificationContent
+            guard let newContent = original.content.mutableCopy() as? UNMutableNotificationContent else { return }
             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 15 * 60, repeats: false)
             let newID = original.identifier + "_snooze"
             center.removePendingNotificationRequests(withIdentifiers: [newID])
@@ -129,6 +130,7 @@ struct SanaApp: App {
 
     init() {
         FirebaseApp.configure()
+        Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)
         AppRouter.registerQuickActions()
         _ = MetricsService.shared
     }

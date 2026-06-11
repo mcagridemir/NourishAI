@@ -207,11 +207,18 @@ struct PaywallView: View {
 
     private var footerSection: some View {
         VStack(spacing: 8) {
-            Button("Restore purchases") {
+            Button {
                 Task { await restore() }
+            } label: {
+                if isRestoring {
+                    ProgressView().scaleEffect(0.75).tint(SanaTheme.Color.primary)
+                } else {
+                    Text("Restore purchases")
+                        .font(SanaTheme.Font.caption())
+                        .foregroundStyle(SanaTheme.Color.primary)
+                }
             }
-            .font(SanaTheme.Font.caption())
-            .foregroundStyle(SanaTheme.Color.primary)
+            .disabled(isRestoring)
 
             Text("Payment will be charged to your Apple ID account. Subscription automatically renews unless cancelled. Cancel anytime in Settings.")
                 .font(SanaTheme.Font.caption(10))

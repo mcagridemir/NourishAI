@@ -92,6 +92,7 @@ struct UserNutritionContext {
     let healthConditions: [String]
     let country: String
     let dailyCalorieTarget: Int
+    let language: String   // BCP-47 code, e.g. "tr", "en"
 
     // Convenience helpers for prompts
     var avoidClause: String {
@@ -102,6 +103,10 @@ struct UserNutritionContext {
     }
     var cuisineNote: String {
         country.isEmpty ? "" : "Prefer \(country) cuisine and traditional foods when appropriate."
+    }
+    var languageInstruction: String {
+        let name = Locale(identifier: "en").localizedString(forLanguageCode: language) ?? language
+        return "Always respond in \(name). Never switch to another language, even if the user writes in one."
     }
 }
 
@@ -164,6 +169,8 @@ actor ClaudeService {
         User profile: \(context.profileDescription)
         Health conditions to consider: \(context.conditionsClause)
         \(context.cuisineNote)
+        \(context.languageInstruction)
+        All "insights" and "suggestions" array values must be written in the user's language.
         """
 
         let body: [String: Any] = [
@@ -199,6 +206,8 @@ actor ClaudeService {
         \(schema)
         User profile: \(context.profileDescription)
         Health conditions: \(context.conditionsClause)
+        \(context.languageInstruction)
+        All "insights" and "suggestions" array values must be written in the user's language.
         """
         let body: [String: Any] = [
             "model": model,
@@ -228,6 +237,7 @@ actor ClaudeService {
                     Health conditions: \(context.conditionsClause)
                     \(context.cuisineNote)
                     When suggesting meals, use culturally familiar foods for the user's region. Always flag any meal or nutrient that conflicts with their health conditions.
+                    \(context.languageInstruction)
                     """
 
                     let apiMessages = messages.prefix(40).map { $0.toAPIDict() }
@@ -273,6 +283,8 @@ actor ClaudeService {
         \(context.cuisineNote)
         Target: \(context.dailyCalorieTarget) kcal/day
         Include traditional \(context.country.isEmpty ? "local" : context.country) meals and ingredients where fitting.
+        \(context.languageInstruction)
+        All meal names, descriptions, ingredients, and recipe text must be in the user's language.
         """
 
         let body: [String: Any] = [
@@ -289,14 +301,17 @@ actor ClaudeService {
 
     // MARK: - Grocery list
 
-    func generateGroceryList(from plan: MealPlanResponse) async throws -> [GrocerySection] {
+    func generateGroceryList(from plan: MealPlanResponse, language: String = "en") async throws -> [GrocerySection] {
         let meals = plan.days.flatMap { d in
             [d.breakfast.name, d.lunch.name, d.dinner.name] + d.snacks.map { $0.name }
         }
+        let langName = Locale(identifier: "en").localizedString(forLanguageCode: language) ?? language
+        let langInstruction = "Always respond in \(langName). Translate all category names and item names to \(langName)."
         let prompt = """
         Create a grouped grocery shopping list for: \(meals.joined(separator: ", ")).
         Return ONLY JSON array: [{"category": "string", "items": [{"name":"string","quantity":float,"unit":"string"}]}]
         Categories: Produce, Protein, Dairy, Grains, Pantry, Frozen. Consolidate duplicates.
+        \(langInstruction)
         """
 
         let body: [String: Any] = [
@@ -336,6 +351,8 @@ actor ClaudeService {
         Health conditions to accommodate: \(context.conditionsClause)
         \(context.cuisineNote)
         Target ~\(context.dailyCalorieTarget / 3) kcal per serving.
+        \(context.languageInstruction)
+        All name, description, ingredients, instructions, and tips must be in the user's language.
         """
         let body: [String: Any] = [
             "model": model, "max_tokens": 2048,
@@ -373,6 +390,7 @@ actor ClaudeService {
         - Water goal hit: \(stats.waterGoalHitDays)/\(stats.daysTracked) days
 
         Be specific, warm, and data-driven. No generic advice.
+        \(context.languageInstruction)
         """
         let body: [String: Any] = [
             "model": model, "max_tokens": 1024,
@@ -408,6 +426,7 @@ actor ClaudeService {
         - Health conditions: \(context.conditionsClause)
         \(context.cuisineNote)
         User profile: \(context.profileDescription)
+        \(context.languageInstruction)
         """
         let body: [String: Any] = [
             "model": model, "max_tokens": 512,
@@ -427,6 +446,7 @@ actor ClaudeService {
         Recent data: \(context.recentNutritionSummary)
         Deficiencies: \(context.detectedDeficiencies.joined(separator: ", "))
         Be specific, warm, and actionable. Plain text only.
+        \(context.languageInstruction)
         """
         let body: [String: Any] = [
             "model": model, "max_tokens": 256,
@@ -461,7 +481,7 @@ actor ClaudeService {
             }
         } else {
             guard !apiKey.isEmpty else {
-                fatalError("Claude API key missing. Run Scripts/generate_api_key.py and update APIKeyStore.swift, or configure BackendConfig.proxyURL.")
+                throw ClaudeError.apiKeyMissing
             }
             req.setValue(apiKey, forHTTPHeaderField: "x-api-key")
         }
@@ -514,13 +534,20 @@ enum ClaudeError: LocalizedError {
     case invalidJSON
     case decodingFailed(String)
     case httpError(Int)
+    case apiKeyMissing
 
     var errorDescription: String? {
         switch self {
-        case .imageEncodingFailed:      return "Could not encode image for upload."
-        case .invalidJSON:              return "Received unexpected response format."
-        case .decodingFailed(let msg):  return "Parse error: \(msg)"
-        case .httpError(let code):      return "Server error (HTTP \(code))."
+        case .imageEncodingFailed:
+            return NSLocalizedString("Could not encode image for upload.", comment: "")
+        case .invalidJSON:
+            return NSLocalizedString("Received unexpected response format.", comment: "")
+        case .decodingFailed(let msg):
+            return String(format: NSLocalizedString("Parse error: %@", comment: ""), msg)
+        case .httpError(let code):
+            return String(format: NSLocalizedString("Server error (HTTP %d).", comment: ""), code)
+        case .apiKeyMissing:
+            return NSLocalizedString("AI service is not configured. Please check your setup.", comment: "")
         }
     }
 }

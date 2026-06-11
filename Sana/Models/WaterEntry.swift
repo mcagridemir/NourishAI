@@ -4,9 +4,9 @@ import SwiftData
 
 @Model
 final class WaterEntry {
-    var id: UUID
-    var loggedAt: Date
-    var amountMl: Int
+    var id: UUID = UUID()
+    var loggedAt: Date = Date.now
+    var amountMl: Int = 0
 
     @Relationship(inverse: \User.waterEntries)
     var user: User?

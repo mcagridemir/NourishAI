@@ -30,13 +30,13 @@ struct MealHistoryView: View {
     }
 
     private var mealsWithPhotos: [MealEntry] {
-        user.mealEntries
+        (user.mealEntries ?? [])
             .filter { $0.photoData != nil }
             .sorted { $0.loggedAt > $1.loggedAt }
     }
 
     private var filteredEntries: [MealEntry] {
-        user.mealEntries
+        (user.mealEntries ?? [])
             .filter { meal in
                 let matchSearch = searchText.isEmpty ||
                     meal.mealName.localizedCaseInsensitiveContains(searchText) ||
@@ -81,7 +81,7 @@ struct MealHistoryView: View {
                                     .swipeActions(edge: .trailing) {
                                         Button(role: .destructive) {
                                             HapticService.destructive()
-                                            user.mealEntries.removeAll { $0.id == meal.id }
+                                            user.mealEntries?.removeAll { $0.id == meal.id }
                                         } label: {
                                             Label("Delete", systemImage: "trash")
                                         }

@@ -14,7 +14,7 @@ struct SleepNutritionCard: View {
     // How does the user typically eat after a short vs long sleep?
     // We compare today's meals vs the typical 7-day average.
     private var sevenDayAvgCalories: Int {
-        let recent = user.mealEntries.filter { $0.loggedAt > Date().addingTimeInterval(-7 * 86400) }
+        let recent = (user.mealEntries ?? []).filter { $0.loggedAt > Date().addingTimeInterval(-7 * 86400) }
         guard !recent.isEmpty else { return user.dailyCalorieTarget }
         let byDay = Dictionary(grouping: recent) { Calendar.current.startOfDay(for: $0.loggedAt) }
         let totals = byDay.values.map { $0.map { $0.calories }.reduce(0, +) }

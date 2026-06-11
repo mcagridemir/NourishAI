@@ -9,6 +9,7 @@ struct DashboardView: View {
     @StateObject private var vm: DashboardViewModel
     @EnvironmentObject private var healthKit: HealthKitService
     @EnvironmentObject private var router: AppRouter
+    @Environment(\.modelContext) private var context
     @Environment(\.horizontalSizeClass) private var hSizeClass
     @AppStorage("celebrated.streaks") private var celebratedStreaks: String = ""
     @State private var showingMilestone = false
@@ -109,6 +110,8 @@ struct DashboardView: View {
                     Image(systemName: "square.and.arrow.up")
                         .font(.system(size: 16, weight: .medium))
                         .foregroundStyle(SanaTheme.Color.primary)
+                        .frame(width: 38, height: 38)
+                        .contentShape(Rectangle())
                 }
                 .accessibilityLabel("Share daily summary")
                 NavigationLink(destination: ProfileView(user: user)) {
@@ -134,7 +137,7 @@ struct DashboardView: View {
     private var heroDailySummaryCard: some View {
         Button { HapticService.impact(.light); showingGoals = true } label: {
             ZStack(alignment: .topTrailing) {
-                // Subtle radial accent top-right
+                // Subtle radial accent top-right (decorative only)
                 Circle()
                     .fill(
                         RadialGradient(
@@ -144,6 +147,7 @@ struct DashboardView: View {
                     )
                     .frame(width: 200, height: 200)
                     .offset(x: 40, y: -60)
+                    .allowsHitTesting(false)
 
                 VStack(spacing: 20) {
                     // Ring + side stats
@@ -159,6 +163,7 @@ struct DashboardView: View {
             .background(Color.primary.opacity(0.92))
             .clipShape(RoundedRectangle(cornerRadius: SanaTheme.Radius.xl))
             .overlay(RoundedRectangle(cornerRadius: SanaTheme.Radius.xl).stroke(Color.white.opacity(0.06), lineWidth: 0.5))
+            .contentShape(RoundedRectangle(cornerRadius: SanaTheme.Radius.xl))
         }
         .buttonStyle(.plain)
         .padding(.horizontal, SanaTheme.Spacing.lg)
@@ -332,7 +337,7 @@ struct DashboardView: View {
                         .contextMenu {
                             Button(role: .destructive) {
                                 HapticService.destructive()
-                                user.mealEntries.removeAll { $0.id == meal.id }
+                                context.delete(meal)
                             } label: {
                                 Label("Delete meal", systemImage: "trash")
                             }

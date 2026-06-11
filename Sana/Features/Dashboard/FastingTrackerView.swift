@@ -24,11 +24,15 @@ struct FastingTrackerView: View {
     ]
 
     var body: some View {
-        VStack(spacing: 16) {
-            HStack {
-                Label("Fasting", systemImage: "timer")
+        VStack(spacing: 10) {
+            HStack(alignment: .center, spacing: 4) {
+                Image(systemName: "timer")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundStyle(.primary)
+                Text("Fasting")
                     .font(SanaTheme.Font.headline())
-                Spacer()
+                    .lineLimit(1)
+                Spacer(minLength: 4)
                 Menu {
                     ForEach(protocols, id: \.0) { name, hours in
                         Button("\(name) — \(Int(hours))h fast") {
@@ -37,58 +41,62 @@ struct FastingTrackerView: View {
                         }
                     }
                 } label: {
-                    Text("\(Int(targetHours)):\(Int(24 - targetHours)) protocol")
-                        .font(SanaTheme.Font.caption(12))
+                    Text("\(Int(targetHours)):\(Int(24 - targetHours))")
+                        .font(SanaTheme.Font.caption(11))
                         .foregroundStyle(SanaTheme.Color.primary)
                 }
             }
 
-            HStack(spacing: 24) {
+            HStack(spacing: 12) {
                 // Progress ring
                 ZStack {
                     Circle()
-                        .stroke(SanaTheme.Color.primaryLight, lineWidth: 8)
+                        .stroke(SanaTheme.Color.primaryLight, lineWidth: 7)
                     Circle()
                         .trim(from: 0, to: progress)
                         .stroke(isDone ? SanaTheme.Color.accent : SanaTheme.Color.primary,
-                                style: StrokeStyle(lineWidth: 8, lineCap: .round))
+                                style: StrokeStyle(lineWidth: 7, lineCap: .round))
                         .rotationEffect(.degrees(-90))
                         .animation(SanaTheme.Animation.bouncy, value: progress)
-                    VStack(spacing: 2) {
+                    VStack(spacing: 1) {
                         Text(isActive ? timeString(elapsed) : "--:--:--")
-                            .font(.system(size: 15, weight: .bold, design: .monospaced))
+                            .font(.system(size: 11, weight: .bold, design: .monospaced))
                             .foregroundStyle(isDone ? SanaTheme.Color.accent : SanaTheme.Color.primary)
+                            .minimumScaleFactor(0.7)
+                            .lineLimit(1)
                         Text(isActive ? "elapsed" : "not started")
-                            .font(SanaTheme.Font.caption(10))
+                            .font(SanaTheme.Font.caption(9))
                             .foregroundStyle(.secondary)
                     }
+                    .padding(.horizontal, 4)
                 }
-                .frame(width: 90, height: 90)
+                .frame(width: 76, height: 76)
 
-                VStack(alignment: .leading, spacing: 10) {
+                VStack(alignment: .leading, spacing: 7) {
                     fastingStat(icon: "target",
                                 label: "Target",
                                 value: "\(Int(targetHours))h fast")
-                    fastingStat(icon: "clock.arrow.trianglehead.counterclockwise.rotate.90",
+                    fastingStat(icon: "clock.fill",
                                 label: "Remaining",
                                 value: isActive ? timeString(remaining) : "--")
                     fastingStat(icon: isDone ? "flame.fill" : "moon.zzz.fill",
-                                label: isDone ? "Fat burning!" : "Zone",
+                                label: isDone ? "Burning!" : "Zone",
                                 value: zoneLabel,
                                 accent: isDone)
                 }
-                Spacer()
+                Spacer(minLength: 0)
             }
 
             // Action button
             Button(action: toggleFasting) {
                 Label(isActive ? "End fast" : "Start fast",
                       systemImage: isActive ? "stop.circle.fill" : "play.circle.fill")
-                    .font(SanaTheme.Font.headline())
+                    .font(SanaTheme.Font.headline(13))
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(NourishButtonStyle(isPrimary: !isActive))
             .tint(isActive ? Color.red : SanaTheme.Color.primary)
+            .accessibilityLabel(isActive ? "End fast" : "Start fast")
         }
         .padding()
         .nourishCard()

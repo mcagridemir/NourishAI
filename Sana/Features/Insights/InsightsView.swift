@@ -12,6 +12,7 @@ struct InsightsView: View {
     @State private var showingShare = false
     @State private var showingWeeklyReport = false
     @State private var showingDiary = false
+    @State private var showingProgress = false
 
     enum InsightRange: String, CaseIterable {
         case week = "7 days"; case month = "30 days"
@@ -27,14 +28,14 @@ struct InsightsView: View {
     }
 
     private var weightEntries: [WeightEntry] {
-        user.weightEntries
+        (user.weightEntries ?? [])
             .filter { $0.loggedAt > Date().addingTimeInterval(-Double(weightDays) * 86400) }
             .sorted { $0.loggedAt < $1.loggedAt }
     }
 
     private var entries: [MealEntry] {
         let days = selectedRange == .week ? 7 : 30
-        return user.mealEntries
+        return (user.mealEntries ?? [])
             .filter { $0.loggedAt > Date().addingTimeInterval(-Double(days) * 86400) }
             .sorted { $0.loggedAt < $1.loggedAt }
     }
@@ -55,13 +56,13 @@ struct InsightsView: View {
                     if entries.isEmpty {
                         emptyInsightsCard
                     } else {
-                        MealHeatmapView(mealEntries: user.mealEntries)
+                        MealHeatmapView(mealEntries: user.mealEntries ?? [])
                         if !dailyCalories.isEmpty { calorieChart }
                         if !dailyCalories.isEmpty { calorieBalanceChart }
                         macroBreakdownChart
                         WeekComparisonView(user: user)
                         healthScoreChart
-                        MealTimingView(mealEntries: user.mealEntries)
+                        MealTimingView(mealEntries: user.mealEntries ?? [])
                         SleepNutritionCard(user: user)
                         HydrationTrendView(user: user)
                     }
@@ -76,6 +77,13 @@ struct InsightsView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     HStack(spacing: 16) {
+                        Button {
+                            showingProgress = true
+                        } label: {
+                            Image(systemName: "camera.on.rectangle")
+                                .foregroundStyle(SanaTheme.Color.primary)
+                        }
+                        .accessibilityLabel("Progress photos")
                         Button {
                             showingDiary = true
                         } label: {
@@ -110,6 +118,9 @@ struct InsightsView: View {
                 if let image = shareImage {
                     ShareSheet(items: [image])
                 }
+            }
+            .sheet(isPresented: $showingProgress) {
+                ProgressPhotosView(user: user)
             }
         }
     }
@@ -214,7 +225,7 @@ struct InsightsView: View {
                     .lineStyle(StrokeStyle(lineWidth: 1, dash: [4]))
             }
             .frame(height: 140)
-            Text("vs. your \(user.dailyCalorieTarget) kcal goal · green = over · orange = under")
+            Text(String(format: NSLocalizedString("vs. your %d kcal goal · green = over · orange = under", comment: ""), user.dailyCalorieTarget))
                 .font(SanaTheme.Font.caption(11))
                 .foregroundStyle(.secondary)
         }
@@ -321,7 +332,7 @@ struct InsightsView: View {
                                     .font(.system(size: 13))
                                     .foregroundStyle(.orange)
                             }
-                            Text("Low \(nutrient)").font(SanaTheme.Font.body(14))
+                            Text(String(format: NSLocalizedString("Low %@", comment: ""), nutrient)).font(SanaTheme.Font.body(14))
                             Spacer()
                             Text("Below target").font(SanaTheme.Font.caption(11)).foregroundStyle(.orange)
                         }

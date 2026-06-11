@@ -9,7 +9,7 @@ struct CaloriePredictionCard: View {
 
     // Today's meals so far
     private var todayMeals: [MealEntry] {
-        user.mealEntries
+        (user.mealEntries ?? [])
             .filter { Calendar.current.isDateInToday($0.loggedAt) }
             .sorted { $0.loggedAt < $1.loggedAt }
     }
@@ -21,7 +21,7 @@ struct CaloriePredictionCard: View {
     private var historicalAvgCalories: Int {
         let cal = Calendar.current
         let weekday = cal.component(.weekday, from: .now)
-        let recent = user.mealEntries.filter { $0.loggedAt > Date().addingTimeInterval(-14 * 86400) }
+        let recent = (user.mealEntries ?? []).filter { $0.loggedAt > Date().addingTimeInterval(-14 * 86400) }
         let byDay = Dictionary(grouping: recent) { cal.startOfDay(for: $0.loggedAt) }
         let similar = byDay.filter { day, _ in
             let dw = cal.component(.weekday, from: day)
@@ -37,7 +37,7 @@ struct CaloriePredictionCard: View {
     private var predictedRemainingCalories: Int {
         let cal = Calendar.current
         let currentHour = hourNow
-        let recent = user.mealEntries.filter {
+        let recent = (user.mealEntries ?? []).filter {
             $0.loggedAt > Date().addingTimeInterval(-14 * 86400)
             && !cal.isDateInToday($0.loggedAt)
         }

@@ -110,7 +110,7 @@ private struct ConfettiPiece: Identifiable {
     let delay: Double
 
     init() {
-        color = [Color.orange, .yellow, SanaTheme.Color.primary, .pink, .purple, .cyan].randomElement()!
+        color = [Color.orange, .yellow, SanaTheme.Color.primary, .pink, .purple, .cyan].randomElement() ?? .orange
         size = CGFloat.random(in: 5...12)
         x = CGFloat.random(in: 0...1)
         rotation = Double.random(in: 0...360)

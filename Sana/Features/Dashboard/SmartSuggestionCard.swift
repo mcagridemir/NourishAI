@@ -12,7 +12,7 @@ struct SmartSuggestionCard: View {
 
     private var remainingCalories: Int { max(0, user.dailyCalorieTarget - user.todayCalories) }
     private var remainingProtein: Double {
-        let eaten = user.mealEntries.filter { Calendar.current.isDateInToday($0.loggedAt) }.map { $0.protein }.reduce(0, +)
+        let eaten = (user.mealEntries ?? []).filter { Calendar.current.isDateInToday($0.loggedAt) }.map { $0.protein }.reduce(0, +)
         return max(0, user.dailyProteinTarget - eaten)
     }
 

@@ -176,7 +176,7 @@ struct BodyMetricsView: View {
                 }
                 .frame(maxWidth: .infinity)
             }
-            Text("Based on a healthy BMI of 18.5–24.9 for your height (\(heightDescription))")
+            Text(String(format: NSLocalizedString("Based on a healthy BMI of 18.5–24.9 for your height (%@)", comment: ""), heightDescription))
                 .font(SanaTheme.Font.caption(11))
                 .foregroundStyle(.secondary)
 

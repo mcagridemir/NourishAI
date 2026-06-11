@@ -66,8 +66,7 @@ enum PreviewBootstrap {
                 entry.logSource   = dayOffset == 0 ? "photo" : ["photo", "manual", "barcode"].randomElement()!
                 entry.confidence  = Double.random(in: 0.82...0.98)
                 entry.user        = user
-                context.insert(entry)         // explicit insert — same pattern as WaterEntry/WeightEntry
-                user.mealEntries.append(entry)
+                context.insert(entry)
             }
         }
 
@@ -84,7 +83,6 @@ enum PreviewBootstrap {
                 let entry = WaterEntry(amountMl: amount)
                 entry.loggedAt = waterDate
                 entry.user     = user
-                user.waterEntries.append(entry)
                 context.insert(entry)
             }
         }
@@ -96,7 +94,6 @@ enum PreviewBootstrap {
             let entry = WeightEntry(weightKg: kg)
             entry.loggedAt = date
             entry.user     = user
-            user.weightEntries.append(entry)
             context.insert(entry)
         }
 
@@ -115,8 +112,8 @@ enum PreviewBootstrap {
             // Log the first two as taken today
             if s.0 == "Vitamin D3" || s.0 == "Omega-3" {
                 let log = SupplementLog()
-                supp.logs.append(log)
                 context.insert(log)
+                log.supplement = supp
             }
         }
 

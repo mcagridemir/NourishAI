@@ -90,13 +90,13 @@ struct SupplementDashboardCard: View {
     private func toggle(_ supp: Supplement) {
         HapticService.selection()
         if supp.isLoggedToday {
-            if let log = supp.logs.first(where: { Calendar.current.isDateInToday($0.loggedAt) }) {
+            if let log = supp.logs?.first(where: { Calendar.current.isDateInToday($0.loggedAt) }) {
                 context.delete(log)
             }
         } else {
             let log = SupplementLog()
-            supp.logs.append(log)
             context.insert(log)
+            log.supplement = supp
         }
         try? context.save()
     }

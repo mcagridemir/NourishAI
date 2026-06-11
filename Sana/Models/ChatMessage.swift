@@ -10,12 +10,12 @@ import SwiftData
 
 @Model
 final class ChatMessage {
-    var id: UUID
-    var createdAt: Date
-    var role: ChatRole
-    var content: String
-    var isStreaming: Bool      // true while Claude is still responding
-    var attachedMealId: UUID?  // if message relates to a meal analysis
+    var id: UUID = UUID()
+    var createdAt: Date = Date.now
+    var role: ChatRole = ChatRole.user
+    var content: String = ""
+    var isStreaming: Bool = false   // true while Claude is still responding
+    var attachedMealId: UUID?       // if message relates to a meal analysis
 
     @Relationship(inverse: \User.chatMessages)
     var user: User?

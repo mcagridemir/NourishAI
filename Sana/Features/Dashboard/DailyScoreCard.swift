@@ -72,7 +72,7 @@ struct DailyScoreCard: View {
 
     /// Meal quality: average health score of today's meals
     private var qualityScore: Int {
-        let meals = user.mealEntries.filter { Calendar.current.isDateInToday($0.loggedAt) }
+        let meals = (user.mealEntries ?? []).filter { Calendar.current.isDateInToday($0.loggedAt) }
         guard !meals.isEmpty else { return 0 }
         return meals.map { $0.healthScore }.reduce(0, +) / meals.count
     }
@@ -125,7 +125,7 @@ struct DailyScoreCard: View {
                     let delta = totalScore - yesterday
                     let sign = delta >= 0 ? "↑" : "↓"
                     let badgeColor: Color = delta >= 0 ? SanaTheme.Color.primary : SanaTheme.Color.danger
-                    Text("\(sign) \(abs(delta)) vs yesterday")
+                    (Text("\(sign) \(abs(delta)) ") + Text("vs yesterday"))
                         .font(SanaTheme.Font.caption(11))
                         .foregroundStyle(badgeColor)
                         .padding(.horizontal, 8).padding(.vertical, 3)

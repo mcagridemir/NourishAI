@@ -10,14 +10,14 @@ import SwiftData
 
 @Model
 final class MealPlan {
-    var id: UUID
-    var createdAt: Date
-    var weekStartDate: Date
-    var title: String
-    var isActive: Bool
+    var id: UUID = UUID()
+    var createdAt: Date = Date.now
+    var weekStartDate: Date = Date.now
+    var title: String = "Weekly Plan"
+    var isActive: Bool = true
 
     @Relationship(deleteRule: .cascade, inverse: \MealPlanDay.plan)
-    var days: [MealPlanDay]
+    var days: [MealPlanDay]?
 
     @Relationship(inverse: \User.mealPlans)
     var user: User?
@@ -27,12 +27,13 @@ final class MealPlan {
     }
 
     var totalCaloriesAverage: Int {
-        guard !days.isEmpty else { return 0 }
-        return days.map { $0.totalCalories }.reduce(0, +) / days.count
+        let d = days ?? []
+        guard !d.isEmpty else { return 0 }
+        return d.map { $0.totalCalories }.reduce(0, +) / d.count
     }
 
     var groceryItems: [GroceryItem] {
-        days.flatMap { $0.allMeals }.flatMap { $0.ingredients }
+        (days ?? []).flatMap { $0.allMeals }.flatMap { $0.ingredients }
             .map { GroceryItem(name: $0, quantity: 1, unit: "serving") }
     }
 
@@ -48,25 +49,25 @@ final class MealPlan {
 
 @Model
 final class MealPlanDay {
-    var id: UUID
-    var date: Date
-    var dayIndex: Int    // 0 = Monday
+    var id: UUID = UUID()
+    var date: Date = Date.now
+    var dayIndex: Int = 0    // 0 = Monday
 
     // Single relationship to PlannedMeal with explicit inverse — Core Data requires
     // every relationship to have a resolvable inverse, even unidirectional ones.
     // Use PlannedMeal.mealType to distinguish breakfast / lunch / dinner / snack.
-    @Relationship(deleteRule: .cascade, inverse: \PlannedMeal.day) var meals: [PlannedMeal]
+    @Relationship(deleteRule: .cascade, inverse: \PlannedMeal.day) var meals: [PlannedMeal]?
 
     var plan: MealPlan?
 
     // Computed accessors — call sites stay the same
-    var breakfastMeal: PlannedMeal? { meals.first { $0.mealType == .breakfast } }
-    var lunchMeal: PlannedMeal?     { meals.first { $0.mealType == .lunch     } }
-    var dinnerMeal: PlannedMeal?    { meals.first { $0.mealType == .dinner    } }
-    var snackMeals: [PlannedMeal]   { meals.filter { $0.mealType == .snack   } }
+    var breakfastMeal: PlannedMeal? { (meals ?? []).first { $0.mealType == .breakfast } }
+    var lunchMeal: PlannedMeal?     { (meals ?? []).first { $0.mealType == .lunch     } }
+    var dinnerMeal: PlannedMeal?    { (meals ?? []).first { $0.mealType == .dinner    } }
+    var snackMeals: [PlannedMeal]   { (meals ?? []).filter { $0.mealType == .snack   } }
 
-    var totalCalories: Int { meals.map { $0.calories }.reduce(0, +) }
-    var allMeals: [PlannedMeal] { meals }
+    var totalCalories: Int { (meals ?? []).map { $0.calories }.reduce(0, +) }
+    var allMeals: [PlannedMeal] { meals ?? [] }
 
     var dayName: String {
         date.formatted(.dateTime.weekday(.wide))
@@ -82,18 +83,18 @@ final class MealPlanDay {
 
 @Model
 final class PlannedMeal {
-    var id: UUID
-    var name: String
-    var mealDescription: String
-    var prepTimeMinutes: Int
-    var calories: Int
-    var protein: Double
-    var carbohydrates: Double
-    var fat: Double
-    var ingredients: [String]
-    var recipeSteps: String
-    var isCompleted: Bool   // user ticked it off
-    var mealType: MealType
+    var id: UUID = UUID()
+    var name: String = ""
+    var mealDescription: String = ""
+    var prepTimeMinutes: Int = 0
+    var calories: Int = 0
+    var protein: Double = 0
+    var carbohydrates: Double = 0
+    var fat: Double = 0
+    var ingredients: [String] = []
+    var recipeSteps: String = ""
+    var isCompleted: Bool = false   // user ticked it off
+    var mealType: MealType = MealType.snack
 
     // Back-reference required by Core Data / SwiftData for relationship inverse resolution.
     var day: MealPlanDay?

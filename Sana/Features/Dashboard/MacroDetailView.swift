@@ -10,7 +10,7 @@ struct MacroDetailView: View {
     @Environment(\.dismiss) private var dismiss
 
     private var todayMeals: [MealEntry] {
-        user.mealEntries
+        (user.mealEntries ?? [])
             .filter { Calendar.current.isDateInToday($0.loggedAt) }
             .filter { macro.value(of: $0) > 0 }
             .sorted { macro.value(of: $0) > macro.value(of: $1) }

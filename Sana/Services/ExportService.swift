@@ -9,13 +9,13 @@ struct ExportService {
             "Date,Time,Meal,Type,Calories,Protein(g),Carbs(g),Fat(g),Fiber(g),Health Score"
         ]
 
-        let sorted = user.mealEntries.sorted { $0.loggedAt < $1.loggedAt }
+        let sorted = user.mealEntries?.sorted { $0.loggedAt < $1.loggedAt }
         let dateFmt = DateFormatter()
         dateFmt.dateFormat = "yyyy-MM-dd"
         let timeFmt = DateFormatter()
         timeFmt.dateFormat = "HH:mm"
 
-        for entry in sorted {
+        for entry in sorted ?? [] {
             let cols: [String] = [
                 dateFmt.string(from: entry.loggedAt),
                 timeFmt.string(from: entry.loggedAt),

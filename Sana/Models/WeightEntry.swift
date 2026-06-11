@@ -4,9 +4,9 @@ import SwiftData
 
 @Model
 final class WeightEntry {
-    var id: UUID
-    var loggedAt: Date
-    var weightKg: Double
+    var id: UUID = UUID()
+    var loggedAt: Date = Date.now
+    var weightKg: Double = 0
 
     @Relationship(inverse: \User.weightEntries)
     var user: User?

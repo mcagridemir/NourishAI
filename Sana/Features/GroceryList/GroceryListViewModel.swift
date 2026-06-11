@@ -23,7 +23,7 @@ final class GroceryListViewModel: ObservableObject {
     // MARK: - Persistence helpers
 
     private var activePlanKey: String? {
-        guard let plan = user.mealPlans.first(where: { $0.isActive }) else { return nil }
+        guard let plan = user.mealPlans?.first(where: { $0.isActive }) else { return nil }
         return "groceryList.\(plan.id.uuidString)"
     }
 
@@ -42,11 +42,11 @@ final class GroceryListViewModel: ObservableObject {
     }
 
     func generate() async {
-        guard let plan = user.mealPlans.first(where: { $0.isActive }) else { return }
+        guard let plan = user.mealPlans?.first(where: { $0.isActive }) else { return }
         isGenerating = true
         defer { isGenerating = false }
         do {
-            let planResp = MealPlanResponse(days: plan.days.sorted { $0.dayIndex < $1.dayIndex }.compactMap { day -> MealPlanDayResponse? in
+            let planResp = MealPlanResponse(days: (plan.days ?? []).sorted { $0.dayIndex < $1.dayIndex }.compactMap { day -> MealPlanDayResponse? in
                 guard let b = day.breakfastMeal, let l = day.lunchMeal, let d = day.dinnerMeal else { return nil }
                 return MealPlanDayResponse(dayIndex: day.dayIndex,
                     breakfast: MealSuggestion(name: b.name, description: b.mealDescription, prepTime: b.prepTimeMinutes, calories: b.calories, protein: b.protein, carbohydrates: b.carbohydrates, fat: b.fat, ingredients: b.ingredients, recipe: b.recipeSteps),
@@ -55,7 +55,7 @@ final class GroceryListViewModel: ObservableObject {
                     snacks: day.snackMeals.map { MealSuggestion(name: $0.name, description: $0.mealDescription, prepTime: $0.prepTimeMinutes, calories: $0.calories, protein: $0.protein, carbohydrates: $0.carbohydrates, fat: $0.fat, ingredients: $0.ingredients, recipe: $0.recipeSteps) },
                     totalCalories: day.totalCalories)
             })
-            sections = try await ClaudeService.shared.generateGroceryList(from: planResp)
+            sections = try await ClaudeService.shared.generateGroceryList(from: planResp, language: user.nutritionContext.language)
             saveCurrentState()
         } catch {
             self.error = error.localizedDescription
@@ -77,7 +77,7 @@ final class GroceryListViewModel: ObservableObject {
         }.joined(separator: "\n\n")
         let av = UIActivityViewController(activityItems: [text], applicationActivities: nil)
         if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-           let vc = scene.windows.first?.rootViewController {
+           let vc = scene.keyWindow?.rootViewController {
             vc.present(av, animated: true)
         }
     }

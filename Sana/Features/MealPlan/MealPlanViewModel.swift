@@ -18,7 +18,7 @@ final class MealPlanViewModel: ObservableObject {
     init(user: User) { self.user = user }
 
     func loadExistingPlan() {
-        currentPlan = user.mealPlans
+        currentPlan = (user.mealPlans ?? [])
             .filter { $0.isActive }
             .sorted { $0.createdAt > $1.createdAt }
             .first
@@ -42,12 +42,11 @@ final class MealPlanViewModel: ObservableObject {
                     PlannedMeal(from: dayResp.lunch,     mealType: .lunch),
                     PlannedMeal(from: dayResp.dinner,    mealType: .dinner)
                 ] + dayResp.snacks.map { PlannedMeal(from: $0, mealType: .snack) }
-                plan.days.append(day)
+                day.plan = plan
             }
 
             // Deactivate old plans
-            user.mealPlans.forEach { $0.isActive = false }
-            user.mealPlans.append(plan)
+            (user.mealPlans ?? []).forEach { $0.isActive = false }
             currentPlan = plan
         } catch {
             self.error = error.localizedDescription
@@ -99,10 +98,9 @@ final class MealPlanViewModel: ObservableObject {
                 PlannedMeal(from: dayResp.lunch,     mealType: .lunch),
                 PlannedMeal(from: dayResp.dinner,    mealType: .dinner)
             ] + dayResp.snacks.map { PlannedMeal(from: $0, mealType: .snack) }
-            plan.days.append(day)
+            day.plan = plan
         }
-        user.mealPlans.forEach { $0.isActive = false }
-        user.mealPlans.append(plan)
+        (user.mealPlans ?? []).forEach { $0.isActive = false }
         currentPlan = plan
     }
 
@@ -120,7 +118,6 @@ final class MealPlanViewModel: ObservableObject {
         entry.aiInsights = [planned.mealDescription]
         entry.logSource = "plan"
         entry.user = user
-        user.mealEntries.append(entry)
         planned.isCompleted = true
         WidgetDataStore.save(user.widgetData)
         Task { @MainActor in

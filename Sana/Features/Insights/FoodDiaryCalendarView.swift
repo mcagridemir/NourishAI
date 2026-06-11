@@ -11,7 +11,7 @@ struct FoodDiaryCalendarView: View {
     private var calendar: Calendar { .current }
 
     private var mealsOnSelected: [MealEntry] {
-        user.mealEntries
+        (user.mealEntries ?? [])
             .filter { calendar.isDate($0.loggedAt, inSameDayAs: selectedDate) }
             .sorted { $0.loggedAt < $1.loggedAt }
     }
@@ -207,11 +207,11 @@ struct FoodDiaryCalendarView: View {
     // MARK: - Helpers
 
     private func mealCount(on date: Date) -> Int {
-        user.mealEntries.filter { calendar.isDate($0.loggedAt, inSameDayAs: date) }.count
+        (user.mealEntries ?? []).filter { calendar.isDate($0.loggedAt, inSameDayAs: date) }.count
     }
 
     private func caloriesLogged(on date: Date) -> Int {
-        user.mealEntries
+        (user.mealEntries ?? [])
             .filter { calendar.isDate($0.loggedAt, inSameDayAs: date) }
             .map { $0.calories }
             .reduce(0, +)

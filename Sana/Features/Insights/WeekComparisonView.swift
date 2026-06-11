@@ -11,14 +11,14 @@ struct WeekComparisonView: View {
 
     // This week: Mon→today
     private var thisWeek: [MealEntry] {
-        user.mealEntries.filter {
+        (user.mealEntries ?? []).filter {
             $0.loggedAt >= weekStart(offset: 0) && $0.loggedAt < weekStart(offset: 1)
         }
     }
 
     // Last week
     private var lastWeek: [MealEntry] {
-        user.mealEntries.filter {
+        (user.mealEntries ?? []).filter {
             $0.loggedAt >= weekStart(offset: -1) && $0.loggedAt < weekStart(offset: 0)
         }
     }

@@ -38,10 +38,10 @@ struct GroceryListView: View {
         VStack(spacing: 0) {
             // Progress bar
             HStack {
-                Text("\(vm.checkedCount)/\(vm.totalCount) items")
+                Text(String(format: NSLocalizedString("%d/%d items", comment: ""), vm.checkedCount, vm.totalCount))
                     .font(SanaTheme.Font.caption()).foregroundStyle(.secondary)
                 Spacer()
-                Text("\(Int(vm.progress * 100))% done")
+                Text(String(format: NSLocalizedString("%d%% done", comment: ""), Int(vm.progress * 100)))
                     .font(SanaTheme.Font.caption()).foregroundStyle(SanaTheme.Color.primary)
             }
             .padding(.horizontal, SanaTheme.Spacing.md)
@@ -111,6 +111,9 @@ private struct GroceryItemRow: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .accessibilityLabel(item.isChecked
+            ? "\(item.name), \(item.formattedQuantity) – in cart. Tap to remove."
+            : "\(item.name), \(item.formattedQuantity) – not yet in cart. Tap to add.")
     }
 }
 

@@ -83,7 +83,6 @@ final class MealLogViewModel: ObservableObject {
         HapticService.notification(.success)
         let entry = MealEntry(from: analysis, mealType: selectedMealType, photoData: capturedImage?.jpegData(compressionQuality: 0.6))
         entry.user = user
-        user.mealEntries.append(entry)
         user.dailyAnalysisCount += 1
         Task { try? await HealthKitService.shared.logMeal(entry) }
         scheduleDeficiencyAlertsIfNeeded()
@@ -97,7 +96,6 @@ final class MealLogViewModel: ObservableObject {
         HapticService.notification(.success)
         let entry = MealEntry(manual: name, calories: calories, protein: protein, carbs: carbs, fat: fat, mealType: selectedMealType)
         entry.user = user
-        user.mealEntries.append(entry)
         scheduleDeficiencyAlertsIfNeeded()
         refreshWidget()
         refreshLiveActivity()
@@ -120,7 +118,6 @@ final class MealLogViewModel: ObservableObject {
         entry.confidence = result.confidence
         entry.logSource = "label"
         entry.user = user
-        user.mealEntries.append(entry)
         scheduleDeficiencyAlertsIfNeeded()
         refreshWidget()
         refreshLiveActivity()
@@ -144,7 +141,6 @@ final class MealLogViewModel: ObservableObject {
         let scaled = product.scaled(toGrams: grams)
         let entry = MealEntry(barcode: scaled, mealType: selectedMealType)
         entry.user = user
-        user.mealEntries.append(entry)
         user.dailyAnalysisCount += 1
         Task { try? await HealthKitService.shared.logMeal(entry) }
         scheduleDeficiencyAlertsIfNeeded()
@@ -172,7 +168,7 @@ final class MealLogViewModel: ObservableObject {
 
     var savedMeals: [MealEntry] {
         Array(
-            user.mealEntries
+            (user.mealEntries ?? [])
                 .filter { $0.isFavourite }
                 .sorted { $0.mealName < $1.mealName }
                 .prefix(12)
@@ -182,7 +178,7 @@ final class MealLogViewModel: ObservableObject {
     /// Top-5 most-logged meals by name (excluding today, past 30 days), one representative entry each.
     var frequentMeals: [MealEntry] {
         let cutoff = Date().addingTimeInterval(-30 * 86400)
-        let recent = user.mealEntries.filter { $0.loggedAt > cutoff && !Calendar.current.isDateInToday($0.loggedAt) }
+        let recent = (user.mealEntries ?? []).filter { $0.loggedAt > cutoff && !Calendar.current.isDateInToday($0.loggedAt) }
         let grouped = Dictionary(grouping: recent) { $0.mealName.lowercased() }
         return grouped
             .sorted { $0.value.count > $1.value.count }
@@ -194,7 +190,6 @@ final class MealLogViewModel: ObservableObject {
         HapticService.notification(.success)
         let entry = MealEntry(relogging: meal, mealType: selectedMealType)
         entry.user = user
-        user.mealEntries.append(entry)
         Task { try? await HealthKitService.shared.logMeal(entry) }
         scheduleDeficiencyAlertsIfNeeded()
         refreshWidget()
@@ -215,7 +210,6 @@ final class MealLogViewModel: ObservableObject {
         entry.aiInsights = recipe.tips
         entry.logSource = "recipe"
         entry.user = user
-        user.mealEntries.append(entry)
         Task { try? await HealthKitService.shared.logMeal(entry) }
         scheduleDeficiencyAlertsIfNeeded()
         refreshWidget()
@@ -224,7 +218,7 @@ final class MealLogViewModel: ObservableObject {
     }
 
     private func requestReviewIfEligible() {
-        let total = user.mealEntries.count
+        let total = (user.mealEntries ?? []).count
         guard total == 5 || total == 20 || total == 50 else { return }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }

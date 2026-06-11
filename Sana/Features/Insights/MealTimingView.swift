@@ -20,7 +20,7 @@ struct MealTimingView: View {
         var windows: [Double] = []
         for i in 0..<7 {
             guard let day = calendar.date(byAdding: .day, value: -i, to: calendar.startOfDay(for: .now)) else { continue }
-            let nextDay = calendar.date(byAdding: .day, value: 1, to: day)!
+            guard let nextDay = calendar.date(byAdding: .day, value: 1, to: day) else { continue }
             let dayMeals = mealEntries.filter { $0.loggedAt >= day && $0.loggedAt < nextDay }.map { $0.loggedAt }
             guard dayMeals.count >= 2, let first = dayMeals.min(), let last = dayMeals.max() else { continue }
             windows.append(last.timeIntervalSince(first) / 3600)
@@ -53,7 +53,7 @@ struct MealTimingView: View {
         var result: [(Int, Double)] = []
         for i in 0..<7 {
             guard let day = calendar.date(byAdding: .day, value: -i, to: calendar.startOfDay(for: .now)) else { continue }
-            let nextDay = calendar.date(byAdding: .day, value: 1, to: day)!
+            guard let nextDay = calendar.date(byAdding: .day, value: 1, to: day) else { continue }
             let dayMeals = mealEntries.filter { $0.loggedAt >= day && $0.loggedAt < nextDay }
             for meal in dayMeals {
                 let hour = Double(calendar.component(.hour, from: meal.loggedAt)) +

@@ -107,7 +107,7 @@ struct LogWeightSheet: View {
             HStack(spacing: 6) {
                 Image(systemName: diff < 0 ? "arrow.down.circle.fill" : "arrow.up.circle.fill")
                     .foregroundStyle(diff < 0 ? SanaTheme.Color.primary : .orange)
-                Text("\(diff < 0 ? "" : "+")\(diffDisplay) from last entry")
+                Text("\(diff < 0 ? "" : "+")\(diffDisplay) ") + Text("from last entry")
                     .font(SanaTheme.Font.caption())
                     .foregroundStyle(.secondary)
             }
@@ -120,7 +120,6 @@ struct LogWeightSheet: View {
         HapticService.notification(.success)
         let entry = WeightEntry(weightKg: weightKg)
         entry.user = user
-        user.weightEntries.append(entry)
         user.weightKg = weightKg
         Task { try? await HealthKitService.shared.writeWeight(kg: weightKg) }
         dismiss()

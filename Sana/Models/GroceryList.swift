@@ -10,11 +10,11 @@ import SwiftData
 
 @Model
 final class GroceryList {
-    var id: UUID
-    var createdAt: Date
-    var weekStartDate: Date
-    var sections: [GrocerySection]
-    var isArchived: Bool
+    var id: UUID = UUID()
+    var createdAt: Date = Date.now
+    var weekStartDate: Date = Date.now
+    var sections: [GrocerySection] = []
+    var isArchived: Bool = false
 
     var totalItems: Int { sections.flatMap { $0.items }.count }
     var checkedItems: Int { sections.flatMap { $0.items }.filter { $0.isChecked }.count }

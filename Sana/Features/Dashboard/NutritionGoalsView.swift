@@ -8,7 +8,7 @@ struct NutritionGoalsView: View {
     @Environment(\.dismiss) private var dismiss
 
     private var today: [MealEntry] {
-        user.mealEntries.filter { Calendar.current.isDateInToday($0.loggedAt) }
+        (user.mealEntries ?? []).filter { Calendar.current.isDateInToday($0.loggedAt) }
     }
     private var cal:    Int    { today.map { $0.calories }.reduce(0, +) }
     private var prot:   Double { today.map { $0.protein }.reduce(0, +) }

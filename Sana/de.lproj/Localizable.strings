@@ -337,3 +337,109 @@
 "Moderate exercise 3–5 days/week" = "Moderater Sport 3–5 Tage/Woche";
 "Hard exercise 6–7 days/week" = "Intensiver Sport 6–7 Tage/Woche";
 "Physical job or twice-daily training" = "Körperliche Arbeit oder zweimal täglich Training";
+
+// MARK: - Fortschrittsfotos
+"Add Progress Photo" = "Fortschrittsfoto hinzufügen";
+"Progress Photos" = "Fortschrittsfotos";
+"Start your journey" = "Beginne deine Reise";
+"Track your physical progress with photos.\nSee how far you've come over time." = "Verfolge deinen körperlichen Fortschritt mit Fotos.\nSieh, wie weit du gekommen bist.";
+"Add first photo" = "Erstes Foto hinzufügen";
+"Compare photos" = "Fotos vergleichen";
+"Exit compare mode" = "Vergleichsmodus beenden";
+"Before" = "Vorher";
+"After" = "Nachher";
+"Comparison" = "Vergleich";
+"Compare" = "Vergleichen";
+"Journey" = "Reise";
+"Weight change" = "Gewichtsveränderung";
+"Photos" = "Fotos";
+"Save photo" = "Foto speichern";
+"Delete this photo?" = "Dieses Foto löschen?";
+"Progress Photo" = "Fortschrittsfoto";
+"Tap first photo" = "Erstes Foto antippen";
+"Tap second photo" = "Zweites Foto antippen";
+"Ready!" = "Bereit!";
+"Compare mode" = "Vergleichsmodus";
+
+// MARK: - Authentifizierung
+"Your personal AI nutrition coach" = "Dein persönlicher KI-Ernährungscoach";
+"Continue with email" = "Mit E-Mail fortfahren";
+"By continuing you agree to our" = "Durch Fortfahren stimmst du zu";
+"Sign in" = "Anmelden";
+"Create account" = "Konto erstellen";
+"Terms of Service" = "Nutzungsbedingungen";
+"Privacy Policy" = "Datenschutzrichtlinie";
+"and" = "und";
+"Forgot password?" = "Passwort vergessen?";
+"Reset Password" = "Passwort zurücksetzen";
+"Email" = "E-Mail";
+"Password" = "Passwort";
+"Full name" = "Vollständiger Name";
+"Continue with Apple" = "Mit Apple fortfahren";
+"Continue with Google" = "Mit Google fortfahren";
+"Or" = "Oder";
+
+// MARK: - Einblicke (fehlend)
+"Your trends" = "Deine Trends";
+"Goal" = "Ziel";
+"No data yet" = "Noch keine Daten";
+"Log meals to see calorie trends, macro breakdowns, and health score history." = "Protokolliere Mahlzeiten, um Kalorientrends, Makro-Aufschlüsselungen und den Gesundheitsscore-Verlauf zu sehen.";
+"Log meals for at least 2 weeks to see the comparison." = "Protokolliere Mahlzeiten für mindestens 2 Wochen, um den Vergleich zu sehen.";
+"Logging streak" = "Protokoll-Serie";
+"Less" = "Weniger";
+"More" = "Mehr";
+"No meals logged today yet." = "Heute noch keine Mahlzeiten protokolliert.";
+"Eating pattern (7 days)" = "Essmuster (7 Tage)";
+"Time between meals" = "Zeit zwischen Mahlzeiten";
+"No meal photos yet" = "Noch keine Mahlzeitenfotos";
+"Take a photo when logging meals to see them here" = "Mache beim Protokollieren ein Foto, um es hier zu sehen";
+
+// MARK: - Wochenbericht
+"Analysing your week…" = "Deine Woche wird analysiert…";
+"Claude is reviewing your nutrition data" = "Claude überprüft deine Ernährungsdaten";
+
+// MARK: - Rezeptgenerator
+"What's in your kitchen?" = "Was ist in deiner Küche?";
+"Add ingredients and Claude will craft a healthy recipe tailored to your goals." = "Füge Zutaten hinzu und Claude erstellt ein gesundes Rezept für deine Ziele.";
+"Quick add" = "Schnell hinzufügen";
+"Claude is creating your personalised recipe" = "Claude erstellt dein personalisiertes Rezept";
+
+// MARK: - Barcode-Scanner
+"Looking up product…" = "Produkt wird gesucht…";
+"Product not found" = "Produkt nicht gefunden";
+
+// MARK: - Einkaufsliste
+"No grocery list yet" = "Noch keine Einkaufsliste";
+"Generate a smart shopping list\nfrom your active meal plan." = "Erstelle eine intelligente Einkaufsliste\naus deinem aktiven Ernährungsplan.";
+
+// MARK: - Kamera / Mahlzeitenprotokoll
+"Estimating…" = "Schätzung läuft…";
+"Estimate with AI" = "Mit KI schätzen";
+"How was it?" = "Wie war es?";
+
+// MARK: - Fortschrittsfoto hinzufügen
+"Add a progress photo" = "Fortschrittsfoto hinzufügen";
+"Track your body transformation over time" = "Verfolge deine Transformation im Laufe der Zeit";
+
+// MARK: - Format- / interpolierte Zeichenfolgen
+"No meals logged" = "Keine Mahlzeiten eingetragen";
+"from last entry" = "seit letztem Eintrag";
+"vs. your %d kcal goal · green = over · orange = under" = "vs. Ihr %d kcal-Ziel · Grün = darüber · Orange = darunter";
+"Low %@" = "Niedriger %@";
+"No results for \"%@\"" = "Keine Ergebnisse für \"%@\"";
+"%d free analyses remaining today" = "%d kostenlose Analysen heute übrig";
+"vs yesterday" = "vs. gestern";
+"Hi %@! I'm your Sana coach." = "Hallo %@! Ich bin dein Sana-Coach.";
+"Contains: %@" = "Enthält: %@";
+"Label serving: %@  ·  %.1f servings per container" = "Etikettenportion: %@  ·  %.1f Portionen pro Packung";
+"%d/%d items" = "%d/%d Artikel";
+"%d%% done" = "%d%% erledigt";
+"%d of %d unlocked" = "%d von %d freigeschaltet";
+"Based on a healthy BMI of 18.5–24.9 for your height (%@)" = "Basierend auf einem gesunden BMI von 18,5–24,9 für deine Größe (%@)";
+
+// MARK: - Fehlermeldungen
+"Could not encode image for upload." = "Bild konnte nicht für den Upload kodiert werden.";
+"Received unexpected response format." = "Unerwartetes Antwortformat erhalten.";
+"Parse error: %@" = "Analyse-Fehler: %@";
+"Server error (HTTP %d)." = "Serverfehler (HTTP %d).";
+"AI service is not configured. Please check your setup." = "KI-Dienst ist nicht konfiguriert. Bitte überprüfe deine Einstellungen.";

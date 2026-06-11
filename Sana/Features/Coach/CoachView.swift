@@ -104,6 +104,12 @@ struct CoachView: View {
             }
             .animation(SanaTheme.Animation.smooth, value: vm.savedPlanBanner != nil)
             .animation(SanaTheme.Animation.smooth, value: vm.pendingPlanResponse != nil)
+            .sheet(isPresented: $vm.showingVoiceInput) {
+                VoiceMealInputView { text in
+                    vm.inputText = text
+                    vm.showingVoiceInput = false
+                }
+            }
         }
     }
 
@@ -206,17 +212,6 @@ struct CoachView: View {
 
     private var inputBar: some View {
         HStack(spacing: 8) {
-            // Attachment / plus button
-            Button { } label: {
-                Image(systemName: "plus")
-                    .font(.system(size: 20, weight: .medium))
-                    .foregroundStyle(.primary)
-                    .frame(width: 40, height: 40)
-                    .background(SanaTheme.Color.elevated)
-                    .clipShape(Circle())
-            }
-            .accessibilityLabel("Attach")
-
             // Input pill: text field + mic + send
             HStack(spacing: 4) {
                 TextField("Ask your coach anything…", text: $vm.inputText, axis: .vertical)
@@ -225,7 +220,10 @@ struct CoachView: View {
                     .padding(.leading, 4)
 
                 if !vm.isStreaming {
-                    Button { } label: {
+                    Button {
+                        HapticService.selection()
+                        vm.showingVoiceInput = true
+                    } label: {
                         Image(systemName: "mic")
                             .font(.system(size: 16))
                             .foregroundStyle(.secondary)
@@ -455,7 +453,7 @@ private struct WelcomeBubble: View {
                     .overlay(Circle().stroke(Color(UIColor.systemBackground), lineWidth: 2))
                     .offset(x: 3, y: 3)
             }
-            Text("Hi \(firstName)! I'm your Sana coach.")
+            Text(String(format: NSLocalizedString("Hi %@! I'm your Sana coach.", comment: ""), firstName))
                 .font(SanaTheme.Font.headline())
                 .multilineTextAlignment(.center)
             Text("Ask me anything about your nutrition, get meal suggestions, or learn how to hit your health goals.")

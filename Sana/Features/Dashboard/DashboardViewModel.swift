@@ -17,7 +17,7 @@ final class DashboardViewModel: ObservableObject {
     }
 
     var todayMeals: [MealEntry] {
-        user.mealEntries
+        (user.mealEntries ?? [])
             .filter { Calendar.current.isDateInToday($0.loggedAt) }
             .sorted { $0.loggedAt > $1.loggedAt }
     }
@@ -44,12 +44,12 @@ final class DashboardViewModel: ObservableObject {
     func loadInsights() async {
         WidgetDataStore.save(user.widgetData)
         LiveActivityService.shared.startOrUpdate(user: user)
-        SpotlightService.indexMeals(user.mealEntries)
+        SpotlightService.indexMeals(user.mealEntries ?? [])
         fireGoalNudge()
         scheduleStreakRecovery()
         guard weeklyInsight == nil else { return }
         // Show insights when user has logged any meals ever (not just today)
-        guard !user.mealEntries.isEmpty else { return }
+        guard !(user.mealEntries ?? []).isEmpty else { return }
         isLoadingInsights = true
         insightError = nil
         defer { isLoadingInsights = false }
@@ -79,7 +79,7 @@ final class DashboardViewModel: ObservableObject {
     }
 
     private func scheduleStreakRecovery() {
-        let hasLoggedToday = user.mealEntries.contains { Calendar.current.isDateInToday($0.loggedAt) }
+        let hasLoggedToday = (user.mealEntries ?? []).contains { Calendar.current.isDateInToday($0.loggedAt) }
         NotificationService.shared.scheduleStreakRecovery(
             currentStreak: user.currentStreak,
             hasLoggedToday: hasLoggedToday

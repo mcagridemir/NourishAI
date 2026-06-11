@@ -178,7 +178,7 @@ struct EditProfileView: View {
                 DatePicker(
                     "Born",
                     selection: $dateOfBirth,
-                    in: ...Calendar.current.date(byAdding: .year, value: -10, to: .now)!,
+                    in: ...(Calendar.current.date(byAdding: .year, value: -10, to: .now) ?? .now),
                     displayedComponents: .date
                 )
                 .datePickerStyle(.compact)

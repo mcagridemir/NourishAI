@@ -81,7 +81,9 @@ final class GoogleSignInService: NSObject {
         let verifier  = makePKCEVerifier()
         let challenge = makePKCEChallenge(from: verifier)
 
-        var components = URLComponents(string: "https://accounts.google.com/o/oauth2/v2/auth")!
+        guard var components = URLComponents(string: "https://accounts.google.com/o/oauth2/v2/auth") else {
+            throw GoogleSignInError.invalidCallback
+        }
         components.queryItems = [
             URLQueryItem(name: "client_id",             value: clientID),
             URLQueryItem(name: "redirect_uri",          value: redirectURI),
@@ -90,10 +92,13 @@ final class GoogleSignInService: NSObject {
             URLQueryItem(name: "code_challenge",        value: challenge),
             URLQueryItem(name: "code_challenge_method", value: "S256"),
         ]
+        guard let authURL = components.url else {
+            throw GoogleSignInError.invalidCallback
+        }
 
         let callbackURL: URL = try await withCheckedThrowingContinuation { cont in
             let session = ASWebAuthenticationSession(
-                url: components.url!,
+                url: authURL,
                 callbackURLScheme: redirectScheme
             ) { url, error in
                 if let error = error {

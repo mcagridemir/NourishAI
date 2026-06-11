@@ -11,6 +11,7 @@ final class CoachViewModel: ObservableObject {
     @Published var isStreaming = false
     @Published var streamingBuffer = ""
     @Published var error: String?
+    @Published var showingVoiceInput = false
 
     /// Non-nil when a meal plan was auto-saved from a coach conversation.
     @Published var savedPlanBanner: String?
@@ -30,7 +31,7 @@ final class CoachViewModel: ObservableObject {
 
     init(user: User) {
         self.user = user
-        self.messages = user.chatMessages
+        self.messages = (user.chatMessages ?? [])
             .sorted { $0.createdAt < $1.createdAt }
             .suffix(40)
             .map { $0 }
@@ -49,7 +50,6 @@ final class CoachViewModel: ObservableObject {
         let userMsg = ChatMessage(role: .user, content: text)
         userMsg.user = user
         messages.append(userMsg)
-        user.chatMessages.append(userMsg)
         isStreaming = true
         streamingBuffer = ""
         error = nil
@@ -65,7 +65,6 @@ final class CoachViewModel: ObservableObject {
                     let assistantMsg = ChatMessage(role: .assistant, content: streamingBuffer)
                     assistantMsg.user = user
                     messages.append(assistantMsg)
-                    user.chatMessages.append(assistantMsg)
 
                     // Detect meal plan intent → generate structured plan in background
                     let lower = text.lowercased()
@@ -74,7 +73,9 @@ final class CoachViewModel: ObservableObject {
                     }
                 }
             } catch {
-                self.error = error.localizedDescription
+                if !(error is CancellationError) {
+                    self.error = error.localizedDescription
+                }
             }
             isStreaming = false
             streamingBuffer = ""
@@ -111,10 +112,9 @@ final class CoachViewModel: ObservableObject {
                 PlannedMeal(from: dayResp.lunch,     mealType: .lunch),
                 PlannedMeal(from: dayResp.dinner,    mealType: .dinner)
             ] + dayResp.snacks.map { PlannedMeal(from: $0, mealType: .snack) }
-            plan.days.append(day)
+            day.plan = plan
         }
-        user.mealPlans.forEach { $0.isActive = false }
-        user.mealPlans.append(plan)
+        (user.mealPlans ?? []).forEach { $0.isActive = false }
         pendingPlanResponse = nil
         isSavingPlan = false
         HapticService.notification(.success)
@@ -128,7 +128,7 @@ final class CoachViewModel: ObservableObject {
         isStreaming = false
         streamingBuffer = ""
         messages.removeAll()
-        user.chatMessages.removeAll()   // also erase from SwiftData so next launch starts fresh
+        user.chatMessages = []   // also erase from SwiftData so next launch starts fresh
         inputText = ""
         pendingPlanResponse = nil
         savedPlanBanner = nil

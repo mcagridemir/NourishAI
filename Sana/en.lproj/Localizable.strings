@@ -330,6 +330,89 @@
 "I'm on a %d-day streak! What's next for me?" = "I'm on a %d-day streak! What's next for me?";
 "What should I log for my first meal today?" = "What should I log for my first meal today?";
 
+// MARK: - Progress Photos
+"Add Progress Photo" = "Add Progress Photo";
+"Progress Photos" = "Progress Photos";
+"Start your journey" = "Start your journey";
+"Track your physical progress with photos.\nSee how far you've come over time." = "Track your physical progress with photos.\nSee how far you've come over time.";
+"Add first photo" = "Add first photo";
+"Compare photos" = "Compare photos";
+"Exit compare mode" = "Exit compare mode";
+"Before" = "Before";
+"After" = "After";
+"Comparison" = "Comparison";
+"Compare" = "Compare";
+"Journey" = "Journey";
+"Weight change" = "Weight change";
+"Photos" = "Photos";
+"Save photo" = "Save photo";
+"Delete this photo?" = "Delete this photo?";
+"Progress Photo" = "Progress Photo";
+"Tap first photo" = "Tap first photo";
+"Tap second photo" = "Tap second photo";
+"Ready!" = "Ready!";
+"Compare mode" = "Compare mode";
+
+// MARK: - Auth
+"Your personal AI nutrition coach" = "Your personal AI nutrition coach";
+"Continue with email" = "Continue with email";
+"By continuing you agree to our" = "By continuing you agree to our";
+"Sign in" = "Sign in";
+"Create account" = "Create account";
+"Terms of Service" = "Terms of Service";
+"Privacy Policy" = "Privacy Policy";
+"and" = "and";
+"Forgot password?" = "Forgot password?";
+"Reset Password" = "Reset Password";
+"Email" = "Email";
+"Password" = "Password";
+"Full name" = "Full name";
+"Continue with Apple" = "Continue with Apple";
+"Continue with Google" = "Continue with Google";
+"Or" = "Or";
+
+// MARK: - Insights (missing)
+"Your trends" = "Your trends";
+"Goal" = "Goal";
+"No data yet" = "No data yet";
+"Log meals to see calorie trends, macro breakdowns, and health score history." = "Log meals to see calorie trends, macro breakdowns, and health score history.";
+"Log meals for at least 2 weeks to see the comparison." = "Log meals for at least 2 weeks to see the comparison.";
+"Logging streak" = "Logging streak";
+"Less" = "Less";
+"More" = "More";
+"No meals logged today yet." = "No meals logged today yet.";
+"Eating pattern (7 days)" = "Eating pattern (7 days)";
+"Time between meals" = "Time between meals";
+"No meal photos yet" = "No meal photos yet";
+"Take a photo when logging meals to see them here" = "Take a photo when logging meals to see them here";
+
+// MARK: - Weekly report
+"Analysing your week…" = "Analysing your week…";
+"Claude is reviewing your nutrition data" = "Claude is reviewing your nutrition data";
+
+// MARK: - Recipe generator
+"What's in your kitchen?" = "What's in your kitchen?";
+"Add ingredients and Claude will craft a healthy recipe tailored to your goals." = "Add ingredients and Claude will craft a healthy recipe tailored to your goals.";
+"Quick add" = "Quick add";
+"Claude is creating your personalised recipe" = "Claude is creating your personalised recipe";
+
+// MARK: - Barcode scanner
+"Looking up product…" = "Looking up product…";
+"Product not found" = "Product not found";
+
+// MARK: - Grocery list
+"No grocery list yet" = "No grocery list yet";
+"Generate a smart shopping list\nfrom your active meal plan." = "Generate a smart shopping list\nfrom your active meal plan.";
+
+// MARK: - Camera / meal log
+"Estimating…" = "Estimating…";
+"Estimate with AI" = "Estimate with AI";
+"How was it?" = "How was it?";
+
+// MARK: - Add progress photo (sheet)
+"Add a progress photo" = "Add a progress photo";
+"Track your body transformation over time" = "Track your body transformation over time";
+
 // MARK: - Onboarding activity step (new)
 "How active are you?" = "How active are you?";
 "This helps us calculate your daily calorie needs accurately." = "This helps us calculate your daily calorie needs accurately.";
@@ -338,3 +421,26 @@
 "Moderate exercise 3–5 days/week" = "Moderate exercise 3–5 days/week";
 "Hard exercise 6–7 days/week" = "Hard exercise 6–7 days/week";
 "Physical job or twice-daily training" = "Physical job or twice-daily training";
+
+// MARK: - Format / interpolated strings
+"No meals logged" = "No meals logged";
+"from last entry" = "from last entry";
+"vs. your %d kcal goal · green = over · orange = under" = "vs. your %d kcal goal · green = over · orange = under";
+"Low %@" = "Low %@";
+"No results for \"%@\"" = "No results for \"%@\"";
+"%d free analyses remaining today" = "%d free analyses remaining today";
+"vs yesterday" = "vs yesterday";
+"Hi %@! I'm your Sana coach." = "Hi %@! I'm your Sana coach.";
+"Contains: %@" = "Contains: %@";
+"Label serving: %@  ·  %.1f servings per container" = "Label serving: %@  ·  %.1f servings per container";
+"%d/%d items" = "%d/%d items";
+"%d%% done" = "%d%% done";
+"%d of %d unlocked" = "%d of %d unlocked";
+"Based on a healthy BMI of 18.5–24.9 for your height (%@)" = "Based on a healthy BMI of 18.5–24.9 for your height (%@)";
+
+// MARK: - Error messages
+"Could not encode image for upload." = "Could not encode image for upload.";
+"Received unexpected response format." = "Received unexpected response format.";
+"Parse error: %@" = "Parse error: %@";
+"Server error (HTTP %d)." = "Server error (HTTP %d).";
+"AI service is not configured. Please check your setup." = "AI service is not configured. Please check your setup.";

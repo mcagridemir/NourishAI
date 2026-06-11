@@ -330,6 +330,89 @@
 "I'm on a %d-day streak! What's next for me?" = "%d günlük serimdeyim! Sıradaki ne?";
 "What should I log for my first meal today?" = "Bugünkü ilk öğüne ne kaydetmeliyim?";
 
+// MARK: - İlerleme Fotoğrafları
+"Add Progress Photo" = "İlerleme Fotoğrafı Ekle";
+"Progress Photos" = "İlerleme Fotoğrafları";
+"Start your journey" = "Yolculuğunuza Başlayın";
+"Track your physical progress with photos.\nSee how far you've come over time." = "Fotoğraflarla fiziksel ilerlemenizi takip edin.\nNe kadar yol kat ettiğinizi görün.";
+"Add first photo" = "İlk Fotoğrafı Ekle";
+"Compare photos" = "Fotoğrafları Karşılaştır";
+"Exit compare mode" = "Karşılaştırma Modundan Çık";
+"Before" = "Önce";
+"After" = "Sonra";
+"Comparison" = "Karşılaştırma";
+"Compare" = "Karşılaştır";
+"Journey" = "Yolculuk";
+"Weight change" = "Kilo Değişimi";
+"Photos" = "Fotoğraflar";
+"Save photo" = "Fotoğrafı Kaydet";
+"Delete this photo?" = "Bu Fotoğrafı Sil?";
+"Progress Photo" = "İlerleme Fotoğrafı";
+"Tap first photo" = "İlk fotoğrafa dokun";
+"Tap second photo" = "İkinci fotoğrafa dokun";
+"Ready!" = "Hazır!";
+"Compare mode" = "Karşılaştırma Modu";
+
+// MARK: - Kimlik Doğrulama
+"Your personal AI nutrition coach" = "Kişisel AI beslenme koçunuz";
+"Continue with email" = "E-posta ile devam et";
+"By continuing you agree to our" = "Devam ederek kabul etmiş olursunuz";
+"Sign in" = "Giriş Yap";
+"Create account" = "Hesap Oluştur";
+"Terms of Service" = "Kullanım Koşulları";
+"Privacy Policy" = "Gizlilik Politikası";
+"and" = "ve";
+"Forgot password?" = "Şifremi unuttum?";
+"Reset Password" = "Şifreyi Sıfırla";
+"Email" = "E-posta";
+"Password" = "Şifre";
+"Full name" = "Ad Soyad";
+"Continue with Apple" = "Apple ile devam et";
+"Continue with Google" = "Google ile devam et";
+"Or" = "Veya";
+
+// MARK: - İçgörüler (eksik olanlar)
+"Your trends" = "Trendleriniz";
+"Goal" = "Hedef";
+"No data yet" = "Henüz veri yok";
+"Log meals to see calorie trends, macro breakdowns, and health score history." = "Kalori trendlerini, makro dağılımını ve sağlık puanı geçmişini görmek için öğün kaydedin.";
+"Log meals for at least 2 weeks to see the comparison." = "Karşılaştırmayı görmek için en az 2 hafta öğün kaydedin.";
+"Logging streak" = "Kayıt Serisi";
+"Less" = "Az";
+"More" = "Çok";
+"No meals logged today yet." = "Bugün henüz öğün kaydedilmedi.";
+"Eating pattern (7 days)" = "Yeme Düzeni (7 Gün)";
+"Time between meals" = "Öğünler Arası Süre";
+"No meal photos yet" = "Henüz öğün fotoğrafı yok";
+"Take a photo when logging meals to see them here" = "Öğün kaydederken fotoğraf çektiğinizde burada görünür";
+
+// MARK: - Haftalık Rapor
+"Analysing your week…" = "Haftanız analiz ediliyor…";
+"Claude is reviewing your nutrition data" = "Claude beslenme verilerinizi inceliyor";
+
+// MARK: - Tarif Oluşturucu
+"What's in your kitchen?" = "Mutfağınızda ne var?";
+"Add ingredients and Claude will craft a healthy recipe tailored to your goals." = "Malzeme ekleyin, Claude hedeflerinize özel sağlıklı bir tarif hazırlasın.";
+"Quick add" = "Hızlı Ekle";
+"Claude is creating your personalised recipe" = "Claude kişiselleştirilmiş tarifinizi hazırlıyor";
+
+// MARK: - Barkod Tarayıcı
+"Looking up product…" = "Ürün aranıyor…";
+"Product not found" = "Ürün Bulunamadı";
+
+// MARK: - Market Listesi
+"No grocery list yet" = "Henüz market listesi yok";
+"Generate a smart shopping list\nfrom your active meal plan." = "Aktif yemek planınızdan\nakıllı alışveriş listesi oluşturun.";
+
+// MARK: - Kamera / Öğün Kaydı
+"Estimating…" = "Tahmin ediliyor…";
+"Estimate with AI" = "AI ile Tahmin Et";
+"How was it?" = "Nasıldı?";
+
+// MARK: - İlerleme Fotoğrafı (ekleme sayfası)
+"Add a progress photo" = "İlerleme fotoğrafı ekle";
+"Track your body transformation over time" = "Vücut dönüşümünüzü zaman içinde takip edin";
+
 // MARK: - Kullanıcı katılımı - aktivite adımı (yeni)
 "How active are you?" = "Ne kadar aktifsiniz?";
 "This helps us calculate your daily calorie needs accurately." = "Günlük kalori ihtiyacınızı doğru hesaplamamıza yardımcı olur.";
@@ -338,3 +421,26 @@
 "Moderate exercise 3–5 days/week" = "Haftada 3–5 gün orta düzey egzersiz";
 "Hard exercise 6–7 days/week" = "Haftada 6–7 gün yoğun egzersiz";
 "Physical job or twice-daily training" = "Fiziksel iş veya günde iki kez antrenman";
+
+// MARK: - Format / ara değer içeren dizeler
+"No meals logged" = "Öğün kaydedilmedi";
+"from last entry" = "son kayıttan";
+"vs. your %d kcal goal · green = over · orange = under" = "%d kkal hedefinizle karşılaştırıldığında · yeşil = fazla · turuncu = eksik";
+"Low %@" = "Düşük %@";
+"No results for \"%@\"" = "\"%@\" için sonuç yok";
+"%d free analyses remaining today" = "Bugün %d ücretsiz analiz hakkı kaldı";
+"vs yesterday" = "dünle karşılaştırma";
+"Hi %@! I'm your Sana coach." = "Merhaba %@! Ben senin Sana koçunum.";
+"Contains: %@" = "İçerir: %@";
+"Label serving: %@  ·  %.1f servings per container" = "Etiket porsiyonu: %@  ·  Kap başına %.1f porsiyon";
+"%d/%d items" = "%d/%d ürün";
+"%d%% done" = "%%%d tamamlandı";
+"%d of %d unlocked" = "%d/%d kilidi açıldı";
+"Based on a healthy BMI of 18.5–24.9 for your height (%@)" = "%@ boyunuz için sağlıklı VKİ aralığı 18,5–24,9'a dayanarak";
+
+// MARK: - Hata mesajları
+"Could not encode image for upload." = "Görsel yükleme için kodlanamadı.";
+"Received unexpected response format." = "Beklenmeyen bir yanıt formatı alındı.";
+"Parse error: %@" = "Ayrıştırma hatası: %@";
+"Server error (HTTP %d)." = "Sunucu hatası (HTTP %d).";
+"AI service is not configured. Please check your setup." = "Yapay zeka servisi yapılandırılmamış. Lütfen ayarlarınızı kontrol edin.";

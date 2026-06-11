@@ -10,50 +10,52 @@ import SwiftData
 
 @Model
 final class User {
-    var id: UUID
-    var authID: String          // links to AuthService userID (Apple sub, email_address, etc.)
-    var name: String
-    var email: String           // empty — canonical email lives in Keychain
+    var id: UUID = UUID()
+    var authID: String = ""     // links to AuthService userID (Apple sub, email_address, etc.)
+    var name: String = ""
+    var email: String = ""      // empty — canonical email lives in Keychain
     var avatarData: Data?
-    var createdAt: Date
+    var createdAt: Date = Date.now
 
     var dateOfBirth: Date?
-    var biologicalSex: BiologicalSex
-    var heightCm: Double
-    var weightKg: Double
-    var activityLevel: ActivityLevel
+    var biologicalSex: BiologicalSex = BiologicalSex.preferNotToSay
+    var heightCm: Double = 170
+    var weightKg: Double = 70
+    var activityLevel: ActivityLevel = ActivityLevel.moderatelyActive
 
-    var primaryGoal: NutritionGoal
-    var dailyCalorieTarget: Int
-    var dailyProteinTarget: Double
-    var dailyCarbTarget: Double
-    var dailyFatTarget: Double
-    var dailyFiberTarget: Double
-    var useCustomMacros: Bool
+    var primaryGoal: NutritionGoal = NutritionGoal.eatHealthier
+    var dailyCalorieTarget: Int = 2000
+    var dailyProteinTarget: Double = 112
+    var dailyCarbTarget: Double = 225
+    var dailyFatTarget: Double = 65
+    var dailyFiberTarget: Double = 30
+    var useCustomMacros: Bool = false
 
-    var dietaryStyle: DietaryStyle
-    var allergies: [String]
+    var dietaryStyle: DietaryStyle = DietaryStyle.noPreference
+    var allergies: [String] = []
     var healthConditions: [String] = []
     var country: String = ""
-    var dislikedFoods: [String]
-    var cuisinePreferences: [String]
+    var dislikedFoods: [String] = []
+    var cuisinePreferences: [String] = []
 
-    var subscriptionTier: SubscriptionTier
-    var dailyAnalysisCount: Int
-    var lastAnalysisResetDate: Date
+    var subscriptionTier: SubscriptionTier = SubscriptionTier.free
+    var dailyAnalysisCount: Int = 0
+    var lastAnalysisResetDate: Date = Date.now
 
-    var dailyWaterGoalMl: Int
+    var dailyWaterGoalMl: Int = 2000
 
     /// Target weight in kg (0 = not set).
     var targetWeightKg: Double = 0
     /// Whether the user prefers metric (kg/cm) or imperial (lbs/ft+in) units.
     var unitSystem: UnitSystem = UnitSystem.metric
 
-    @Relationship(deleteRule: .cascade) var mealEntries: [MealEntry]
-    @Relationship(deleteRule: .cascade) var mealPlans: [MealPlan]
-    @Relationship(deleteRule: .cascade) var chatMessages: [ChatMessage]
-    @Relationship(deleteRule: .cascade) var waterEntries: [WaterEntry]
-    @Relationship(deleteRule: .cascade) var weightEntries: [WeightEntry]
+    // CloudKit requires all to-many relationships to be Optional
+    @Relationship(deleteRule: .cascade) var mealEntries: [MealEntry]?
+    @Relationship(deleteRule: .cascade) var mealPlans: [MealPlan]?
+    @Relationship(deleteRule: .cascade) var chatMessages: [ChatMessage]?
+    @Relationship(deleteRule: .cascade) var waterEntries: [WaterEntry]?
+    @Relationship(deleteRule: .cascade) var weightEntries: [WeightEntry]?
+    @Relationship(deleteRule: .cascade) var progressPhotos: [ProgressPhoto]?
 
     var age: Int? {
         guard let dob = dateOfBirth else { return nil }
@@ -61,40 +63,40 @@ final class User {
     }
 
     var latestWeightKg: Double {
-        weightEntries.sorted { $0.loggedAt > $1.loggedAt }.first?.weightKg ?? weightKg
+        (weightEntries ?? []).sorted { $0.loggedAt > $1.loggedAt }.first?.weightKg ?? weightKg
     }
 
     var weightChangeSinceStart: Double? {
-        let sorted = weightEntries.sorted { $0.loggedAt < $1.loggedAt }
+        let sorted = (weightEntries ?? []).sorted { $0.loggedAt < $1.loggedAt }
         guard sorted.count >= 2, let first = sorted.first, let last = sorted.last else { return nil }
         return last.weightKg - first.weightKg
     }
 
     var todayWaterMl: Int {
-        waterEntries
+        (waterEntries ?? [])
             .filter { Calendar.current.isDateInToday($0.loggedAt) }
             .reduce(0) { $0 + $1.amountMl }
     }
 
     var todayCalories: Int {
-        mealEntries
+        (mealEntries ?? [])
             .filter { Calendar.current.isDateInToday($0.loggedAt) }
             .map { $0.calories }.reduce(0, +)
     }
 
     var todayProtein: Double {
-        mealEntries
+        (mealEntries ?? [])
             .filter { Calendar.current.isDateInToday($0.loggedAt) }
             .map { $0.protein }.reduce(0, +)
     }
 
     var todayMealCount: Int {
-        mealEntries.filter { Calendar.current.isDateInToday($0.loggedAt) }.count
+        (mealEntries ?? []).filter { Calendar.current.isDateInToday($0.loggedAt) }.count
     }
 
     var currentStreak: Int {
         let cal = Calendar.current
-        let loggedDays = Set(mealEntries.map { cal.startOfDay(for: $0.loggedAt) })
+        let loggedDays = Set((mealEntries ?? []).map { cal.startOfDay(for: $0.loggedAt) })
         var streak = 0
         var date = cal.startOfDay(for: .now)
         if !loggedDays.contains(date) {
@@ -196,7 +198,7 @@ final class User {
     var projectedWeeklyWeightChangeKg: Double {
         let cal = Calendar.current
         let cutoff = Date().addingTimeInterval(-7 * 86400)
-        let recent = mealEntries.filter { $0.loggedAt > cutoff }
+        let recent = (mealEntries ?? []).filter { $0.loggedAt > cutoff }
         guard !recent.isEmpty else { return 0 }
         let daysLogged = max(1, Set(recent.map { cal.startOfDay(for: $0.loggedAt) }).count)
         let avgDaily = Double(recent.map { $0.calories }.reduce(0, +)) / Double(daysLogged)
@@ -216,7 +218,7 @@ final class User {
 
     private var last7DaysMeals: [MealEntry] {
         let cutoff = Date.now.addingTimeInterval(-7 * 86400)
-        return mealEntries.filter { $0.loggedAt > cutoff }
+        return (mealEntries ?? []).filter { $0.loggedAt > cutoff }
     }
 
     var recentNutritionSummary: String {
@@ -251,7 +253,7 @@ final class User {
         let avgFat   = count == 0 ? 0 : Int(last7.map { $0.fat }.reduce(0, +)) / count
         let avgScore = count == 0 ? 0 : last7.map { $0.healthScore }.reduce(0, +) / count
 
-        let waterByDay = Dictionary(grouping: waterEntries.filter { $0.loggedAt > cutoff }) {
+        let waterByDay = Dictionary(grouping: (waterEntries ?? []).filter { $0.loggedAt > cutoff }) {
             cal.startOfDay(for: $0.loggedAt)
         }
         let waterHitDays = waterByDay.filter { _, entries in
@@ -264,7 +266,7 @@ final class User {
     }
 
     var widgetData: SanaWidgetData {
-        let todayMeals = mealEntries.filter { Calendar.current.isDateInToday($0.loggedAt) }
+        let todayMeals = (mealEntries ?? []).filter { Calendar.current.isDateInToday($0.loggedAt) }
         return SanaWidgetData(
             calories: todayMeals.map { $0.calories }.reduce(0, +),
             calorieTarget: dailyCalorieTarget,
@@ -299,6 +301,7 @@ final class User {
                 if avgProt < dailyProteinTarget * 0.7 { deficiencies.append("protein") }
             }
         }
+        let langCode = Locale.current.language.languageCode?.identifier ?? "en"
         return UserNutritionContext(
             profileDescription: profileDescription,
             recentNutritionSummary: summary,
@@ -306,7 +309,8 @@ final class User {
             allergies: allergies,
             healthConditions: healthConditions,
             country: country,
-            dailyCalorieTarget: dailyCalorieTarget
+            dailyCalorieTarget: dailyCalorieTarget,
+            language: langCode
         )
     }
 
@@ -375,6 +379,7 @@ final class User {
         self.chatMessages = []
         self.waterEntries = []
         self.weightEntries = []
+        self.progressPhotos = []
     }
 
     private func resetDailyCountIfNeeded() {

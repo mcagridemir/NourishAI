@@ -84,6 +84,7 @@ struct SupplementTrackerView: View {
                         Image(systemName: "plus")
                             .foregroundStyle(SanaTheme.Color.primary)
                     }
+                    .accessibilityLabel("Add supplement")
                 }
             }
             .sheet(isPresented: $showingAdd) {
@@ -126,7 +127,7 @@ struct SupplementTrackerView: View {
                 if let best, best.currentStreak > 1 {
                     HStack(spacing: 4) {
                         Image(systemName: "flame.fill").foregroundStyle(.orange).font(.caption)
-                        Text("\(best.name) · \(best.currentStreak) day streak")
+                        Text("\(best.name) · \(best.currentStreak) ") + Text("day streak")
                             .font(SanaTheme.Font.caption(12))
                             .foregroundStyle(.orange)
                     }
@@ -199,6 +200,9 @@ struct SupplementTrackerView: View {
                     .animation(SanaTheme.Animation.snappy, value: supp.isLoggedToday)
             }
             .buttonStyle(.plain)
+            .accessibilityLabel(supp.isLoggedToday
+                ? "\(supp.name) – marked as taken. Tap to undo."
+                : "Mark \(supp.name) as taken")
         }
         .padding(.horizontal, SanaTheme.Spacing.md)
         .padding(.vertical, 12)
@@ -235,13 +239,13 @@ struct SupplementTrackerView: View {
         HapticService.selection()
         if supp.isLoggedToday {
             // Remove today's log
-            if let log = supp.logs.first(where: { Calendar.current.isDateInToday($0.loggedAt) }) {
+            if let log = supp.logs?.first(where: { Calendar.current.isDateInToday($0.loggedAt) }) {
                 context.delete(log)
             }
         } else {
             let log = SupplementLog()
-            supp.logs.append(log)
             context.insert(log)
+            log.supplement = supp
             if supp.currentStreak > 0 {
                 HapticService.notification(.success)
             }

@@ -305,7 +305,7 @@ struct MealLogView: View {
             if user.subscriptionTier == .free {
                 HStack {
                     Image(systemName: "info.circle").foregroundStyle(.secondary).font(.caption)
-                    Text("\(user.remainingFreeAnalyses) free analyses remaining today")
+                    Text(String(format: NSLocalizedString("%d free analyses remaining today", comment: ""), user.remainingFreeAnalyses))
                         .font(SanaTheme.Font.caption()).foregroundStyle(.secondary)
                 }
             }
@@ -676,7 +676,7 @@ struct BarcodeProductView: View {
                 Text("Allergen warning")
                     .font(SanaTheme.Font.headline(14))
                     .foregroundStyle(.red)
-                Text("Contains: \(allergenWarnings.joined(separator: ", "))")
+                Text(String(format: NSLocalizedString("Contains: %@", comment: ""), allergenWarnings.joined(separator: ", ")))
                     .font(SanaTheme.Font.body(13))
                     .foregroundStyle(.red.opacity(0.85))
             }

@@ -114,7 +114,7 @@ struct FoodSearchView: View {
             Image(systemName: "tray")
                 .font(.system(size: 36))
                 .foregroundStyle(SanaTheme.Color.primary)
-            Text("No results for \"\(query)\"")
+            Text(String(format: NSLocalizedString("No results for \"%@\"", comment: ""), query))
                 .font(SanaTheme.Font.headline())
             Text("Try a different name or use the barcode scanner")
                 .font(SanaTheme.Font.body(13))

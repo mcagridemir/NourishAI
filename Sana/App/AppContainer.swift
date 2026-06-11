@@ -21,7 +21,8 @@ final class AppContainer {
                              MealPlanDay.self, PlannedMeal.self,
                              ChatMessage.self, GroceryList.self,
                              WaterEntry.self, WeightEntry.self,
-                             Supplement.self, SupplementLog.self])
+                             Supplement.self, SupplementLog.self,
+                             ProgressPhoto.self])
 
         let cloudConfig = ModelConfiguration(schema: schema, cloudKitDatabase: .automatic)
         let localConfig = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
@@ -56,8 +57,45 @@ final class AppContainer {
             print("❌ AppContainer: ALL configurations failed.")
             print("❌ Final error: \(error)")
             print("❌ Full detail: \(String(reflecting: error))")
+            Self.diagnoseSchema()
             fatalError("AppContainer: could not create any ModelContainer — \(error)")
         }
+    }
+
+    /// Binary-search schema diagnostic: adds models one-by-one to pinpoint which
+    /// model (or pair) causes the loadIssueModelContainer crash.
+    private static func diagnoseSchema() {
+        let allTypes: [any PersistentModel.Type] = [
+            User.self, MealEntry.self, MealPlan.self,
+            MealPlanDay.self, PlannedMeal.self,
+            ChatMessage.self, GroceryList.self,
+            WaterEntry.self, WeightEntry.self,
+            Supplement.self, SupplementLog.self,
+            ProgressPhoto.self
+        ]
+        let names = ["User", "MealEntry", "MealPlan",
+                     "MealPlanDay", "PlannedMeal",
+                     "ChatMessage", "GroceryList",
+                     "WaterEntry", "WeightEntry",
+                     "Supplement", "SupplementLog",
+                     "ProgressPhoto"]
+        print("🔍 Schema diagnostic — testing models one by one:")
+        for i in 1...allTypes.count {
+            let subset = Array(allTypes.prefix(i))
+            let label  = Array(names.prefix(i)).joined(separator: " + ")
+            do {
+                let s = Schema(subset)
+                let c = ModelConfiguration(schema: s, isStoredInMemoryOnly: true)
+                _ = try ModelContainer(for: s, configurations: [c])
+                print("  ✅ \(label)")
+            } catch {
+                print("  ❌ FAILED adding \(names[i-1])")
+                print("  ❌ Combo: \(label)")
+                print("  ❌ Error: \(error)")
+                return
+            }
+        }
+        print("  ⚠️ All pass individually — must be a combination issue")
     }
 
     private static func wipeSQLiteStore() {

@@ -48,29 +48,29 @@ struct WaterTrackerView: View {
             // Big number display
             HStack(alignment: .firstTextBaseline, spacing: 4) {
                 Text(user.formatWater(user.todayWaterMl))
-                    .font(.system(size: 28, weight: .bold, design: .rounded))
+                    .font(.system(size: 24, weight: .bold, design: .rounded))
                     .monospacedDigit()
                     .kerning(-0.6)
                 Text("/ \(user.formatWater(user.dailyWaterGoalMl))")
-                    .font(.system(size: 11))
+                    .font(.system(size: 10))
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
                     .minimumScaleFactor(0.7)
             }
-            .padding(.top, 14)
+            .padding(.top, 8)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel("Water: \(user.formatWater(user.todayWaterMl)) of \(user.formatWater(user.dailyWaterGoalMl)). \(Int(progress * 100)) percent.")
 
             // Glass segments (8 cells)
             HStack(spacing: 4) {
                 ForEach(0..<8, id: \.self) { i in
-                    RoundedRectangle(cornerRadius: 6)
+                    RoundedRectangle(cornerRadius: 4)
                         .fill(Double(i) < progress * 8 ? Self.hydrationBlue : SanaTheme.Color.hairline)
-                        .frame(height: 22)
+                        .frame(height: 16)
                         .animation(SanaTheme.Animation.smooth, value: progress)
                 }
             }
-            .padding(.top, 10)
+            .padding(.top, 8)
 
             // Add glass CTA
             Button {
@@ -105,7 +105,7 @@ struct WaterTrackerView: View {
         HapticService.impact(.light)
         let entry = WaterEntry(amountMl: ml)
         entry.user = user
-        user.waterEntries.append(entry)
+        // inverse set above; SwiftData manages the collection
         Task { try? await HealthKitService.shared.logWater(ml: ml) }
         WidgetDataStore.save(user.widgetData)
         LiveActivityService.shared.startOrUpdate(user: user)

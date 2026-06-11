@@ -135,9 +135,9 @@ struct AuthView: View {
                         .font(SanaTheme.Font.caption(11))
                         .foregroundStyle(.tertiary)
                     HStack(spacing: 4) {
-                        Link("Terms of Service", destination: URL(string: "https://sana.app/terms")!)
+                        Link("Terms of Service", destination: URL(string: "https://sana-pages.pages.dev/terms")!)
                         Text("and")
-                        Link("Privacy Policy", destination: URL(string: "https://sana.app/privacy")!)
+                        Link("Privacy Policy", destination: URL(string: "https://sana-pages.pages.dev/privacy")!)
                     }
                     .font(SanaTheme.Font.caption(11))
                     .foregroundStyle(SanaTheme.Color.primary)
@@ -198,7 +198,7 @@ private struct GoogleSignInButton: View {
             isLoading = true
             Task {
                 await auth.signInWithGoogle()
-                isLoading = false
+                isLoading = false  // always reset, even on error
             }
         } label: {
             HStack(spacing: 10) {

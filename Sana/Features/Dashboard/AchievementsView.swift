@@ -17,7 +17,7 @@ struct Achievement: Identifiable {
                     title: "First bite",
                     description: "Log your very first meal",
                     color: SanaTheme.Color.primary) { user in
-            !user.mealEntries.isEmpty
+            !(user.mealEntries ?? []).isEmpty
         },
         Achievement(id: "streak_7",    icon: "flame.fill",
                     title: "Week warrior",
@@ -35,13 +35,13 @@ struct Achievement: Identifiable {
                     title: "Half century",
                     description: "Log 50 meals total",
                     color: .purple) { user in
-            user.mealEntries.count >= 50
+            (user.mealEntries ?? []).count >= 50
         },
         Achievement(id: "meals_100",   icon: "100.circle.fill",
                     title: "Century club",
                     description: "Log 100 meals total",
                     color: .indigo) { user in
-            user.mealEntries.count >= 100
+            (user.mealEntries ?? []).count >= 100
         },
         Achievement(id: "water_goal",  icon: "drop.fill",
                     title: "Hydration hero",
@@ -50,9 +50,9 @@ struct Achievement: Identifiable {
             let cal = Calendar.current
             var streak = 0
             for i in 0..<7 {
-                guard let day = cal.date(byAdding: .day, value: -i, to: cal.startOfDay(for: .now)) else { break }
-                let nextDay = cal.date(byAdding: .day, value: 1, to: day)!
-                let ml = user.waterEntries
+                guard let day = cal.date(byAdding: .day, value: -i, to: cal.startOfDay(for: .now)),
+                      let nextDay = cal.date(byAdding: .day, value: 1, to: day) else { break }
+                let ml = (user.waterEntries ?? [])
                     .filter { $0.loggedAt >= day && $0.loggedAt < nextDay }
                     .map { $0.amountMl }.reduce(0, +)
                 if ml >= user.dailyWaterGoalMl { streak += 1 } else { break }
@@ -66,9 +66,9 @@ struct Achievement: Identifiable {
             let cal = Calendar.current
             var streak = 0
             for i in 0..<5 {
-                guard let day = cal.date(byAdding: .day, value: -i, to: cal.startOfDay(for: .now)) else { break }
-                let nextDay = cal.date(byAdding: .day, value: 1, to: day)!
-                let prot = user.mealEntries
+                guard let day = cal.date(byAdding: .day, value: -i, to: cal.startOfDay(for: .now)),
+                      let nextDay = cal.date(byAdding: .day, value: 1, to: day) else { break }
+                let prot = (user.mealEntries ?? [])
                     .filter { $0.loggedAt >= day && $0.loggedAt < nextDay }
                     .map { $0.protein }.reduce(0, +)
                 if prot >= user.dailyProteinTarget { streak += 1 } else { break }
@@ -79,7 +79,7 @@ struct Achievement: Identifiable {
                     title: "Health star",
                     description: "Achieve an average health score of 80+",
                     color: .red) { user in
-            let recent = user.mealEntries.suffix(20)
+            let recent = (user.mealEntries ?? []).suffix(20)
             guard !recent.isEmpty else { return false }
             return recent.map { $0.healthScore }.reduce(0, +) / recent.count >= 80
         },
@@ -87,7 +87,7 @@ struct Achievement: Identifiable {
                     title: "Label reader",
                     description: "Scan 5 food barcodes",
                     color: SanaTheme.Color.primary) { user in
-            user.mealEntries.filter { $0.logSource == "barcode" }.count >= 5
+            (user.mealEntries ?? []).filter { $0.logSource == "barcode" }.count >= 5
         },
         Achievement(id: "fasting_complete", icon: "moon.stars.fill",
                     title: "Fasting champion",
@@ -102,9 +102,9 @@ struct Achievement: Identifiable {
             let cal = Calendar.current
             var streak = 0
             for i in 0..<7 {
-                guard let day = cal.date(byAdding: .day, value: -i, to: cal.startOfDay(for: .now)) else { break }
-                let nextDay = cal.date(byAdding: .day, value: 1, to: day)!
-                let cals = user.mealEntries
+                guard let day = cal.date(byAdding: .day, value: -i, to: cal.startOfDay(for: .now)),
+                      let nextDay = cal.date(byAdding: .day, value: 1, to: day) else { break }
+                let cals = (user.mealEntries ?? [])
                     .filter { $0.loggedAt >= day && $0.loggedAt < nextDay }
                     .map { $0.calories }.reduce(0, +)
                 let inRange = cals > 0 && cals <= Int(Double(user.dailyCalorieTarget) * 1.05)
@@ -116,7 +116,7 @@ struct Achievement: Identifiable {
                     title: "Planner",
                     description: "Log all meals from a meal plan day",
                     color: .teal) { user in
-            user.mealPlans.flatMap { $0.days }
+            (user.mealPlans ?? []).flatMap { $0.days ?? [] }
                 .contains { day in
                     let meals: [PlannedMeal?] = [day.breakfastMeal, day.lunchMeal, day.dinnerMeal]
                     return meals.compactMap { $0 }.allSatisfy { $0.isCompleted }
@@ -127,14 +127,14 @@ struct Achievement: Identifiable {
                     description: "Log 5 different meal types in one week",
                     color: .orange) { user in
             let lastWeek = Date().addingTimeInterval(-7 * 86400)
-            let types = Set(user.mealEntries.filter { $0.loggedAt > lastWeek }.map { $0.mealType })
+            let types = Set((user.mealEntries ?? []).filter { $0.loggedAt > lastWeek }.map { $0.mealType })
             return types.count >= 4
         },
         Achievement(id: "photo_10",    icon: "camera.fill",
                     title: "Snap & track",
                     description: "Analyse 10 meals via photo",
                     color: SanaTheme.Color.primary) { user in
-            user.mealEntries.filter { $0.photoData != nil }.count >= 10
+            (user.mealEntries ?? []).filter { $0.photoData != nil }.count >= 10
         },
         Achievement(id: "perfect_day", icon: "star.fill",
                     title: "Perfect day",
@@ -143,10 +143,10 @@ struct Achievement: Identifiable {
             let cal = Calendar.current
             let today = cal.startOfDay(for: .now)
             guard let tomorrow = cal.date(byAdding: .day, value: 1, to: today) else { return false }
-            let meals = user.mealEntries.filter { $0.loggedAt >= today && $0.loggedAt < tomorrow }
+            let meals = (user.mealEntries ?? []).filter { $0.loggedAt >= today && $0.loggedAt < tomorrow }
             let cals = meals.map { $0.calories }.reduce(0, +)
             let prot = meals.map { $0.protein }.reduce(0, +)
-            let water = user.waterEntries.filter { $0.loggedAt >= today && $0.loggedAt < tomorrow }.map { $0.amountMl }.reduce(0, +)
+            let water = (user.waterEntries ?? []).filter { $0.loggedAt >= today && $0.loggedAt < tomorrow }.map { $0.amountMl }.reduce(0, +)
             return cals >= user.dailyCalorieTarget - 100 &&
                    prot >= user.dailyProteinTarget &&
                    water >= user.dailyWaterGoalMl
@@ -188,7 +188,7 @@ struct AchievementsView: View {
                         .frame(width: 100, height: 100)
                         Text("Achievements")
                             .font(SanaTheme.Font.headline(18))
-                        Text("\(unlocked.count) of \(Achievement.all.count) unlocked")
+                        Text(String(format: NSLocalizedString("%d of %d unlocked", comment: ""), unlocked.count, Achievement.all.count))
                             .font(SanaTheme.Font.body(13))
                             .foregroundStyle(.secondary)
                     }

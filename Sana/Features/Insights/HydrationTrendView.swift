@@ -13,7 +13,7 @@ struct HydrationTrendView: View {
         return (0..<7).reversed().compactMap { offset -> (Date, Int, Int)? in
             guard let date = cal.date(byAdding: .day, value: -offset, to: cal.startOfDay(for: .now)) else { return nil }
             let dayEnd = cal.date(byAdding: .day, value: 1, to: date) ?? date
-            let total = user.waterEntries
+            let total = (user.waterEntries ?? [])
                 .filter { $0.loggedAt >= date && $0.loggedAt < dayEnd }
                 .reduce(0) { $0 + $1.amountMl }
             return (date, total, user.dailyWaterGoalMl)

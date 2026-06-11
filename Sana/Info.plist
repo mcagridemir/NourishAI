@@ -19,6 +19,7 @@
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>com.cagri.Sana.widgetRefresh</string>
+		<string>com.cagri.Sana.nutritionSync</string>
 	</array>
 	<key>CFBundleURLTypes</key>
 	<array>
@@ -43,6 +44,10 @@
 	<string>Sana uses the microphone to let you log meals by voice.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Sana accesses your photos to analyse meal images.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Sana saves your progress photos to your photo library.</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>Sana uses speech recognition to transcribe your spoken meal names.</string>
 	<key>NSSupportsLiveActivities</key>
@@ -56,9 +61,18 @@
 	<true/>
 	<key>UILaunchScreen</key>
 	<dict/>
+	<key>CFBundleIconName</key>
+	<string>AppIcon</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 </dict>
 </plist>

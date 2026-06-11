@@ -10,39 +10,39 @@ import SwiftData
 
 @Model
 final class MealEntry {
-    var id: UUID
-    var loggedAt: Date
-    var mealType: MealType
+    var id: UUID = UUID()
+    var loggedAt: Date = Date.now
+    var mealType: MealType = MealType.snack
     var photoData: Data?
-    var mealName: String
-    var estimatedPortionSize: String
+    var mealName: String = ""
+    var estimatedPortionSize: String = ""
 
     // Macros
-    var calories: Int
-    var protein: Double
-    var carbohydrates: Double
-    var fat: Double
-    var fiber: Double
-    var sugar: Double
-    var sodium: Double
+    var calories: Int = 0
+    var protein: Double = 0
+    var carbohydrates: Double = 0
+    var fat: Double = 0
+    var fiber: Double = 0
+    var sugar: Double = 0
+    var sodium: Double = 0
 
     // Micros (stored as JSON string for flexibility)
-    var vitaminsJSON: String
-    var mineralsJSON: String
+    var vitaminsJSON: String = "{}"
+    var mineralsJSON: String = "{}"
 
     // AI metadata
-    var healthScore: Int          // 0-100
-    var aiInsights: [String]
-    var aiSuggestions: [String]
-    var confidence: Double        // 0-1 how sure Claude was
-    var isManualEntry: Bool
+    var healthScore: Int = 0           // 0-100
+    var aiInsights: [String] = []
+    var aiSuggestions: [String] = []
+    var confidence: Double = 0         // 0-1 how sure Claude was
+    var isManualEntry: Bool = false
 
     // Notes
-    var userNotes: String
-    var userRating: Int    // 0 = unrated, 1-5 stars
-    var isFavourite: Bool
+    var userNotes: String = ""
+    var userRating: Int = 0    // 0 = unrated, 1-5 stars
+    var isFavourite: Bool = false
     /// How the entry was created: "photo", "barcode", "manual", "relog", "recipe", "plan"
-    var logSource: String
+    var logSource: String = ""
 
     @Relationship(inverse: \User.mealEntries)
     var user: User?
