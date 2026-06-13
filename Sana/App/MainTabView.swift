@@ -49,9 +49,13 @@ struct MainTabView: View {
         // is updated by StoreKit. Without this sync, a paying user is treated as free.
         .onAppear {
             user.subscriptionTier = subscription.isPremium ? .premium : .free
+            Task { await ClaudeService.shared.setTransactionID(subscription.activeTransactionID) }
         }
         .onChange(of: subscription.isPremium) { _, isPremium in
             user.subscriptionTier = isPremium ? .premium : .free
+        }
+        .onChange(of: subscription.activeTransactionID) { _, id in
+            Task { await ClaudeService.shared.setTransactionID(id) }
         }
     }
 

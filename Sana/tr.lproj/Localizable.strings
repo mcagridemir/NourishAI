@@ -434,7 +434,7 @@
 "Contains: %@" = "İçerir: %@";
 "Label serving: %@  ·  %.1f servings per container" = "Etiket porsiyonu: %@  ·  Kap başına %.1f porsiyon";
 "%d/%d items" = "%d/%d ürün";
-"%d%% done" = "%%%d tamamlandı";
+"%d%% done" = "%d%% tamamlandı";
 "%d of %d unlocked" = "%d/%d kilidi açıldı";
 "Based on a healthy BMI of 18.5–24.9 for your height (%@)" = "%@ boyunuz için sağlıklı VKİ aralığı 18,5–24,9'a dayanarak";
 

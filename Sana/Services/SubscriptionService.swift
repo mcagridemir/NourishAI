@@ -10,6 +10,7 @@ final class SubscriptionService: ObservableObject {
 
     @Published var products: [Product] = []
     @Published var isPremium = false
+    @Published var activeTransactionID: String?
     @Published var isLoading = false
     @Published var error: String?
 
@@ -72,12 +73,15 @@ final class SubscriptionService: ObservableObject {
         for await result in Transaction.currentEntitlements {
             if let transaction = try? checkVerified(result) {
                 if [monthlyProductId, yearlyProductId].contains(transaction.productID) {
-                    isPremium = transaction.revocationDate == nil
+                    let active = transaction.revocationDate == nil
+                    isPremium = active
+                    activeTransactionID = active ? String(transaction.originalID) : nil
                     return
                 }
             }
         }
         isPremium = false
+        activeTransactionID = nil
     }
 
     var monthlyProduct: Product? { products.first { $0.id == monthlyProductId } }
@@ -102,8 +106,10 @@ final class SubscriptionService: ObservableObject {
     }
 
     private func updatePremiumStatus(_ transaction: Transaction) async {
-        isPremium = [monthlyProductId, yearlyProductId].contains(transaction.productID)
-                    && transaction.revocationDate == nil
+        let active = [monthlyProductId, yearlyProductId].contains(transaction.productID)
+                     && transaction.revocationDate == nil
+        isPremium = active
+        activeTransactionID = active ? String(transaction.originalID) : nil
     }
 
     private func checkVerified<T>(_ result: VerificationResult<T>) throws -> T {

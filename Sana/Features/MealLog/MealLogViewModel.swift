@@ -28,6 +28,7 @@ final class MealLogViewModel: ObservableObject {
     @Published var showingVoiceInput = false
     @Published var voicePrefill: String = ""
     @Published var showingLabelScanner = false
+    @Published var showPaywall = false
 
     private let user: User
     private let context: ModelContext
@@ -61,7 +62,7 @@ final class MealLogViewModel: ObservableObject {
 
     func analyzeImage(_ image: UIImage) async {
         guard user.canAnalyzeMeal else {
-            state = .error("You've reached your 5 free analyses today. Upgrade to Premium for unlimited.")
+            showPaywall = true
             return
         }
         state = .analyzing
@@ -69,6 +70,9 @@ final class MealLogViewModel: ObservableObject {
             let analysis = try await ClaudeService.shared.analyzeMeal(
                 image: image, mealType: selectedMealType, context: user.nutritionContext)
             state = .result(analysis)
+        } catch ClaudeError.quotaExceeded {
+            state = .idle
+            showPaywall = true
         } catch {
             state = .error(error.localizedDescription)
         }
@@ -141,7 +145,6 @@ final class MealLogViewModel: ObservableObject {
         let scaled = product.scaled(toGrams: grams)
         let entry = MealEntry(barcode: scaled, mealType: selectedMealType)
         entry.user = user
-        user.dailyAnalysisCount += 1
         Task { try? await HealthKitService.shared.logMeal(entry) }
         scheduleDeficiencyAlertsIfNeeded()
         refreshWidget()

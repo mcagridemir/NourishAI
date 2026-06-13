@@ -113,6 +113,9 @@ struct MealLogView: View {
                     dismiss()
                 }
             }
+            .sheet(isPresented: $vm.showPaywall) {
+                PaywallView()
+            }
         }
     }
 

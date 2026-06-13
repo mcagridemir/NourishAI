@@ -12,6 +12,7 @@ final class MealPlanViewModel: ObservableObject {
     @Published var isReplacingMeal = false
     @Published var error: String?
     @Published var replacementSuccess = false
+    @Published var showPaywall = false
 
     let user: User
 
@@ -48,6 +49,8 @@ final class MealPlanViewModel: ObservableObject {
             // Deactivate old plans
             (user.mealPlans ?? []).forEach { $0.isActive = false }
             currentPlan = plan
+        } catch ClaudeError.quotaExceeded {
+            showPaywall = true
         } catch {
             self.error = error.localizedDescription
             print("❌ Meal plan error: \(error)")
@@ -78,6 +81,8 @@ final class MealPlanViewModel: ObservableObject {
             meal.isCompleted     = false
             HapticService.notification(.success)
             replacementSuccess = true
+        } catch ClaudeError.quotaExceeded {
+            showPaywall = true
         } catch {
             self.error = error.localizedDescription
         }

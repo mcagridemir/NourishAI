@@ -14,6 +14,7 @@ struct RecipeGeneratorView: View {
     @State private var isGenerating = false
     @State private var recipe: RecipeResult?
     @State private var errorMessage: String?
+    @State private var showPaywall = false
     @State private var messageIndex = 0
     @State private var servingMultiplier: Double = 1.0   // 0.5×, 1×, 1.5×, 2×
     @FocusState private var inputFocused: Bool
@@ -77,6 +78,9 @@ struct RecipeGeneratorView: View {
                     messageIndex = (messageIndex + 1) % generatingMessages.count
                 }
             }
+        }
+        .sheet(isPresented: $showPaywall) {
+            PaywallView()
         }
     }
 
@@ -379,6 +383,8 @@ struct RecipeGeneratorView: View {
             )
             HapticService.notification(.success)
             recipe = result
+        } catch ClaudeError.quotaExceeded {
+            showPaywall = true
         } catch {
             HapticService.notification(.error)
             errorMessage = error.localizedDescription

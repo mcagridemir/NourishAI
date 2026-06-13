@@ -141,8 +141,6 @@
 "goal reached" = "goal reached";
 "Avg/day" = "Avg/day";
 "Today" = "Today";
-"Good" = "Good";
-"Fair" = "Fair";
 "Poor" = "Poor";
 "No data" = "No data";
 "Breakdown by meal" = "Breakdown by meal";
@@ -239,8 +237,6 @@
 "Next" = "Next";
 
 // MARK: - Range pickers
-"7 days" = "7 days";
-"30 days" = "30 days";
 "7d" = "7d";
 "30d" = "30d";
 "90d" = "90d";

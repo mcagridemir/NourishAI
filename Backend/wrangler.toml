@@ -6,7 +6,8 @@ compatibility_date = "2024-09-23"
 # ── Environment variables ────────────────────────────────────────────────────
 [vars]
 RATE_LIMIT_PER_MINUTE = "30"    # per-IP requests per minute
-DAILY_AI_QUOTA        = "100"   # per user-ID AI calls per UTC day
+FREE_DAILY_QUOTA      = "5"     # Claude calls/day for free tier users
+PREMIUM_DAILY_QUOTA   = "500"   # Claude calls/day for active subscribers
 
 # ── KV namespace ─────────────────────────────────────────────────────────────
 # Create once, then paste the returned IDs below:

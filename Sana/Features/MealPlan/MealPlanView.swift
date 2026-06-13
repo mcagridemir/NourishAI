@@ -67,6 +67,9 @@ struct MealPlanView: View {
         .sheet(isPresented: $showingGroceryList) {
             GroceryListView(user: user)
         }
+        .sheet(isPresented: $vm.showPaywall) {
+            PaywallView()
+        }
     }
 }
 

@@ -110,6 +110,9 @@ struct CoachView: View {
                     vm.showingVoiceInput = false
                 }
             }
+            .sheet(isPresented: $vm.showPaywall) {
+                PaywallView()
+            }
         }
     }
 

@@ -11,6 +11,7 @@ final class CoachViewModel: ObservableObject {
     @Published var isStreaming = false
     @Published var streamingBuffer = ""
     @Published var error: String?
+    @Published var showPaywall = false
     @Published var showingVoiceInput = false
 
     /// Non-nil when a meal plan was auto-saved from a coach conversation.
@@ -74,7 +75,11 @@ final class CoachViewModel: ObservableObject {
                 }
             } catch {
                 if !(error is CancellationError) {
-                    self.error = error.localizedDescription
+                    if case ClaudeError.quotaExceeded = error {
+                        self.showPaywall = true
+                    } else {
+                        self.error = error.localizedDescription
+                    }
                 }
             }
             isStreaming = false

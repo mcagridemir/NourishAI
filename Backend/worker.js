@@ -15,8 +15,9 @@
  *   wrangler kv namespace create "RATE_KV" --preview
  *
  * Optional env vars (wrangler.toml [vars]):
- *   RATE_LIMIT_PER_MINUTE = "30"    # per-IP soft cap (default 30)
- *   DAILY_AI_QUOTA        = "100"   # per user-ID per UTC day (default 100)
+ *   RATE_LIMIT_PER_MINUTE  = "30"   # per-IP soft cap (default 30)
+ *   FREE_DAILY_QUOTA       = "5"    # Claude calls/day for free users (default 5)
+ *   PREMIUM_DAILY_QUOTA    = "500"  # Claude calls/day for active subscribers (default 500)
  *
  * App Store notifications webhook:
  *   Set the URL in App Store Connect → App Information → App Store Server Notifications
@@ -61,10 +62,14 @@ async function handleProxy(request, env) {
     return corsResponse('Rate limit exceeded', 429);
   }
 
-  // Per-user daily quota (KV-backed, keyed by app-supplied user ID)
+  // Per-user daily quota — premium users get a higher cap, free users get 5/day
   const userID = request.headers.get('X-User-ID');
   if (userID) {
-    const dailyQuota = parseInt(env.DAILY_AI_QUOTA ?? '100', 10);
+    const transactionID = request.headers.get('X-Transaction-ID');
+    const isPremium = transactionID ? await checkPremium(transactionID, env) : false;
+    const dailyQuota = isPremium
+      ? parseInt(env.PREMIUM_DAILY_QUOTA ?? '500', 10)
+      : parseInt(env.FREE_DAILY_QUOTA ?? '5', 10);
     if (!(await allowByUser(userID, dailyQuota, env))) {
       return corsResponse('Daily quota exceeded', 429);
     }
@@ -168,6 +173,20 @@ async function handleAppStoreWebhook(request, env) {
   return new Response('OK', { status: 200 });
 }
 
+// ── Premium check ────────────────────────────────────────────────────────────
+
+async function checkPremium(originalTransactionID, env) {
+  if (!env.RATE_KV) return false;
+  try {
+    const record = await env.RATE_KV.get(`sub:${originalTransactionID}`);
+    if (!record) return false;
+    const { status } = JSON.parse(record);
+    return status === 'active' || status === 'grace';
+  } catch {
+    return false;
+  }
+}
+
 // ── Rate-limiting helpers (KV-backed) ────────────────────────────────────────
 //
 // KV is eventually consistent and does not support atomic increments, so the
@@ -223,7 +242,7 @@ function corsResponse(body, status) {
       'Content-Type':                 'text/plain',
       'Access-Control-Allow-Origin':  '*',
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, X-App-Secret, X-User-ID, anthropic-version',
+      'Access-Control-Allow-Headers': 'Content-Type, X-App-Secret, X-User-ID, X-Transaction-ID, anthropic-version',
     },
   });
 }

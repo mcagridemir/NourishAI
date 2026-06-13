@@ -122,6 +122,8 @@ actor ClaudeService {
     private let decoder = JSONDecoder()
     /// Set by AuthService after sign-in/out; forwarded as X-User-ID on proxy requests.
     private var currentUserID: String?
+    /// Set by SubscriptionService; forwarded as X-Transaction-ID for premium quota on the proxy.
+    private var currentTransactionID: String?
 
     private init() {
         self.apiKey = APIKeyStore.claudeAPIKey
@@ -129,6 +131,10 @@ actor ClaudeService {
 
     func setUserID(_ id: String?) {
         currentUserID = id
+    }
+
+    func setTransactionID(_ id: String?) {
+        currentTransactionID = id
     }
 
     // MARK: - Meal photo analysis
@@ -250,7 +256,8 @@ actor ClaudeService {
                     let request = try buildRequest(body: body)
                     let (bytes, response) = try await URLSession.shared.bytes(for: request)
                     guard let http = response as? HTTPURLResponse, http.statusCode == 200 else {
-                        throw ClaudeError.httpError((response as? HTTPURLResponse)?.statusCode ?? 0)
+                        let code = (response as? HTTPURLResponse)?.statusCode ?? 0
+                        throw code == 429 ? ClaudeError.quotaExceeded : ClaudeError.httpError(code)
                     }
 
                     for try await line in bytes.lines {
@@ -463,7 +470,11 @@ actor ClaudeService {
         let request = try buildRequest(body: body)
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let http = response as? HTTPURLResponse, http.statusCode == 200 else {
-            throw ClaudeError.httpError((response as? HTTPURLResponse)?.statusCode ?? 0)
+            let code = (response as? HTTPURLResponse)?.statusCode ?? 0
+            if code == 429, let text = String(data: data, encoding: .utf8), text.lowercased().contains("quota") {
+                throw ClaudeError.quotaExceeded
+            }
+            throw ClaudeError.httpError(code)
         }
         return data
     }
@@ -478,6 +489,9 @@ actor ClaudeService {
             req.setValue(BackendConfig.appSecret, forHTTPHeaderField: "X-App-Secret")
             if let userID = currentUserID {
                 req.setValue(userID, forHTTPHeaderField: "X-User-ID")
+            }
+            if let transactionID = currentTransactionID {
+                req.setValue(transactionID, forHTTPHeaderField: "X-Transaction-ID")
             }
         } else {
             guard !apiKey.isEmpty else {
@@ -535,6 +549,7 @@ enum ClaudeError: LocalizedError {
     case decodingFailed(String)
     case httpError(Int)
     case apiKeyMissing
+    case quotaExceeded
 
     var errorDescription: String? {
         switch self {
@@ -548,6 +563,8 @@ enum ClaudeError: LocalizedError {
             return String(format: NSLocalizedString("Server error (HTTP %d).", comment: ""), code)
         case .apiKeyMissing:
             return NSLocalizedString("AI service is not configured. Please check your setup.", comment: "")
+        case .quotaExceeded:
+            return NSLocalizedString("You've reached your daily limit. Upgrade to Premium for unlimited access.", comment: "")
         }
     }
 }
