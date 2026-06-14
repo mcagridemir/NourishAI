@@ -116,7 +116,7 @@ final class HealthKitService: ObservableObject {
         guard let type = HKQuantityType.quantityType(forIdentifier: identifier) else { return }
         let query = HKObserverQuery(sampleType: type, predicate: nil) { [weak self] _, completionHandler, error in
             guard let self, error == nil else { completionHandler(); return }
-            Task { await self.refreshAll() }
+            Task { @MainActor in await self.refreshAll() }
             completionHandler()
         }
         store.execute(query)

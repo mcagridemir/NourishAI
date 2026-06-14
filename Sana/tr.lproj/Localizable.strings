@@ -440,6 +440,280 @@
 
 // MARK: - Hata mesajları
 "Could not encode image for upload." = "Görsel yükleme için kodlanamadı.";
+
+// MARK: - Ana Sayfa (ek)
+"Left" = "Kalan";
+"Burned" = "Yakılan";
+"Generating your weekly insight…" = "Haftalık içgörünüz oluşturuluyor…";
+"AI Insight" = "Yapay Zeka İçgörüsü";
+"Show snack ideas" = "Atıştırmalık fikirleri göster";
+"Ask coach" = "Koça sor";
+"Snap meal" = "Öğün fotoğrafla";
+"AI estimates" = "Yapay zeka tahmini";
+"Ask Coach" = "Koça Sor";
+"Get advice" = "Tavsiye al";
+"Weekly view" = "Haftalık görünüm";
+"Apple Health" = "Apple Sağlık";
+"Steps" = "Adımlar";
+"Sleep" = "Uyku";
+"Resting HR" = "Dinlenme Nabzı";
+"Delete meal" = "Öğünü Sil";
+"Add meal" = "Öğün Ekle";
+"Try Sana Premium" = "Sana Premium'u Deneyin";
+"Unlimited scans · Meal plans · 7-day free trial" = "Sınırsız tarama · Yemek planları · 7 günlük ücretsiz deneme";
+
+// MARK: - Koç (ek)
+"Sana Coach" = "Sana Koç";
+"Online · knows your context" = "Çevrimiçi · bağlamınızı biliyor";
+"Ask your coach anything…" = "Koçunuza her şeyi sorun…";
+"Sana is thinking" = "Sana düşünüyor";
+"Coach knows your **last 7 days** of meals, your goals, and your activity." = "Koç son **7 günlük** öğünlerinizi, hedeflerinizi ve aktivitenizi biliyor.";
+"Ask me anything about your nutrition, get meal suggestions, or learn how to hit your health goals." = "Beslenmeniz hakkında her şeyi sorun, öğün önerileri alın veya sağlık hedeflerinize nasıl ulaşacağınızı öğrenin.";
+
+// MARK: - Kimlik Doğrulama (ek)
+"Snap any meal" = "Her öğünü fotoğraflayın";
+"AI estimates calories & macros instantly" = "Yapay zeka kalori ve makroları anında tahmin eder";
+"AI nutrition coach" = "Yapay zeka beslenme koçu";
+"Personalised plans, goals & weekly insights" = "Kişiselleştirilmiş planlar, hedefler ve haftalık içgörüler";
+"Apple Health sync" = "Apple Sağlık senkronizasyonu";
+"Steps, sleep & activity in one view" = "Adımlar, uyku ve aktivite tek görünümde";
+"Signing in…" = "Giriş yapılıyor…";
+"Email address" = "E-posta adresi";
+"Confirm password" = "Şifreyi onayla";
+"Passwords don't match." = "Şifreler eşleşmiyor.";
+
+// MARK: - Kullanıcı Katılımı (ek)
+"Welcome to Sana" = "Sana'ya Hoş Geldiniz";
+"Your personal AI nutrition coach. Let's set up your profile." = "Kişisel yapay zeka beslenme koçunuz. Profilinizi ayarlayalım.";
+"Your name" = "Adınız";
+"About you" = "Hakkınızda";
+"This helps us personalise your calorie and nutrition targets." = "Kalori ve beslenme hedeflerinizi kişiselleştirmemize yardımcı olur.";
+"What's your main goal?" = "Ana hedefiniz nedir?";
+"We'll tailor your plan around this." = "Planınızı buna göre şekillendireceğiz.";
+"Dietary style" = "Beslenme Tarzı";
+"How would you describe your eating habits? You can skip this." = "Yeme alışkanlıklarınızı nasıl tanımlarsınız? Bu adımı atlayabilirsiniz.";
+"No preference / Skip" = "Tercih Yok / Atla";
+"Any food allergies?" = "Besin alerjiniz var mı?";
+"Select all that apply. You can change this later." = "Geçerlilerin hepsini seçin. Bunu daha sonra değiştirebilirsiniz.";
+"Any health conditions?" = "Sağlık durumunuz var mı?";
+"We'll tailor meals and advice around these. Select all that apply." = "Yemekleri ve tavsiyeleri bunlara göre düzenleyeceğiz. Geçerlilerin hepsini seçin.";
+"Gluten" = "Gluten";
+"Dairy" = "Süt Ürünleri";
+"Nuts" = "Kuruyemiş";
+"Soy" = "Soya";
+"Shellfish" = "Kabuklu Deniz Ürünleri";
+"Fish" = "Balık";
+"Sesame" = "Susam";
+
+// MARK: - Profil (ek)
+"Premium" = "Premium";
+"Height" = "Boy";
+"BMI" = "VKİ";
+"Upgrade to Premium" = "Premium'a Yükselt";
+"Sign out" = "Çıkış Yap";
+"Allergies" = "Alerjiler";
+"Nutrition targets" = "Beslenme Hedefleri";
+
+// MARK: - Profil Düzenleme
+"Country" = "Ülke";
+"e.g. Turkey" = "örn. Türkiye";
+"Body" = "Vücut";
+"Units" = "Birimler";
+"Metric (kg, cm)" = "Metrik (kg, cm)";
+"Imperial (lbs, ft)" = "İngiliz (lbs, ft)";
+"Biological sex" = "Biyolojik Cinsiyet";
+"Date of birth" = "Doğum Tarihi";
+"Born" = "Doğum";
+"Primary goal" = "Ana Hedef";
+"Estimated calories" = "Tahmini Kalori";
+"Auto-calculated from your goals" = "Hedeflerinizden otomatik hesaplanmıştır";
+"Custom macro targets" = "Özel Makro Hedefleri";
+"Weight goal" = "Kilo Hedefi";
+"Set a weight target" = "Kilo hedefi belirle";
+"Lose" = "Azalt";
+"Gain" = "Artır";
+"Health conditions" = "Sağlık Durumları";
+"Sana uses this to tailor meal suggestions and flag nutritional conflicts." = "Sana bunu öğün önerilerini kişiselleştirmek ve besin çatışmalarını işaretlemek için kullanır.";
+"Food allergies" = "Besin Alerjileri";
+"Water goal" = "Su Hedefi";
+"Your projected weekly change is shown on the Dashboard once a few weight entries are logged." = "Birkaç kilo girişi kaydedildikten sonra tahmini haftalık değişiminiz Ana Sayfa'da gösterilir.";
+
+// MARK: - Bildirimler
+"Notifications" = "Bildirimler";
+"Notifications are enabled" = "Bildirimler Etkin";
+"Enable notifications to get meal reminders and weekly nutrition summaries." = "Öğün hatırlatıcıları ve haftalık beslenme özetleri almak için bildirimleri etkinleştirin.";
+"Enable notifications" = "Bildirimleri Etkinleştir";
+"Open Settings > Sana to enable notifications." = "Bildirimleri etkinleştirmek için Ayarlar > Sana'yı açın.";
+"Meal reminders" = "Öğün Hatırlatıcıları";
+"Smart timing" = "Akıllı Zamanlama";
+"Adapts reminders to your wake time via Health" = "Hatırlatıcıları uyku verinize göre ayarlar";
+"Grant Health access to enable smart timing." = "Akıllı zamanlamayı etkinleştirmek için Sağlık erişimi verin.";
+"No recent sleep data — using manual times as fallback." = "Son uyku verisi yok — geri dönüş olarak manuel saatler kullanılıyor.";
+"Hydration reminders" = "Su İçme Hatırlatıcıları";
+"Every 2 hours, 8 AM – 9 PM" = "Her 2 saatte bir, 08:00 – 21:00";
+"Weekly nutrition recap" = "Haftalık Beslenme Özeti";
+"Every Sunday at 7:00 PM" = "Her Pazar 19:00'da";
+
+// MARK: - Öğün Kaydı (ek)
+"Loading photo…" = "Fotoğraf yükleniyor…";
+"Analyzing your meal" = "Öğününüz analiz ediliyor";
+"This usually takes 4–6 seconds" = "Bu genellikle 4–6 saniye sürer";
+"Detecting items" = "Öğeler tespit ediliyor";
+"Identifying portions" = "Porsiyonlar belirleniyor";
+"Calculating macros" = "Makrolar hesaplanıyor";
+"Scoring meal quality" = "Öğün kalitesi puanlanıyor";
+"The image may be unclear. Review the values before saving." = "Görüntü net olmayabilir. Kaydetmeden önce değerleri kontrol edin.";
+"Allergen warning" = "Alerjen Uyarısı";
+"Open Food Facts" = "Open Food Facts";
+"Saved meals" = "Kayıtlı Öğünler";
+"per 100g" = "100g başına";
+"Type at least 2 characters to search\nthe Open Food Facts database" = "Open Food Facts veritabanında\narama için en az 2 karakter yazın";
+"Try a different name or use the barcode scanner" = "Farklı bir isim deneyin veya barkod tarayıcıyı kullanın";
+"Add to log" = "Kayda Ekle";
+
+// MARK: - İçgörüler (ek)
+"Over" = "Fazla";
+"Under" = "Eksik";
+"Macro split" = "Makro Dağılımı";
+"Health score" = "Sağlık Puanı";
+"Body weight" = "Vücut Ağırlığı";
+"Nutrient gaps" = "Besin Eksiklikleri";
+
+// MARK: - Market Listesi (ek)
+"Grocery list" = "Market Listesi";
+"Regenerate list" = "Listeyi Yeniden Oluştur";
+"Uncheck all" = "Tümünü Kaldır";
+"Share list" = "Listeyi Paylaş";
+"Building your grocery list…" = "Market listeniz hazırlanıyor…";
+"Generate from meal plan" = "Yemek planından oluştur";
+
+// MARK: - Premium Satın Alma
+"PREMIUM" = "PREMIUM";
+"Get the\nbest of you." = "En iyisini\northaya çıkarın.";
+"Unlock unlimited AI coaching, personalized meal plans, and deep insights." = "Sınırsız yapay zeka koçluğunun, kişiselleştirilmiş yemek planlarının ve derin içgörülerin kilidini açın.";
+"Unlimited meal analyses" = "Sınırsız öğün analizi";
+"No daily limits — scan every meal" = "Günlük sınır yok — her öğünü tara";
+"AI meal planner" = "Yapay zeka yemek planlayıcı";
+"Personalised 7-day plans" = "Kişiselleştirilmiş 7 günlük planlar";
+"Deep weekly insights" = "Derin haftalık içgörüler";
+"Full nutrition trends & reports" = "Tam beslenme trendleri ve raporlar";
+"Grocery list generator" = "Market listesi oluşturucu";
+"Auto-built from your meal plan" = "Yemek planınızdan otomatik oluşturulur";
+"Recipe creator" = "Tarif oluşturucu";
+"AI recipes from your ingredients" = "Malzemelerinizden yapay zeka tarifleri";
+"Priority AI responses" = "Öncelikli yapay zeka yanıtları";
+"Faster, smarter coaching" = "Daha hızlı, daha akıllı koçluk";
+"Yearly" = "Yıllık";
+"Best value" = "En İyi Değer";
+"Monthly" = "Aylık";
+"Cancel anytime" = "İstediğiniz zaman iptal edin";
+"Start free trial" = "Ücretsiz denemeyi başlat";
+"Restore purchases" = "Satın almaları geri yükle";
+
+// MARK: - Yemek Planı (ek)
+"Breakfast, lunch, dinner + snacks" = "Kahvaltı, öğle, akşam yemeği + atıştırmalıklar";
+"Prep times and ingredient lists" = "Hazırlık süreleri ve malzeme listeleri";
+"One-tap to log any meal" = "Herhangi bir öğünü tek dokunuşla kaydedin";
+"Swap any meal you don't like" = "Beğenmediğiniz öğünleri değiştirin";
+"Get a personalised 3-day plan built around your calorie target, dietary style, and allergies." = "Kalori hedefinize, beslenme tarzınıza ve alerjilerinize göre kişiselleştirilmiş 3 günlük plan alın.";
+
+// MARK: - Vücut Ölçüleri (ek)
+"Body Mass Index" = "Vücut Kitle İndeksi";
+"Underweight" = "Düşük Ağırlık";
+"Healthy weight" = "Sağlıklı Ağırlık";
+"Overweight" = "Fazla Kilolu";
+"Obese" = "Obez";
+"BMR" = "BMH";
+"Calories burned at rest" = "Dinlenirken yakılan kalori";
+"TDEE" = "TGEH";
+"Total daily expenditure" = "Toplam günlük harcama";
+"Calorie goal" = "Kalori Hedefi";
+"Based on your goal" = "Hedefinize göre";
+"Est. body fat" = "Tahmini Vücut Yağı";
+"BMI-based estimate" = "VKİ tabanlı tahmin";
+"Ideal weight range" = "İdeal ağırlık aralığı";
+"Lower" = "Alt";
+"Upper" = "Üst";
+"above healthy range" = "sağlıklı aralığın üzerinde";
+"below healthy range" = "sağlıklı aralığın altında";
+"You're within the healthy range" = "Sağlıklı aralıktasınız";
+"Activity level" = "Aktivite Düzeyi";
+"Change your activity level in Edit Profile to recalculate targets." = "Hedefleri yeniden hesaplamak için Profili Düzenle'de aktivite düzeyinizi değiştirin.";
+"These are statistical estimates based on population averages…" = "Bunlar nüfus ortalamalarına dayalı istatistiksel tahminlerdir…";
+
+// MARK: - Kilo Hedefi Kartı
+"Edit goal" = "Hedefi Düzenle";
+"Set weight goal" = "Kilo hedefi belirle";
+"Calorie deficit" = "Kalori Açığı";
+"Calorie surplus" = "Kalori Fazlası";
+"maintaining" = "idame";
+"losing ~%@ kg/wk" = "~%@ kg/hf kayıp";
+"gaining ~%@ kg/wk" = "~%@ kg/hf kazanım";
+"~%d wk to go" = "~%d hafta kaldı";
+
+// MARK: - Haftalık Rapor (ek)
+"Weekly Report" = "Haftalık Rapor";
+"This week's wins" = "Bu Haftanın Kazanımları";
+"Room to improve" = "Gelişim Alanları";
+"Nutrient spotlight" = "Besin Öne Çıkarma";
+"Next week's challenge" = "Gelecek Haftanın Meydan Okuması";
+"Regenerate report" = "Raporu Yeniden Oluştur";
+
+// MARK: - Tarif Oluşturucu (ek)
+"Recipe generator" = "Tarif Oluşturucu";
+"New recipe" = "Yeni Tarif";
+"e.g. chicken, broccoli, oats…" = "örn. tavuk, brokoli, yulaf…";
+"Analysing your ingredients…" = "Malzemeleriniz analiz ediliyor…";
+"Balancing macros…" = "Makrolar dengeleniyor…";
+"Crafting the recipe…" = "Tarif hazırlanıyor…";
+"Adding finishing touches…" = "Son rötuşlar ekleniyor…";
+"1× (as generated)" = "1× (oluşturulduğu gibi)";
+"½ serving" = "½ porsiyon";
+"Nutrition per serving" = "Porsiyon başına besin değerleri";
+"Instructions" = "Talimatlar";
+"Generate recipe" = "Tarif oluştur";
+"Prep" = "Hazırlık";
+"Cook" = "Pişirme";
+"Serves" = "Kişi Sayısı";
+"Chicken breast" = "Tavuk göğsü";
+"Oats" = "Yulaf";
+"Broccoli" = "Brokoli";
+"Greek yogurt" = "Yunan yoğurdu";
+"Sweet potato" = "Tatlı patates";
+"Salmon" = "Somon";
+"Spinach" = "Ispanak";
+"Lentils" = "Mercimek";
+
+// MARK: - Sesli Öğün Girişi
+"Listening…" = "Dinleniyor…";
+"Tap to speak" = "Konuşmak için dokun";
+"Use this" = "Bunu Kullan";
+"Microphone access required" = "Mikrofon erişimi gerekli";
+"Open Settings" = "Ayarları Aç";
+
+// MARK: - Aralıklı Oruç (ek)
+"elapsed" = "geçti";
+"not started" = "başlamadı";
+"Burning!" = "Yakıyor!";
+"Digesting" = "Sindirim";
+"Absorbing" = "Emilim";
+"Glycogen depleting" = "Glikojen Tükenme";
+"Fat burning 🔥" = "Yağ Yakma 🔥";
+"Deep ketosis 🔥" = "Derin Ketoz 🔥";
+
+// MARK: - İlerleme Fotoğrafları (ek)
+"Days" = "Gün";
+
+// MARK: - Tema Seçici
+"Preview" = "Önizleme";
+"Colour presets" = "Renk Ön Ayarları";
+"The accent colour applies to buttons, toggles, progress bars, and highlights throughout the app." = "Vurgu rengi, uygulama genelinde düğmelere, geçişlere, ilerleme çubuklarına ve vurgulamalara uygulanır.";
+"Forest" = "Orman";
+"Ocean" = "Okyanus";
+"Sunset" = "Günbatımı";
+"Rose" = "Gül";
+"Indigo" = "İndigo";
+"Slate" = "Arduvaz";
 "Received unexpected response format." = "Beklenmeyen bir yanıt formatı alındı.";
 "Parse error: %@" = "Ayrıştırma hatası: %@";
 "Server error (HTTP %d)." = "Sunucu hatası (HTTP %d).";

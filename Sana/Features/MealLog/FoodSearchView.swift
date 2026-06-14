@@ -6,7 +6,7 @@ struct FoodSearchView: View {
     @Environment(\.dismiss) private var dismiss
     let mealType: MealType
     var allergies: [String] = []
-    let onSelect: (FoodProduct) -> Void
+    let onSelect: (FoodProduct, Double) -> Void
 
     @State private var query = ""
     @State private var results: [FoodProduct] = []
@@ -25,7 +25,7 @@ struct FoodSearchView: View {
                             mealType: mealType,
                             allergenWarnings: AllergenChecker.detect(in: product.name, against: allergies)
                         ) { grams in
-                            onSelect(product)
+                            onSelect(product, grams)
                         } onDiscard: {
                             selectedProduct = nil
                             showingProductDetail = false

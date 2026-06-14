@@ -436,6 +436,282 @@
 
 // MARK: - Error messages
 "Could not encode image for upload." = "Could not encode image for upload.";
+
+// MARK: - Dashboard
+"Left" = "Left";
+"Burned" = "Burned";
+"Generating your weekly insight…" = "Generating your weekly insight…";
+"AI Insight" = "AI Insight";
+"Show snack ideas" = "Show snack ideas";
+"Ask coach" = "Ask coach";
+"Snap meal" = "Snap meal";
+"AI estimates" = "AI estimates";
+"Ask Coach" = "Ask Coach";
+"Get advice" = "Get advice";
+"Weekly view" = "Weekly view";
+"Apple Health" = "Apple Health";
+"Steps" = "Steps";
+"Sleep" = "Sleep";
+"Resting HR" = "Resting HR";
+"Delete meal" = "Delete meal";
+"Add meal" = "Add meal";
+"Try Sana Premium" = "Try Sana Premium";
+"Unlimited scans · Meal plans · 7-day free trial" = "Unlimited scans · Meal plans · 7-day free trial";
+
+// MARK: - Coach
+"Sana Coach" = "Sana Coach";
+"Online · knows your context" = "Online · knows your context";
+"Ask your coach anything…" = "Ask your coach anything…";
+"Sana is thinking" = "Sana is thinking";
+"Coach knows your **last 7 days** of meals, your goals, and your activity." = "Coach knows your **last 7 days** of meals, your goals, and your activity.";
+"Ask me anything about your nutrition, get meal suggestions, or learn how to hit your health goals." = "Ask me anything about your nutrition, get meal suggestions, or learn how to hit your health goals.";
+
+// MARK: - Auth
+"Snap any meal" = "Snap any meal";
+"AI estimates calories & macros instantly" = "AI estimates calories & macros instantly";
+"AI nutrition coach" = "AI nutrition coach";
+"Personalised plans, goals & weekly insights" = "Personalised plans, goals & weekly insights";
+"Apple Health sync" = "Apple Health sync";
+"Steps, sleep & activity in one view" = "Steps, sleep & activity in one view";
+"Signing in…" = "Signing in…";
+"Email address" = "Email address";
+"Confirm password" = "Confirm password";
+"Passwords don't match." = "Passwords don't match.";
+
+// MARK: - Onboarding
+"Welcome to Sana" = "Welcome to Sana";
+"Your personal AI nutrition coach. Let's set up your profile." = "Your personal AI nutrition coach. Let's set up your profile.";
+"Your name" = "Your name";
+"About you" = "About you";
+"This helps us personalise your calorie and nutrition targets." = "This helps us personalise your calorie and nutrition targets.";
+"What's your main goal?" = "What's your main goal?";
+"We'll tailor your plan around this." = "We'll tailor your plan around this.";
+"Dietary style" = "Dietary style";
+"How would you describe your eating habits? You can skip this." = "How would you describe your eating habits? You can skip this.";
+"No preference / Skip" = "No preference / Skip";
+"Any food allergies?" = "Any food allergies?";
+"Select all that apply. You can change this later." = "Select all that apply. You can change this later.";
+"Any health conditions?" = "Any health conditions?";
+"We'll tailor meals and advice around these. Select all that apply." = "We'll tailor meals and advice around these. Select all that apply.";
+"Gluten" = "Gluten";
+"Dairy" = "Dairy";
+"Nuts" = "Nuts";
+"Soy" = "Soy";
+"Shellfish" = "Shellfish";
+"Fish" = "Fish";
+"Sesame" = "Sesame";
+
+// MARK: - Profile
+"Premium" = "Premium";
+"Height" = "Height";
+"BMI" = "BMI";
+"Upgrade to Premium" = "Upgrade to Premium";
+"Sign out" = "Sign out";
+"Allergies" = "Allergies";
+"Nutrition targets" = "Nutrition targets";
+"Nutrition coach" = "Nutrition coach";
+
+// MARK: - Edit Profile
+"Country" = "Country";
+"e.g. Turkey" = "e.g. Turkey";
+"Body" = "Body";
+"Units" = "Units";
+"Metric (kg, cm)" = "Metric (kg, cm)";
+"Imperial (lbs, ft)" = "Imperial (lbs, ft)";
+"Biological sex" = "Biological sex";
+"Date of birth" = "Date of birth";
+"Born" = "Born";
+"Primary goal" = "Primary goal";
+"Estimated calories" = "Estimated calories";
+"Auto-calculated from your goals" = "Auto-calculated from your goals";
+"Custom macro targets" = "Custom macro targets";
+"Weight goal" = "Weight goal";
+"Set a weight target" = "Set a weight target";
+"Lose" = "Lose";
+"Gain" = "Gain";
+"Health conditions" = "Health conditions";
+"Sana uses this to tailor meal suggestions and flag nutritional conflicts." = "Sana uses this to tailor meal suggestions and flag nutritional conflicts.";
+"Food allergies" = "Food allergies";
+"Water goal" = "Water goal";
+"Your projected weekly change is shown on the Dashboard once a few weight entries are logged." = "Your projected weekly change is shown on the Dashboard once a few weight entries are logged.";
+
+// MARK: - Notifications
+"Notifications" = "Notifications";
+"Notifications are enabled" = "Notifications are enabled";
+"Enable notifications to get meal reminders and weekly nutrition summaries." = "Enable notifications to get meal reminders and weekly nutrition summaries.";
+"Enable notifications" = "Enable notifications";
+"Open Settings > Sana to enable notifications." = "Open Settings > Sana to enable notifications.";
+"Meal reminders" = "Meal reminders";
+"Smart timing" = "Smart timing";
+"Adapts reminders to your wake time via Health" = "Adapts reminders to your wake time via Health";
+"Grant Health access to enable smart timing." = "Grant Health access to enable smart timing.";
+"No recent sleep data — using manual times as fallback." = "No recent sleep data — using manual times as fallback.";
+"Hydration reminders" = "Hydration reminders";
+"Every 2 hours, 8 AM – 9 PM" = "Every 2 hours, 8 AM – 9 PM";
+"Weekly nutrition recap" = "Weekly nutrition recap";
+"Every Sunday at 7:00 PM" = "Every Sunday at 7:00 PM";
+
+// MARK: - Meal Log
+"Loading photo…" = "Loading photo…";
+"Analyzing your meal" = "Analyzing your meal";
+"This usually takes 4–6 seconds" = "This usually takes 4–6 seconds";
+"Detecting items" = "Detecting items";
+"Identifying portions" = "Identifying portions";
+"Calculating macros" = "Calculating macros";
+"Scoring meal quality" = "Scoring meal quality";
+"The image may be unclear. Review the values before saving." = "The image may be unclear. Review the values before saving.";
+"Allergen warning" = "Allergen warning";
+"Open Food Facts" = "Open Food Facts";
+"Saved meals" = "Saved meals";
+"per 100g" = "per 100g";
+"Type at least 2 characters to search\nthe Open Food Facts database" = "Type at least 2 characters to search\nthe Open Food Facts database";
+"Try a different name or use the barcode scanner" = "Try a different name or use the barcode scanner";
+"Add to log" = "Add to log";
+
+// MARK: - Insights
+"Over" = "Over";
+"Under" = "Under";
+"Macro split" = "Macro split";
+"Health score" = "Health score";
+"Body weight" = "Body weight";
+"Nutrient gaps" = "Nutrient gaps";
+
+// MARK: - Grocery List
+"Grocery list" = "Grocery list";
+"Regenerate list" = "Regenerate list";
+"Uncheck all" = "Uncheck all";
+"Share list" = "Share list";
+"Building your grocery list…" = "Building your grocery list…";
+"Generate from meal plan" = "Generate from meal plan";
+
+// MARK: - Paywall
+"PREMIUM" = "PREMIUM";
+"Get the\nbest of you." = "Get the\nbest of you.";
+"Unlock unlimited AI coaching, personalized meal plans, and deep insights." = "Unlock unlimited AI coaching, personalized meal plans, and deep insights.";
+"Unlimited meal analyses" = "Unlimited meal analyses";
+"No daily limits — scan every meal" = "No daily limits — scan every meal";
+"AI meal planner" = "AI meal planner";
+"Personalised 7-day plans" = "Personalised 7-day plans";
+"Deep weekly insights" = "Deep weekly insights";
+"Full nutrition trends & reports" = "Full nutrition trends & reports";
+"Grocery list generator" = "Grocery list generator";
+"Auto-built from your meal plan" = "Auto-built from your meal plan";
+"Recipe creator" = "Recipe creator";
+"AI recipes from your ingredients" = "AI recipes from your ingredients";
+"Priority AI responses" = "Priority AI responses";
+"Faster, smarter coaching" = "Faster, smarter coaching";
+"Yearly" = "Yearly";
+"Best value" = "Best value";
+"Monthly" = "Monthly";
+"Cancel anytime" = "Cancel anytime";
+"Start free trial" = "Start free trial";
+"Restore purchases" = "Restore purchases";
+
+// MARK: - Meal Plan
+"Grocery list" = "Grocery list";
+"Breakfast, lunch, dinner + snacks" = "Breakfast, lunch, dinner + snacks";
+"Prep times and ingredient lists" = "Prep times and ingredient lists";
+"One-tap to log any meal" = "One-tap to log any meal";
+"Swap any meal you don't like" = "Swap any meal you don't like";
+"Get a personalised 3-day plan built around your calorie target, dietary style, and allergies." = "Get a personalised 3-day plan built around your calorie target, dietary style, and allergies.";
+
+// MARK: - Body Metrics
+"Body Mass Index" = "Body Mass Index";
+"Underweight" = "Underweight";
+"Healthy weight" = "Healthy weight";
+"Overweight" = "Overweight";
+"Obese" = "Obese";
+"BMR" = "BMR";
+"Calories burned at rest" = "Calories burned at rest";
+"TDEE" = "TDEE";
+"Total daily expenditure" = "Total daily expenditure";
+"Calorie goal" = "Calorie goal";
+"Based on your goal" = "Based on your goal";
+"Est. body fat" = "Est. body fat";
+"BMI-based estimate" = "BMI-based estimate";
+"Ideal weight range" = "Ideal weight range";
+"Lower" = "Lower";
+"Upper" = "Upper";
+"above healthy range" = "above healthy range";
+"below healthy range" = "below healthy range";
+"You're within the healthy range" = "You're within the healthy range";
+"Activity level" = "Activity level";
+"Change your activity level in Edit Profile to recalculate targets." = "Change your activity level in Edit Profile to recalculate targets.";
+"These are statistical estimates based on population averages…" = "These are statistical estimates based on population averages…";
+
+// MARK: - Weight Goal Card
+"Edit goal" = "Edit goal";
+"Set weight goal" = "Set weight goal";
+"Calorie deficit" = "Calorie deficit";
+"Calorie surplus" = "Calorie surplus";
+"maintaining" = "maintaining";
+"losing ~%@ kg/wk" = "losing ~%@ kg/wk";
+"gaining ~%@ kg/wk" = "gaining ~%@ kg/wk";
+"~%d wk to go" = "~%d wk to go";
+
+// MARK: - Weekly Report
+"Weekly Report" = "Weekly Report";
+"This week's wins" = "This week's wins";
+"Room to improve" = "Room to improve";
+"Nutrient spotlight" = "Nutrient spotlight";
+"Next week's challenge" = "Next week's challenge";
+"Regenerate report" = "Regenerate report";
+
+// MARK: - Recipe Generator
+"Recipe generator" = "Recipe generator";
+"New recipe" = "New recipe";
+"e.g. chicken, broccoli, oats…" = "e.g. chicken, broccoli, oats…";
+"Analysing your ingredients…" = "Analysing your ingredients…";
+"Balancing macros…" = "Balancing macros…";
+"Crafting the recipe…" = "Crafting the recipe…";
+"Adding finishing touches…" = "Adding finishing touches…";
+"1× (as generated)" = "1× (as generated)";
+"½ serving" = "½ serving";
+"Nutrition per serving" = "Nutrition per serving";
+"Instructions" = "Instructions";
+"Generate recipe" = "Generate recipe";
+"Prep" = "Prep";
+"Cook" = "Cook";
+"Serves" = "Serves";
+"Chicken breast" = "Chicken breast";
+"Oats" = "Oats";
+"Broccoli" = "Broccoli";
+"Greek yogurt" = "Greek yogurt";
+"Sweet potato" = "Sweet potato";
+"Salmon" = "Salmon";
+"Spinach" = "Spinach";
+"Lentils" = "Lentils";
+
+// MARK: - Voice Meal Input
+"Listening…" = "Listening…";
+"Tap to speak" = "Tap to speak";
+"Use this" = "Use this";
+"Microphone access required" = "Microphone access required";
+"Open Settings" = "Open Settings";
+
+// MARK: - Fasting
+"elapsed" = "elapsed";
+"not started" = "not started";
+"Burning!" = "Burning!";
+"Digesting" = "Digesting";
+"Absorbing" = "Absorbing";
+"Glycogen depleting" = "Glycogen depleting";
+"Fat burning 🔥" = "Fat burning 🔥";
+"Deep ketosis 🔥" = "Deep ketosis 🔥";
+
+// MARK: - Progress Photos
+"Days" = "Days";
+
+// MARK: - Theme Picker
+"Preview" = "Preview";
+"Colour presets" = "Colour presets";
+"The accent colour applies to buttons, toggles, progress bars, and highlights throughout the app." = "The accent colour applies to buttons, toggles, progress bars, and highlights throughout the app.";
+"Forest" = "Forest";
+"Ocean" = "Ocean";
+"Sunset" = "Sunset";
+"Rose" = "Rose";
+"Indigo" = "Indigo";
+"Slate" = "Slate";
 "Received unexpected response format." = "Received unexpected response format.";
 "Parse error: %@" = "Parse error: %@";
 "Server error (HTTP %d)." = "Server error (HTTP %d).";

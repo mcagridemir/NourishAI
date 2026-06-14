@@ -96,9 +96,9 @@ struct MealLogView: View {
                 .ignoresSafeArea()
             }
             .sheet(isPresented: $vm.showingFoodSearch) {
-                FoodSearchView(mealType: vm.selectedMealType, allergies: user.allergies) { product in
+                FoodSearchView(mealType: vm.selectedMealType, allergies: user.allergies) { product, grams in
                     vm.showingFoodSearch = false
-                    vm.state = .barcodeResult(product)
+                    vm.saveBarcodeMeal(product: product, grams: grams)
                 }
             }
             .sheet(isPresented: $vm.showingRecipeGenerator) {

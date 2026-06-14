@@ -471,7 +471,7 @@ actor ClaudeService {
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let http = response as? HTTPURLResponse, http.statusCode == 200 else {
             let code = (response as? HTTPURLResponse)?.statusCode ?? 0
-            if code == 429, let text = String(data: data, encoding: .utf8), text.lowercased().contains("quota") {
+            if code == 429 {
                 throw ClaudeError.quotaExceeded
             }
             throw ClaudeError.httpError(code)

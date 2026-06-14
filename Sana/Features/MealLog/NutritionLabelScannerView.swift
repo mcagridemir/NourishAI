@@ -108,6 +108,7 @@ struct NutritionLabelScannerView: View {
     @State private var photo: PhotosPickerItem?
     @State private var state: ScanState = .idle
     @State private var showingCamera = false
+    @State private var showPaywall = false
 
     enum ScanState: Equatable {
         case idle
@@ -155,6 +156,7 @@ struct NutritionLabelScannerView: View {
                     Task { await analyze(image: image) }
                 }
             }
+            .sheet(isPresented: $showPaywall) { PaywallView() }
         }
     }
 
@@ -326,7 +328,10 @@ struct NutritionLabelScannerView: View {
             }
             req.httpBody = try JSONSerialization.data(withJSONObject: body)
 
-            let (responseData, _) = try await URLSession.shared.data(for: req)
+            let (responseData, urlResponse) = try await URLSession.shared.data(for: req)
+            let statusCode = (urlResponse as? HTTPURLResponse)?.statusCode ?? 0
+            if statusCode == 429 { throw ClaudeError.quotaExceeded }
+            guard statusCode == 200 else { throw ClaudeError.httpError(statusCode) }
             let decoded = try JSONDecoder().decode(LabelAPIResponse.self, from: responseData)
             guard let text = decoded.content.first?.text else { throw NSError(domain: "parse", code: 0) }
 
@@ -350,6 +355,8 @@ struct NutritionLabelScannerView: View {
                 ingredients: label.ingredients ?? []
             )
             state = .result(result)
+        } catch ClaudeError.quotaExceeded {
+            showPaywall = true
         } catch {
             state = .error("Couldn't read the label clearly. Make sure the image is sharp and well-lit.")
         }

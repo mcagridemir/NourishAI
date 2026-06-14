@@ -64,8 +64,9 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         switch response.actionIdentifier {
         case "LOG_NOW":
             // Foreground action — deep-link straight to the log sheet.
-            NotificationCenter.default.post(name: .sanaDeepLink,
-                                            object: URL(string: "sana://log")!)
+            if let url = URL(string: "sana://log") {
+                NotificationCenter.default.post(name: .sanaDeepLink, object: url)
+            }
         case "SNOOZE_15":
             // Background action — reschedule the same notification 15 minutes later.
             let original = response.notification.request
@@ -104,7 +105,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         case identifier.hasPrefix("supplement_"):      path = "dashboard"
         default:                                       path = "dashboard"
         }
-        return URL(string: "sana://\(path)")!
+        return URL(string: "sana://\(path)") ?? URL(string: "sana://dashboard")!
     }
 }
 
