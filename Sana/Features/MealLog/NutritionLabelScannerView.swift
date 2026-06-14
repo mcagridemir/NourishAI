@@ -295,13 +295,6 @@ struct NutritionLabelScannerView: View {
         - confidence: 0.0–1.0 based on overall label readability.
         """
 
-        // Build request manually (using ClaudeService internals would require actor hop)
-        let apiKey = APIKeyStore.claudeAPIKey
-        guard !apiKey.isEmpty else {
-            state = .error("API key not configured.")
-            return
-        }
-
         let body: [String: Any] = [
             "model": "claude-sonnet-4-6",
             "max_tokens": 512,
@@ -316,11 +309,21 @@ struct NutritionLabelScannerView: View {
         ]
 
         do {
-            var req = URLRequest(url: URL(string: "https://api.anthropic.com/v1/messages")!, timeoutInterval: 60)
+            let endpoint = BackendConfig.proxyURL ?? URL(string: "https://api.anthropic.com/v1/messages")!
+            var req = URLRequest(url: endpoint, timeoutInterval: 60)
             req.httpMethod = "POST"
             req.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            req.setValue(apiKey, forHTTPHeaderField: "x-api-key")
             req.setValue("2023-06-01", forHTTPHeaderField: "anthropic-version")
+            if BackendConfig.proxyURL != nil {
+                req.setValue(BackendConfig.appSecret, forHTTPHeaderField: "X-App-Secret")
+            } else {
+                let apiKey = APIKeyStore.claudeAPIKey
+                guard !apiKey.isEmpty else {
+                    state = .error("API key not configured.")
+                    return
+                }
+                req.setValue(apiKey, forHTTPHeaderField: "x-api-key")
+            }
             req.httpBody = try JSONSerialization.data(withJSONObject: body)
 
             let (responseData, _) = try await URLSession.shared.data(for: req)

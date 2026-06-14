@@ -9,6 +9,7 @@ final class DashboardViewModel: ObservableObject {
     @Published var weeklyInsight: String?
     @Published var isLoadingInsights = false
     @Published var insightError: String?
+    @Published var showPaywall = false
 
     private let user: User
 
@@ -55,6 +56,8 @@ final class DashboardViewModel: ObservableObject {
         defer { isLoadingInsights = false }
         do {
             weeklyInsight = try await ClaudeService.shared.generateWeeklyInsights(context: user.nutritionContext)
+        } catch ClaudeError.quotaExceeded {
+            showPaywall = true
         } catch {
             insightError = error.localizedDescription
         }

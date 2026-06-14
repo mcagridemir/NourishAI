@@ -32,6 +32,7 @@ struct GroceryListView: View {
         }
         .task { vm.loadList() }
         .onDisappear { vm.saveCurrentState() }
+        .sheet(isPresented: $vm.showPaywall) { PaywallView() }
     }
 
     private var groceryListContent: some View {

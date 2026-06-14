@@ -66,6 +66,7 @@ struct DashboardView: View {
         .task(id: user.currentStreak) { checkStreakMilestone() }
         .sheet(isPresented: $showingGoals) { NutritionGoalsView(user: user) }
         .sheet(isPresented: $showingPaywall) { PaywallView() }
+        .onChange(of: vm.showPaywall) { _, new in if new { showingPaywall = true; vm.showPaywall = false } }
         .sheet(item: $showingMacroDetail) { macro in MacroDetailView(user: user, macro: macro) }
         .sheet(isPresented: $showingShare) {
             if let image = shareImage { ShareSheet(items: [image]) }

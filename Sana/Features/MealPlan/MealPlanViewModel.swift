@@ -32,6 +32,11 @@ final class MealPlanViewModel: ObservableObject {
         do {
             let response = try await ClaudeService.shared.generateMealPlan(context: user.nutritionContext)
             let monday = Calendar.current.date(from: Calendar.current.dateComponents([.yearForWeekOfYear, .weekOfYear], from: .now)) ?? .now
+
+            // Deactivate old plans before creating the new one so SwiftData's
+            // inverse relationship update doesn't immediately deactivate the new plan.
+            (user.mealPlans ?? []).forEach { $0.isActive = false }
+
             let plan = MealPlan(weekStartDate: monday)
             plan.user = user
 
@@ -46,8 +51,6 @@ final class MealPlanViewModel: ObservableObject {
                 day.plan = plan
             }
 
-            // Deactivate old plans
-            (user.mealPlans ?? []).forEach { $0.isActive = false }
             currentPlan = plan
         } catch ClaudeError.quotaExceeded {
             showPaywall = true
@@ -93,6 +96,7 @@ final class MealPlanViewModel: ObservableObject {
         let monday = Calendar.current.date(
             from: Calendar.current.dateComponents([.yearForWeekOfYear, .weekOfYear], from: .now)
         ) ?? .now
+        (user.mealPlans ?? []).forEach { $0.isActive = false }
         let plan = MealPlan(weekStartDate: monday, title: "Coach Plan")
         plan.user = user
         for dayResp in response.days {
@@ -105,7 +109,6 @@ final class MealPlanViewModel: ObservableObject {
             ] + dayResp.snacks.map { PlannedMeal(from: $0, mealType: .snack) }
             day.plan = plan
         }
-        (user.mealPlans ?? []).forEach { $0.isActive = false }
         currentPlan = plan
     }
 

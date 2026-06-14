@@ -38,6 +38,7 @@ struct ManualMealEntryView: View {
     @State private var quickDescription = ""
     @State private var isEstimating = false
     @State private var estimateError: String?
+    @State private var showPaywall = false
 
     // Manual fields
     @State private var name = ""
@@ -134,6 +135,7 @@ struct ManualMealEntryView: View {
             .navigationTitle("Log meal")
             .navigationBarTitleDisplayMode(.inline)
             .onAppear { if name.isEmpty { name = prefillName } }
+            .sheet(isPresented: $showPaywall) { PaywallView() }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Cancel") { dismiss() }
@@ -170,6 +172,8 @@ struct ManualMealEntryView: View {
             proteinStr  = String(format: "%.1f", analysis.protein)
             carbsStr    = String(format: "%.1f", analysis.carbohydrates)
             fatStr      = String(format: "%.1f", analysis.fat)
+        } catch ClaudeError.quotaExceeded {
+            showPaywall = true
         } catch {
             estimateError = error.localizedDescription
         }

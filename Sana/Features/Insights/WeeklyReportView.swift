@@ -7,6 +7,7 @@ struct WeeklyReportView: View {
     @State private var report: WeeklyReport?
     @State private var isLoading = false
     @State private var errorMessage: String?
+    @State private var showPaywall = false
     @Environment(\.dismiss) private var dismiss
 
     private var stats: WeeklyStats { user.weeklyStats }
@@ -37,6 +38,7 @@ struct WeeklyReportView: View {
             }
         }
         .task { await generate() }
+        .sheet(isPresented: $showPaywall) { PaywallView() }
     }
 
     // MARK: - Loading
@@ -179,6 +181,8 @@ struct WeeklyReportView: View {
                 context: user.nutritionContext,
                 stats: stats
             )
+        } catch ClaudeError.quotaExceeded {
+            showPaywall = true
         } catch {
             errorMessage = error.localizedDescription
         }

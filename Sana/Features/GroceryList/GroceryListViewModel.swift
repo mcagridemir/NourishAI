@@ -9,6 +9,7 @@ final class GroceryListViewModel: ObservableObject {
     @Published var sections: [GrocerySection] = []
     @Published var isGenerating = false
     @Published var error: String?
+    @Published var showPaywall = false
 
     private let user: User
 
@@ -57,6 +58,8 @@ final class GroceryListViewModel: ObservableObject {
             })
             sections = try await ClaudeService.shared.generateGroceryList(from: planResp, language: user.nutritionContext.language)
             saveCurrentState()
+        } catch ClaudeError.quotaExceeded {
+            showPaywall = true
         } catch {
             self.error = error.localizedDescription
         }

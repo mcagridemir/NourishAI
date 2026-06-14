@@ -107,6 +107,7 @@ final class CoachViewModel: ObservableObject {
         let monday = Calendar.current.date(
             from: Calendar.current.dateComponents([.yearForWeekOfYear, .weekOfYear], from: .now)
         ) ?? .now
+        (user.mealPlans ?? []).forEach { $0.isActive = false }
         let plan = MealPlan(weekStartDate: monday, title: "Coach Plan")
         plan.user = user
         for dayResp in response.days {
@@ -119,7 +120,6 @@ final class CoachViewModel: ObservableObject {
             ] + dayResp.snacks.map { PlannedMeal(from: $0, mealType: .snack) }
             day.plan = plan
         }
-        (user.mealPlans ?? []).forEach { $0.isActive = false }
         pendingPlanResponse = nil
         isSavingPlan = false
         HapticService.notification(.success)

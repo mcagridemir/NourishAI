@@ -45,7 +45,7 @@ struct BodyMetricsView: View {
         // Need waist measurement — use a rough BMI proxy instead
         guard bmi > 0 else { return nil }
         // Jackson & Pollock BMI-to-BF% approximation
-        let sexFactor: Double = user.biologicalSex == .female ? 5.4 : 0.0
+        let sexFactor: Double = user.biologicalSex == .female ? 0.0 : 10.8
         let ageFactor = Double(user.age ?? 30) * 0.23
         return 1.2 * bmi + ageFactor - 5.4 - sexFactor
     }
