@@ -35,7 +35,7 @@ final class SubscriptionService: ObservableObject {
                 .sorted { $0.price < $1.price }
             await checkCurrentEntitlement()
         } catch {
-            self.error = "Failed to load products: \(error.localizedDescription)"
+            self.error = String(format: NSLocalizedString("Failed to load products: %@", comment: ""), error.localizedDescription)
         }
     }
 
@@ -122,5 +122,5 @@ final class SubscriptionService: ObservableObject {
 
 enum SubscriptionError: LocalizedError {
     case failedVerification
-    var errorDescription: String? { "Purchase verification failed." }
+    var errorDescription: String? { NSLocalizedString("Purchase verification failed.", comment: "") }
 }

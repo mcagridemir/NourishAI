@@ -46,8 +46,10 @@ enum BarcodeError: LocalizedError {
     case productNotFound, networkError(String)
     var errorDescription: String? {
         switch self {
-        case .productNotFound: return "Product not found. Try scanning again or enter manually."
-        case .networkError(let m): return "Network error: \(m)"
+        case .productNotFound:
+            return NSLocalizedString("Product not found. Try scanning again or enter manually.", comment: "")
+        case .networkError(let m):
+            return String(format: NSLocalizedString("Network error: %@", comment: ""), m)
         }
     }
 }
@@ -114,6 +116,8 @@ actor BarcodeService {
     private func double(_ dict: [String: Any], _ key: String) -> Double? {
         if let d = dict[key] as? Double { return d }
         if let i = dict[key] as? Int { return Double(i) }
+        // OpenFoodFacts sometimes returns numeric nutriment values as strings.
+        if let s = dict[key] as? String { return Double(s) }
         return nil
     }
 }

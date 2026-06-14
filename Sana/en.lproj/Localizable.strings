@@ -716,3 +716,42 @@
 "Parse error: %@" = "Parse error: %@";
 "Server error (HTTP %d)." = "Server error (HTTP %d).";
 "AI service is not configured. Please check your setup." = "AI service is not configured. Please check your setup.";
+
+/* MARK: - Notifications */
+"Time to log breakfast 🌅" = "Time to log breakfast 🌅";
+"Don't forget to log lunch 🥗" = "Don't forget to log lunch 🥗";
+"Log your dinner to hit your goals 🌙" = "Log your dinner to hit your goals 🌙";
+"Nutrition tip 💡" = "Nutrition tip 💡";
+"Your %@ intake has been low this week. Tap to see suggestions." = "Your %@ intake has been low this week. Tap to see suggestions.";
+"Your weekly nutrition recap 📊" = "Your weekly nutrition recap 📊";
+"See how your nutrition stacked up this week." = "See how your nutrition stacked up this week.";
+"Fast complete! 🎉" = "Fast complete! 🎉";
+"You've completed your %d-hour fast. Great discipline — time to break your fast mindfully." = "You've completed your %d-hour fast. Great discipline — time to break your fast mindfully.";
+"Time to hydrate 💧" = "Time to hydrate 💧";
+"Don't forget to drink water to stay on track with your daily goal." = "Don't forget to drink water to stay on track with your daily goal.";
+"Almost at your calorie goal 🎯" = "Almost at your calorie goal 🎯";
+"Just %d kcal to go today. Keep it up!" = "Just %d kcal to go today. Keep it up!";
+"Protein goal almost reached 💪" = "Protein goal almost reached 💪";
+"Only %dg more protein today — try a Greek yogurt or egg!" = "Only %dg more protein today — try a Greek yogurt or egg!";
+"Daily calorie goal hit! 🎉" = "Daily calorie goal hit! 🎉";
+"You've reached your %d kcal target. Great work today!" = "You've reached your %d kcal target. Great work today!";
+"Fully hydrated! 💧" = "Fully hydrated! 💧";
+"You've hit your %@ water goal. Your body thanks you." = "You've hit your %@ water goal. Your body thanks you.";
+"🔥 Don't break your %d-day streak!" = "🔥 Don't break your %d-day streak!";
+"Log a meal now to keep your streak alive — it only takes a second." = "Log a meal now to keep your streak alive — it only takes a second.";
+"💊 Time for %@" = "💊 Time for %@";
+"Don't forget your %@ supplement." = "Don't forget your %@ supplement.";
+
+/* MARK: - Service errors */
+"Product not found. Try scanning again or enter manually." = "Product not found. Try scanning again or enter manually.";
+"Network error: %@" = "Network error: %@";
+"Purchase verification failed." = "Purchase verification failed.";
+"Failed to load products: %@" = "Failed to load products: %@";
+
+/* MARK: - Scanner & voice errors */
+"Could not load photo." = "Could not load photo.";
+"Image too large. Try a closer crop." = "Image too large. Try a closer crop.";
+"API key not configured." = "API key not configured.";
+"Couldn't read the label clearly. Make sure the image is sharp and well-lit." = "Couldn't read the label clearly. Make sure the image is sharp and well-lit.";
+"Microphone unavailable." = "Microphone unavailable.";
+"Audio engine failed to start." = "Audio engine failed to start.";

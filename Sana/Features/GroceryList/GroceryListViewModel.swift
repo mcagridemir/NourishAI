@@ -81,6 +81,13 @@ final class GroceryListViewModel: ObservableObject {
         let av = UIActivityViewController(activityItems: [text], applicationActivities: nil)
         if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let vc = scene.keyWindow?.rootViewController {
+            // iPad requires a popover anchor; without one, presenting crashes.
+            if let pop = av.popoverPresentationController {
+                pop.sourceView = vc.view
+                pop.sourceRect = CGRect(x: vc.view.bounds.midX, y: vc.view.bounds.midY,
+                                        width: 0, height: 0)
+                pop.permittedArrowDirections = []
+            }
             vc.present(av, animated: true)
         }
     }

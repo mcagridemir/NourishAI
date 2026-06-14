@@ -58,7 +58,7 @@ final class FastingLiveActivityService {
                 startDate: state.startDate,
                 targetSeconds: state.targetSeconds,
                 isComplete: true,
-                zone: "Fast complete! 🎉"
+                zone: String(localized: "Fast complete! 🎉")
             )
             await activity.update(ActivityContent(state: done, staleDate: nil))
             try? await Task.sleep(for: .seconds(5))

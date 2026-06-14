@@ -277,7 +277,7 @@ struct NutritionLabelScannerView: View {
         state = .analyzing
         guard let data = image.jpegData(compressionQuality: 0.8),
               data.count < 5_000_000 else {
-            state = .error("Image too large. Try a closer crop.")
+            state = .error(String(localized: "Image too large. Try a closer crop."))
             return
         }
 
@@ -321,7 +321,7 @@ struct NutritionLabelScannerView: View {
             } else {
                 let apiKey = APIKeyStore.claudeAPIKey
                 guard !apiKey.isEmpty else {
-                    state = .error("API key not configured.")
+                    state = .error(String(localized: "API key not configured."))
                     return
                 }
                 req.setValue(apiKey, forHTTPHeaderField: "x-api-key")
@@ -358,7 +358,7 @@ struct NutritionLabelScannerView: View {
         } catch ClaudeError.quotaExceeded {
             showPaywall = true
         } catch {
-            state = .error("Couldn't read the label clearly. Make sure the image is sharp and well-lit.")
+            state = .error(String(localized: "Couldn't read the label clearly. Make sure the image is sharp and well-lit."))
         }
     }
 

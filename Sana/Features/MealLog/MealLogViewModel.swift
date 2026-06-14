@@ -45,7 +45,7 @@ final class MealLogViewModel: ObservableObject {
         do {
             guard let data = try await item.loadTransferable(type: Data.self),
                   let image = UIImage(data: data) else {
-                state = .error("Could not load photo.")
+                state = .error(String(localized: "Could not load photo."))
                 return
             }
             capturedImage = image

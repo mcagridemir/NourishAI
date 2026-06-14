@@ -34,7 +34,11 @@ struct ExportService {
         let csv = rows.joined(separator: "\n")
         let tmp = FileManager.default.temporaryDirectory
             .appendingPathComponent("Sana_Export_\(dateFmt.string(from: .now)).csv")
-        try? csv.write(to: tmp, atomically: true, encoding: .utf8)
+        do {
+            try csv.write(to: tmp, atomically: true, encoding: .utf8)
+        } catch {
+            return nil  // don't hand back a URL to a file that wasn't written
+        }
         return tmp
     }
 

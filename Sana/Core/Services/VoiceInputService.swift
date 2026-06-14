@@ -56,7 +56,7 @@ final class VoiceInputService: ObservableObject {
             try audioSession.setCategory(.record, mode: .measurement, options: .duckOthers)
             try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
         } catch {
-            self.error = "Microphone unavailable."
+            self.error = String(localized: "Microphone unavailable.")
             return
         }
 
@@ -72,7 +72,7 @@ final class VoiceInputService: ObservableObject {
 
         audioEngine.prepare()
         do { try audioEngine.start() } catch {
-            self.error = "Audio engine failed to start."
+            self.error = String(localized: "Audio engine failed to start.")
             return
         }
 

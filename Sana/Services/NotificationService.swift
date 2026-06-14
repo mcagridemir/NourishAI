@@ -16,9 +16,9 @@ final class NotificationService {
     func scheduleMealReminders(breakfast: DateComponents, lunch: DateComponents, dinner: DateComponents) {
         cancelAll(withPrefix: "meal_")
         let meals: [(String, String, DateComponents)] = [
-            ("meal_breakfast", "Time to log breakfast 🌅", breakfast),
-            ("meal_lunch",     "Don't forget to log lunch 🥗", lunch),
-            ("meal_dinner",    "Log your dinner to hit your goals 🌙", dinner)
+            ("meal_breakfast", String(localized: "Time to log breakfast 🌅"), breakfast),
+            ("meal_lunch",     String(localized: "Don't forget to log lunch 🥗"), lunch),
+            ("meal_dinner",    String(localized: "Log your dinner to hit your goals 🌙"), dinner)
         ]
         for (id, body, time) in meals {
             let content = UNMutableNotificationContent()
@@ -38,9 +38,9 @@ final class NotificationService {
         cancelAll(withPrefix: "meal_")
         let cal = Calendar.current
         let offsets: [(String, String, Int)] = [
-            ("meal_breakfast", "Time to log breakfast 🌅",          60),   // +1 h
-            ("meal_lunch",     "Don't forget to log lunch 🥗",       270),  // +4.5 h
-            ("meal_dinner",    "Log your dinner to hit your goals 🌙", 600)  // +10 h
+            ("meal_breakfast", String(localized: "Time to log breakfast 🌅"),          60),   // +1 h
+            ("meal_lunch",     String(localized: "Don't forget to log lunch 🥗"),       270),  // +4.5 h
+            ("meal_dinner",    String(localized: "Log your dinner to hit your goals 🌙"), 600)  // +10 h
         ]
         for (id, body, minuteOffset) in offsets {
             guard let fireDate = cal.date(byAdding: .minute, value: minuteOffset, to: wakeTime) else { continue }
@@ -58,8 +58,8 @@ final class NotificationService {
     // Deficiency alert
     func sendDeficiencyAlert(nutrient: String) {
         let content = UNMutableNotificationContent()
-        content.title = "Nutrition tip 💡"
-        content.body = "Your \(nutrient) intake has been low this week. Tap to see suggestions."
+        content.title = String(localized: "Nutrition tip 💡")
+        content.body = String(format: NSLocalizedString("Your %@ intake has been low this week. Tap to see suggestions.", comment: ""), nutrient)
         content.sound = .default
         let request = UNNotificationRequest(
             identifier: "deficiency_\(nutrient)_\(Date().timeIntervalSince1970)",
@@ -71,8 +71,8 @@ final class NotificationService {
     func scheduleWeeklySummary() {
         cancelAll(withPrefix: "weekly_")
         let content = UNMutableNotificationContent()
-        content.title = "Your weekly nutrition recap 📊"
-        content.body = "See how your nutrition stacked up this week."
+        content.title = String(localized: "Your weekly nutrition recap 📊")
+        content.body = String(localized: "See how your nutrition stacked up this week.")
         content.sound = .default
         var components = DateComponents()
         components.weekday = 1; components.hour = 19; components.minute = 0
@@ -85,8 +85,8 @@ final class NotificationService {
         cancelAll(withPrefix: "fasting_")
         guard seconds > 0 else { return }
         let content = UNMutableNotificationContent()
-        content.title = "Fast complete! 🎉"
-        content.body = "You've completed your \(targetHours)-hour fast. Great discipline — time to break your fast mindfully."
+        content.title = String(localized: "Fast complete! 🎉")
+        content.body = String(format: NSLocalizedString("You've completed your %d-hour fast. Great discipline — time to break your fast mindfully.", comment: ""), targetHours)
         content.sound = .default
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: seconds, repeats: false)
         let request = UNNotificationRequest(identifier: "fasting_complete", content: content, trigger: trigger)
@@ -102,8 +102,8 @@ final class NotificationService {
         cancelAll(withPrefix: "hydration_")
         let center = UNUserNotificationCenter.current()
         let content = UNMutableNotificationContent()
-        content.title = "Time to hydrate 💧"
-        content.body = "Don't forget to drink water to stay on track with your daily goal."
+        content.title = String(localized: "Time to hydrate 💧")
+        content.body = String(localized: "Don't forget to drink water to stay on track with your daily goal.")
         content.sound = .default
         var hour = startHour
         var index = 0
@@ -150,27 +150,27 @@ final class NotificationService {
         // Calorie goal close (within 200 kcal)
         if calRemaining > 0 && calRemaining <= 200 {
             send(center, id: "smart_cal_\(dayKey())",
-                 title: "Almost at your calorie goal 🎯",
-                 body: "Just \(calRemaining) kcal to go today. Keep it up!")
+                 title: String(localized: "Almost at your calorie goal 🎯"),
+                 body: String(format: NSLocalizedString("Just %d kcal to go today. Keep it up!", comment: ""), calRemaining))
         }
         // Protein goal close (within 20 g)
         if protRemaining > 0 && protRemaining <= 20 {
             send(center, id: "smart_prot_\(dayKey())",
-                 title: "Protein goal almost reached 💪",
-                 body: "Only \(Int(protRemaining))g more protein today — try a Greek yogurt or egg!")
+                 title: String(localized: "Protein goal almost reached 💪"),
+                 body: String(format: NSLocalizedString("Only %dg more protein today — try a Greek yogurt or egg!", comment: ""), Int(protRemaining)))
         }
         // Calorie goal met
         if calRemaining <= 0 && calRemaining > -300 {
             send(center, id: "smart_cal_done_\(dayKey())",
-                 title: "Daily calorie goal hit! 🎉",
-                 body: "You've reached your \(targetCalories) kcal target. Great work today!")
+                 title: String(localized: "Daily calorie goal hit! 🎉"),
+                 body: String(format: NSLocalizedString("You've reached your %d kcal target. Great work today!", comment: ""), targetCalories))
         }
         // Water goal met
         if waterRemaining <= 0 && waterRemaining > -500 {
             let waterLabel = targetWaterFormatted.isEmpty ? "\(targetWater) ml" : targetWaterFormatted
             send(center, id: "smart_water_\(dayKey())",
-                 title: "Fully hydrated! 💧",
-                 body: "You've hit your \(waterLabel) water goal. Your body thanks you.")
+                 title: String(localized: "Fully hydrated! 💧"),
+                 body: String(format: NSLocalizedString("You've hit your %@ water goal. Your body thanks you.", comment: ""), waterLabel))
         }
     }
 
@@ -190,8 +190,8 @@ final class NotificationService {
         let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
 
         let content = UNMutableNotificationContent()
-        content.title = "🔥 Don't break your \(currentStreak)-day streak!"
-        content.body = "Log a meal now to keep your streak alive — it only takes a second."
+        content.title = String(format: NSLocalizedString("🔥 Don't break your %d-day streak!", comment: ""), currentStreak)
+        content.body = String(localized: "Log a meal now to keep your streak alive — it only takes a second.")
         content.sound = .default
         content.categoryIdentifier = "STREAK_RECOVERY"
 
@@ -220,8 +220,9 @@ final class NotificationService {
         let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
 
         let content = UNMutableNotificationContent()
-        content.title = "💊 Time for \(name)"
-        content.body = "Don't forget your \(timeOfDay.lowercased()) supplement."
+        content.title = String(format: NSLocalizedString("💊 Time for %@", comment: ""), name)
+        let localizedTime = NSLocalizedString(timeOfDay, comment: "supplement time of day").lowercased()
+        content.body = String(format: NSLocalizedString("Don't forget your %@ supplement.", comment: ""), localizedTime)
         content.sound = .default
 
         center.add(UNNotificationRequest(identifier: id, content: content, trigger: trigger))

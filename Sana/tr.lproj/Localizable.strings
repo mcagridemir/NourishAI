@@ -718,3 +718,42 @@
 "Parse error: %@" = "Ayrıştırma hatası: %@";
 "Server error (HTTP %d)." = "Sunucu hatası (HTTP %d).";
 "AI service is not configured. Please check your setup." = "Yapay zeka servisi yapılandırılmamış. Lütfen ayarlarınızı kontrol edin.";
+
+/* MARK: - Notifications */
+"Time to log breakfast 🌅" = "Kahvaltını kaydetme zamanı 🌅";
+"Don't forget to log lunch 🥗" = "Öğle yemeğini kaydetmeyi unutma 🥗";
+"Log your dinner to hit your goals 🌙" = "Hedeflerine ulaşmak için akşam yemeğini kaydet 🌙";
+"Nutrition tip 💡" = "Beslenme ipucu 💡";
+"Your %@ intake has been low this week. Tap to see suggestions." = "Bu hafta %@ alımın düşük oldu. Önerileri görmek için dokun.";
+"Your weekly nutrition recap 📊" = "Haftalık beslenme özetin 📊";
+"See how your nutrition stacked up this week." = "Bu hafta beslenmenin nasıl gittiğini gör.";
+"Fast complete! 🎉" = "Oruç tamamlandı! 🎉";
+"You've completed your %d-hour fast. Great discipline — time to break your fast mindfully." = "%d saatlik orucunu tamamladın. Harika disiplin — orucunu özenle açma zamanı.";
+"Time to hydrate 💧" = "Su içme zamanı 💧";
+"Don't forget to drink water to stay on track with your daily goal." = "Günlük hedefini tutturmak için su içmeyi unutma.";
+"Almost at your calorie goal 🎯" = "Kalori hedefine neredeyse ulaştın 🎯";
+"Just %d kcal to go today. Keep it up!" = "Bugün sadece %d kcal kaldı. Böyle devam et!";
+"Protein goal almost reached 💪" = "Protein hedefine neredeyse ulaştın 💪";
+"Only %dg more protein today — try a Greek yogurt or egg!" = "Bugün yalnızca %dg daha protein — Yunan yoğurdu veya yumurta dene!";
+"Daily calorie goal hit! 🎉" = "Günlük kalori hedefi tutturuldu! 🎉";
+"You've reached your %d kcal target. Great work today!" = "%d kcal hedefine ulaştın. Bugün harika iş çıkardın!";
+"Fully hydrated! 💧" = "Tamamen suya doydun! 💧";
+"You've hit your %@ water goal. Your body thanks you." = "%@ su hedefine ulaştın. Vücudun sana teşekkür ediyor.";
+"🔥 Don't break your %d-day streak!" = "🔥 %d günlük serini bozma!";
+"Log a meal now to keep your streak alive — it only takes a second." = "Serini canlı tutmak için şimdi bir öğün kaydet — sadece bir saniye sürer.";
+"💊 Time for %@" = "💊 %@ zamanı";
+"Don't forget your %@ supplement." = "%@ takviyeni unutma.";
+
+/* MARK: - Service errors */
+"Product not found. Try scanning again or enter manually." = "Ürün bulunamadı. Tekrar taramayı dene veya elle gir.";
+"Network error: %@" = "Ağ hatası: %@";
+"Purchase verification failed." = "Satın alma doğrulaması başarısız oldu.";
+"Failed to load products: %@" = "Ürünler yüklenemedi: %@";
+
+/* MARK: - Scanner & voice errors */
+"Could not load photo." = "Fotoğraf yüklenemedi.";
+"Image too large. Try a closer crop." = "Görsel çok büyük. Daha yakın bir kırpma dene.";
+"API key not configured." = "API anahtarı yapılandırılmamış.";
+"Couldn't read the label clearly. Make sure the image is sharp and well-lit." = "Etiket net okunamadı. Görselin net ve iyi aydınlatılmış olduğundan emin ol.";
+"Microphone unavailable." = "Mikrofon kullanılamıyor.";
+"Audio engine failed to start." = "Ses motoru başlatılamadı.";
