@@ -761,3 +761,7 @@
 "List options" = "List options";
 "Remove %@" = "Remove %@";
 "Remove photo" = "Remove photo";
+"Decrease weight" = "Decrease weight";
+"Increase weight" = "Increase weight";
+"Start recording" = "Start recording";
+"Stop recording" = "Stop recording";

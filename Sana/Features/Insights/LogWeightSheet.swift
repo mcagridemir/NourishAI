@@ -78,6 +78,7 @@ struct LogWeightSheet: View {
                         .font(.system(size: 44))
                         .foregroundStyle(SanaTheme.Color.primary)
                 }
+                .accessibilityLabel(Text("Decrease weight"))
                 Spacer()
                 Button {
                     HapticService.impact(.light)
@@ -87,6 +88,7 @@ struct LogWeightSheet: View {
                         .font(.system(size: 44))
                         .foregroundStyle(SanaTheme.Color.primary)
                 }
+                .accessibilityLabel(Text("Increase weight"))
             }
 
             Slider(value: $weightKg, in: max(30, weightKg - 30)...min(300, weightKg + 30), step: step)

@@ -39,6 +39,7 @@ struct VoiceMealInputView: View {
                                 .foregroundStyle(voice.isListening ? .white : SanaTheme.Color.primary)
                         }
                     }
+                    .accessibilityLabel(Text(voice.isListening ? "Stop recording" : "Start recording"))
                     .shadow(color: SanaTheme.Color.primary.opacity(0.3), radius: voice.isListening ? 12 : 4)
                 }
                 .animation(SanaTheme.Animation.smooth, value: voice.isListening)

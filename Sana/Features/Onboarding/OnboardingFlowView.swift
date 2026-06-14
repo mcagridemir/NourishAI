@@ -89,6 +89,7 @@ struct OnboardingFlowView: View {
                         .foregroundStyle(.primary)
                         .frame(width: 32, height: 32)
                 }
+                .accessibilityLabel(Text("Back"))
                 .transition(.opacity)
             } else {
                 Color.clear.frame(width: 32, height: 32)

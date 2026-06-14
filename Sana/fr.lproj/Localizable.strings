@@ -449,3 +449,7 @@
 "List options" = "Options de liste";
 "Remove %@" = "Retirer %@";
 "Remove photo" = "Retirer la photo";
+"Decrease weight" = "Diminuer le poids";
+"Increase weight" = "Augmenter le poids";
+"Start recording" = "Démarrer l'enregistrement";
+"Stop recording" = "Arrêter l'enregistrement";
