@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — Sana</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f5f5f7;
+      color: #1d1d1f;
+      line-height: 1.7;
+      padding: 40px 20px 80px;
+    }
+    .container { max-width: 720px; margin: 0 auto; background: #fff; border-radius: 18px; padding: 48px 52px; box-shadow: 0 2px 24px rgba(0,0,0,.07); }
+    header { display: flex; align-items: center; gap: 16px; margin-bottom: 40px; }
+    .icon { width: 60px; height: 60px; border-radius: 14px; background: linear-gradient(135deg, #3a8f5e, #2d7a50); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .icon svg { width: 34px; height: 34px; fill: #fff; }
+    header h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; }
+    header p  { font-size: 14px; color: #6e6e73; margin-top: 2px; }
+    h2 { font-size: 19px; font-weight: 700; color: #1d1d1f; margin: 36px 0 10px; padding-bottom: 6px; border-bottom: 1px solid #e8e8ed; }
+    h3 { font-size: 15px; font-weight: 600; color: #1d1d1f; margin: 20px 0 6px; }
+    p, li { font-size: 15px; color: #3d3d3f; }
+    ul { padding-left: 20px; margin: 8px 0; }
+    li { margin-bottom: 4px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; }
+    th { background: #f5f5f7; text-align: left; padding: 8px 12px; font-weight: 600; border-bottom: 2px solid #e8e8ed; }
+    td { padding: 8px 12px; border-bottom: 1px solid #f0f0f5; vertical-align: top; }
+    a { color: #3a8f5e; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .badge { display: inline-block; background: #f0faf5; color: #3a8f5e; border: 1px solid #b8e2ca; border-radius: 6px; font-size: 12px; font-weight: 600; padding: 2px 8px; margin-left: 8px; vertical-align: middle; }
+    footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid #e8e8ed; font-size: 13px; color: #6e6e73; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="icon">
+      <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 4.17 4.42 9.92 6.24 12.11.4.48 1.13.48 1.53 0C14.58 18.92 19 13.17 19 9c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+    </div>
+    <div>
+      <h1>Privacy Policy</h1>
+      <p>Sana — AI Nutrition Coach &nbsp;·&nbsp; Last updated: June 2026</p>
+    </div>
+  </header>
+
+  <p>Sana ("the app") is a personal nutrition tracking application developed by Çağrı Demir. We are committed to protecting your privacy. This policy explains what data Sana collects, how it is used, and your rights.</p>
+
+  <h2>Data We Collect</h2>
+
+  <h3>Data stored on your device <span class="badge">never sent to us</span></h3>
+  <p>Sana stores all personal data locally on your device using Apple's SwiftData framework:</p>
+  <ul>
+    <li><strong>Meal entries</strong> — name, calories, macros, health score, photos, timestamps</li>
+    <li><strong>Weight entries</strong> — dates and weights</li>
+    <li><strong>Water intake entries</strong> — amounts and timestamps</li>
+    <li><strong>Supplement logs</strong> — supplement names, dosages, check-in history</li>
+    <li><strong>User profile</strong> — name, age, height, weight, goals, dietary preferences, health conditions</li>
+    <li><strong>Meal plans</strong> — AI-generated weekly plans and grocery lists</li>
+    <li><strong>Coach conversations</strong> — chat history with the AI coach</li>
+    <li><strong>Progress photos</strong> — body progress images stored in your device's private container</li>
+  </ul>
+  <p>This data is stored in your device's private container and, if you enable iCloud sync, in your personal iCloud account.</p>
+
+  <h3>Data sent off-device</h3>
+  <p>Sana sends certain data to third-party services <strong>only to provide app functionality</strong>:</p>
+  <table>
+    <tr><th>Data</th><th>Sent to</th><th>Purpose</th></tr>
+    <tr><td>Meal photos</td><td>Anthropic (Claude API) via our secure proxy</td><td>AI food recognition and nutrition analysis</td></tr>
+    <tr><td>Meal descriptions / coach messages</td><td>Anthropic (Claude API) via our secure proxy</td><td>AI nutrition coaching responses</td></tr>
+    <tr><td>Nutrition context (calories, macros, goals)</td><td>Anthropic (Claude API) via our secure proxy</td><td>Personalised AI advice</td></tr>
+    <tr><td>Anonymous crash logs</td><td>Google Firebase Crashlytics</td><td>App stability improvements</td></tr>
+    <tr><td>Anonymous usage events</td><td>Google Firebase Analytics</td><td>Understanding feature usage</td></tr>
+  </table>
+  <p><strong>Anthropic Claude API:</strong> Meal images and text are sent to Anthropic's Claude API to provide real-time nutrition analysis and coaching. Data sent to the API is not used to train Anthropic's models. See <a href="https://www.anthropic.com/privacy" target="_blank">Anthropic's Privacy Policy</a>.</p>
+  <p><strong>Firebase:</strong> Crash reports contain no personally identifiable information. Analytics events are anonymised and aggregated.</p>
+
+  <h2>Apple Health</h2>
+  <p>Sana may request access to Apple HealthKit to read:</p>
+  <ul>
+    <li>Step count and active energy burned</li>
+    <li>Sleep analysis</li>
+    <li>Resting heart rate</li>
+  </ul>
+  <p>This data is read from your Health app and displayed within Sana. It is <strong>never</strong> sent to any external server. Access is optional and can be revoked at any time in <strong>iOS Settings → Privacy → Health → Sana</strong>.</p>
+
+  <h2>Authentication</h2>
+  <p>Sana supports <strong>Sign in with Apple</strong>, <strong>Sign in with Google</strong>, and <strong>email/password</strong> sign-in via Firebase Authentication. We receive only the minimum information required to create your account (a unique identifier and, optionally, your name and email). We do not store your credentials — sign-in state is managed securely by Apple/Google/Firebase.</p>
+
+  <h2>Progress Photos</h2>
+  <p>Progress photos are stored exclusively on your device's private app container. They are never uploaded, backed up to our servers, or shared with any third party. If you enable iCloud backup, photos may be included in your personal iCloud backup under your own Apple ID.</p>
+
+  <h2>Data Sharing</h2>
+  <p>We do <strong>not</strong> sell, rent, or share your personal data with third parties for advertising or marketing purposes. Data is shared only as described above, solely to provide and improve app functionality.</p>
+
+  <h2>Data Retention</h2>
+  <ul>
+    <li><strong>Device data:</strong> Stored until you delete the app or clear app data.</li>
+    <li><strong>iCloud data:</strong> Stored in your personal iCloud account under your control.</li>
+    <li><strong>API data:</strong> Messages sent to the Claude API are processed in real time per Anthropic's data retention policy.</li>
+    <li><strong>Firebase data:</strong> Crash reports are retained for 90 days. Analytics data is aggregated and anonymised.</li>
+  </ul>
+
+  <h2>Your Rights</h2>
+  <p>You can:</p>
+  <ul>
+    <li><strong>Export</strong> your meal data via Profile → Export meal data (CSV)</li>
+    <li><strong>Delete</strong> all local data by deleting the app</li>
+    <li><strong>Revoke</strong> HealthKit access in iOS Settings at any time</li>
+    <li><strong>Request data deletion</strong> by contacting us at the email below</li>
+  </ul>
+
+  <h2>Children</h2>
+  <p>Sana is rated 4+ and does not knowingly collect personal information from children under 13. If you believe a child has provided personal information, please contact us for immediate removal.</p>
+
+  <h2>Changes to This Policy</h2>
+  <p>We may update this policy as the app evolves. Material changes will be noted in the app's release notes. Continued use of the app after changes constitutes acceptance.</p>
+
+  <h2>Contact</h2>
+  <p>For privacy questions or data deletion requests:</p>
+  <ul>
+    <li><strong>Developer:</strong> Çağrı Demir</li>
+    <li><strong>Email:</strong> <a href="mailto:cagriidemirr@gmail.com">cagriidemirr@gmail.com</a></li>
+  </ul>
+
+  <footer>
+    <p>© 2026 Çağrı Demir. All rights reserved.</p>
+  </footer>
+</div>
+</body>
+</html>
