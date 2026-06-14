@@ -67,6 +67,7 @@ struct AddProgressPhotoSheet: View {
                                 .foregroundStyle(.white)
                                 .padding(10)
                         }
+                        .accessibilityLabel(Text("Remove photo"))
                     }
             } else {
                 // Source picker

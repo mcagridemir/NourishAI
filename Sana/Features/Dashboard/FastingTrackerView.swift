@@ -179,9 +179,9 @@ struct FastingTrackerView: View {
             in: targetHours * 3600,
             targetHours: Int(targetHours)
         )
-        Task {
-            await FastingLiveActivityService.shared.end()
-            await FastingLiveActivityService.shared.start(
+        Task { @MainActor in
+            FastingLiveActivityService.shared.end()
+            FastingLiveActivityService.shared.start(
                 startDate: now,
                 targetSeconds: targetHours * 3600,
                 zone: "Digesting"

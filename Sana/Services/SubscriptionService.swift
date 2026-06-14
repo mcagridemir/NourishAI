@@ -89,9 +89,18 @@ final class SubscriptionService: ObservableObject {
 
     var yearlySavingsPct: Int? {
         guard let m = monthlyProduct, let y = yearlyProduct else { return nil }
-        let annualMonthly = m.price * 12
+        return Self.yearlySavingsPercent(monthlyPrice: m.price, yearlyPrice: y.price)
+    }
+
+    /// Pure savings calculation, extracted so it can be unit-tested without StoreKit `Product`s.
+    nonisolated static func yearlySavingsPercent(monthlyPrice: Decimal, yearlyPrice: Decimal) -> Int? {
+        let annualMonthly = monthlyPrice * 12
         guard annualMonthly > 0 else { return nil }
-        return Int(((annualMonthly - y.price) / annualMonthly * 100) as NSDecimalNumber)
+        // Note: convert via doubleValue, not Int(_: NSDecimalNumber) — a high-precision
+        // Decimal (e.g. 33.2164…) makes NSDecimalNumber.intValue return 0, which would
+        // render "0% savings" on the paywall for realistic prices like 4.99 / 39.99.
+        let pct = (annualMonthly - yearlyPrice) / annualMonthly * 100
+        return Int((pct as NSDecimalNumber).doubleValue)
     }
 
     // MARK: - Private

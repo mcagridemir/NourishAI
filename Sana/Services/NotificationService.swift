@@ -38,9 +38,9 @@ final class NotificationService {
         cancelAll(withPrefix: "meal_")
         let cal = Calendar.current
         let offsets: [(String, String, Int)] = [
-            ("meal_breakfast", String(localized: "Time to log breakfast 🌅"),          60),   // +1 h
-            ("meal_lunch",     String(localized: "Don't forget to log lunch 🥗"),       270),  // +4.5 h
-            ("meal_dinner",    String(localized: "Log your dinner to hit your goals 🌙"), 600)  // +10 h
+            ("meal_breakfast", String(localized: "Time to log breakfast 🌅"),          Self.smartMealOffsetMinutes.breakfast),  // +1 h
+            ("meal_lunch",     String(localized: "Don't forget to log lunch 🥗"),       Self.smartMealOffsetMinutes.lunch),      // +4.5 h
+            ("meal_dinner",    String(localized: "Log your dinner to hit your goals 🌙"), Self.smartMealOffsetMinutes.dinner)      // +10 h
         ]
         for (id, body, minuteOffset) in offsets {
             guard let fireDate = cal.date(byAdding: .minute, value: minuteOffset, to: wakeTime) else { continue }
@@ -135,38 +135,53 @@ final class NotificationService {
 
     // MARK: - Smart goal notifications
 
-    /// Call once after each meal log. Fires a one-shot nudge if the user is close (≤ 20%) to a goal.
+    /// Which smart-goal nudges apply for the given progress. Pure (no side effects) so it can be unit-tested.
+    nonisolated enum GoalNudge: Hashable { case calorieClose, proteinClose, calorieMet, waterMet }
+
+    nonisolated static func goalNudges(todayCalories: Int, targetCalories: Int,
+                           todayProtein: Double, targetProtein: Double,
+                           todayWater: Int, targetWater: Int) -> Set<GoalNudge> {
+        var result: Set<GoalNudge> = []
+        let calRemaining   = targetCalories - todayCalories
+        let protRemaining  = targetProtein - todayProtein
+        let waterRemaining = targetWater - todayWater
+        if calRemaining > 0 && calRemaining <= 200       { result.insert(.calorieClose) }   // within 200 kcal
+        if protRemaining > 0 && protRemaining <= 20      { result.insert(.proteinClose) }   // within 20 g
+        if calRemaining <= 0 && calRemaining > -300      { result.insert(.calorieMet) }
+        if waterRemaining <= 0 && waterRemaining > -500  { result.insert(.waterMet) }
+        return result
+    }
+
+    /// Call once after each meal log. Fires a one-shot nudge if the user is close to (or just met) a goal.
     func fireSmartGoalNudge(todayCalories: Int, targetCalories: Int,
                             todayProtein: Double, targetProtein: Double,
                             todayWater: Int, targetWater: Int,
                             targetWaterFormatted: String = "") {
-        let calRemaining   = targetCalories - todayCalories
-        let protRemaining  = targetProtein - todayProtein
-        let waterRemaining = targetWater - todayWater
+        let nudges = Self.goalNudges(todayCalories: todayCalories, targetCalories: targetCalories,
+                                     todayProtein: todayProtein, targetProtein: targetProtein,
+                                     todayWater: todayWater, targetWater: targetWater)
 
         // Only nudge once per day per goal: use delivered notifications as guard
         let center = UNUserNotificationCenter.current()
 
-        // Calorie goal close (within 200 kcal)
-        if calRemaining > 0 && calRemaining <= 200 {
+        if nudges.contains(.calorieClose) {
+            let calRemaining = targetCalories - todayCalories
             send(center, id: "smart_cal_\(dayKey())",
                  title: String(localized: "Almost at your calorie goal 🎯"),
                  body: String(format: NSLocalizedString("Just %d kcal to go today. Keep it up!", comment: ""), calRemaining))
         }
-        // Protein goal close (within 20 g)
-        if protRemaining > 0 && protRemaining <= 20 {
+        if nudges.contains(.proteinClose) {
+            let protRemaining = targetProtein - todayProtein
             send(center, id: "smart_prot_\(dayKey())",
                  title: String(localized: "Protein goal almost reached 💪"),
                  body: String(format: NSLocalizedString("Only %dg more protein today — try a Greek yogurt or egg!", comment: ""), Int(protRemaining)))
         }
-        // Calorie goal met
-        if calRemaining <= 0 && calRemaining > -300 {
+        if nudges.contains(.calorieMet) {
             send(center, id: "smart_cal_done_\(dayKey())",
                  title: String(localized: "Daily calorie goal hit! 🎉"),
                  body: String(format: NSLocalizedString("You've reached your %d kcal target. Great work today!", comment: ""), targetCalories))
         }
-        // Water goal met
-        if waterRemaining <= 0 && waterRemaining > -500 {
+        if nudges.contains(.waterMet) {
             let waterLabel = targetWaterFormatted.isEmpty ? "\(targetWater) ml" : targetWaterFormatted
             send(center, id: "smart_water_\(dayKey())",
                  title: String(localized: "Fully hydrated! 💧"),
@@ -205,14 +220,7 @@ final class NotificationService {
         let center = UNUserNotificationCenter.current()
         center.removePendingNotificationRequests(withIdentifiers: [id])
 
-        let hour: Int
-        switch timeOfDay {
-        case "Afternoon": hour = 13
-        case "Evening":   hour = 18
-        case "Before bed": hour = 22
-        case "With meals": hour = 12
-        default: hour = 8  // Morning
-        }
+        let hour = Self.supplementHour(forTimeOfDay: timeOfDay)
 
         var components = DateComponents()
         components.hour = hour
@@ -249,5 +257,21 @@ final class NotificationService {
     private func dayKey() -> String {
         let d = Calendar.current.dateComponents([.year, .month, .day], from: .now)
         return "\(d.year ?? 0)-\(d.month ?? 0)-\(d.day ?? 0)"
+    }
+
+    // MARK: - Pure schedule logic (unit-tested)
+
+    /// Minute offsets from wake time for sleep-aware meal reminders.
+    nonisolated static let smartMealOffsetMinutes = (breakfast: 60, lunch: 270, dinner: 600)
+
+    /// Maps a supplement time-of-day label to the hour it should fire at. Defaults to morning (8).
+    nonisolated static func supplementHour(forTimeOfDay timeOfDay: String) -> Int {
+        switch timeOfDay {
+        case "Afternoon":  return 13
+        case "Evening":    return 18
+        case "Before bed": return 22
+        case "With meals": return 12
+        default:           return 8  // Morning
+        }
     }
 }

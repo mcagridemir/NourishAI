@@ -49,6 +49,7 @@ struct PaywallView: View {
                             .background(.white.opacity(0.18))
                             .clipShape(Circle())
                     }
+                    .accessibilityLabel(Text("Close"))
                 }
             }
         }

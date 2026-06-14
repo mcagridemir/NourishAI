@@ -186,6 +186,7 @@ struct RecipeGeneratorView: View {
                     .font(.system(size: 13))
                     .foregroundStyle(SanaTheme.Color.primary.opacity(0.6))
             }
+            .accessibilityLabel(Text("Remove \(name)"))
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 6)

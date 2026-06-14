@@ -757,3 +757,9 @@
 "Couldn't read the label clearly. Make sure the image is sharp and well-lit." = "Etiket net okunamadı. Görselin net ve iyi aydınlatılmış olduğundan emin ol.";
 "Microphone unavailable." = "Mikrofon kullanılamıyor.";
 "Audio engine failed to start." = "Ses motoru başlatılamadı.";
+
+// Accessibility labels
+"Close" = "Kapat";
+"List options" = "Liste seçenekleri";
+"Remove %@" = "%@ kaldır";
+"Remove photo" = "Fotoğrafı kaldır";

@@ -443,3 +443,9 @@
 "Parse error: %@" = "Erreur d'analyse : %@";
 "Server error (HTTP %d)." = "Erreur serveur (HTTP %d).";
 "AI service is not configured. Please check your setup." = "Le service IA n'est pas configuré. Veuillez vérifier votre configuration.";
+
+// Accessibility labels
+"Close" = "Fermer";
+"List options" = "Options de liste";
+"Remove %@" = "Retirer %@";
+"Remove photo" = "Retirer la photo";

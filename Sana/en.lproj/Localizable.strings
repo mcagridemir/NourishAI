@@ -755,3 +755,9 @@
 "Couldn't read the label clearly. Make sure the image is sharp and well-lit." = "Couldn't read the label clearly. Make sure the image is sharp and well-lit.";
 "Microphone unavailable." = "Microphone unavailable.";
 "Audio engine failed to start." = "Audio engine failed to start.";
+
+// Accessibility labels
+"Close" = "Close";
+"List options" = "List options";
+"Remove %@" = "Remove %@";
+"Remove photo" = "Remove photo";

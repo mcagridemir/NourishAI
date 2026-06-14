@@ -27,6 +27,7 @@ struct GroceryListView: View {
                         Button("Uncheck all") { vm.uncheckAll() }
                         Button("Share list") { vm.shareList() }
                     } label: { Image(systemName: "ellipsis.circle") }
+                    .accessibilityLabel(Text("List options"))
                 }
             }
         }
