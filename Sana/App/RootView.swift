@@ -69,7 +69,12 @@ struct RootView: View {
                 .padding(.top, 8)
             }
         }
-        .task { await auth.checkAuthState() }
+        .task {
+            #if DEBUG
+            UITestSupport.seedIfNeeded(context: context, existing: users)
+            #endif
+            await auth.checkAuthState()
+        }
     }
 
     @ViewBuilder
@@ -85,6 +90,9 @@ struct RootView: View {
                 WhatsNewView()
             }
             .onAppear {
+                #if DEBUG
+                if UITestSupport.isActive { return }
+                #endif
                 if WhatsNewView.shouldShow() {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
                         showingWhatsNew = true

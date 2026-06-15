@@ -41,6 +41,12 @@ final class AuthService: ObservableObject {
     // MARK: - Launch check
 
     func checkAuthState() async {
+        #if DEBUG
+        if UITestSupport.isActive {
+            state = .signedIn(userID: "uitest", provider: .email)
+            return
+        }
+        #endif
         guard let storedID = KeychainService.load(for: .authUserID),
               let providerRaw = KeychainService.load(for: .authProvider),
               let provider = Provider(rawValue: providerRaw) else {
