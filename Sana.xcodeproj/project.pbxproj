@@ -84,6 +84,9 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		8583E02C2FC1E602006ACF1B /* Sana */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				850000012FC1E602006ACF1B /* Exceptions for "Sana" folder in "Sana" target */,
+			);
 			path = Sana;
 			sourceTree = "<group>";
 		};
@@ -99,6 +102,9 @@
 		};
 		8583E1192FC21B6D006ACF1B /* SanaWidget */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				850000022FC21B6D006ACF1B /* Exceptions for "SanaWidget" folder in "SanaWidgetExtension" target */,
+			);
 			path = SanaWidget;
 			sourceTree = "<group>";
 		};
@@ -118,6 +124,23 @@
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		850000012FC1E602006ACF1B /* Exceptions for "Sana" folder in "Sana" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 8583E0292FC1E602006ACF1B /* Sana */;
+		};
+		850000022FC21B6D006ACF1B /* Exceptions for "SanaWidget" folder in "SanaWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 8583E1122FC21B6D006ACF1B /* SanaWidgetExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		8583E0272FC1E602006ACF1B /* Frameworks */ = {
@@ -508,6 +531,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		85297D9F2FC3991C00F6F715 /* Crashlytics */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
