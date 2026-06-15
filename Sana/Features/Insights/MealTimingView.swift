@@ -140,6 +140,7 @@ struct MealTimingView: View {
                                 Text(gap.0)
                                     .font(SanaTheme.Font.caption(12))
                                     .lineLimit(1)
+                                    .minimumScaleFactor(0.75)
                                 Spacer()
                                 Text(String(format: "%.1fh", gap.1))
                                     .font(SanaTheme.Font.headline(12))

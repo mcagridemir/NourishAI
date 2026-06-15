@@ -166,6 +166,7 @@ struct FoodDiaryCalendarView: View {
                                     .font(SanaTheme.Font.body(14))
                                     .foregroundStyle(.primary)
                                     .lineLimit(1)
+                                    .minimumScaleFactor(0.75)
                                 HStack(spacing: 4) {
                                     Text(meal.loggedAt.formatted(.dateTime.hour().minute()))
                                         .font(SanaTheme.Font.caption())

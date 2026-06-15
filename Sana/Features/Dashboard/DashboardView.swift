@@ -870,6 +870,7 @@ private struct MealRowView: View {
                     .font(.system(size: 14, weight: .semibold))
                     .foregroundStyle(.primary)
                     .lineLimit(1)
+                    .minimumScaleFactor(0.75)
                 HStack(spacing: 8) {
                     Text("\(meal.calories) kcal")
                         .font(.system(size: 11, weight: .bold, design: .rounded))

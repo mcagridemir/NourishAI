@@ -171,6 +171,7 @@ struct MealLogView: View {
                                     .font(SanaTheme.Font.body(14))
                                     .foregroundStyle(.primary)
                                     .lineLimit(1)
+                                    .minimumScaleFactor(0.75)
                                 Text("\(meal.calories) kcal · \(Int(meal.protein))g protein")
                                     .font(SanaTheme.Font.caption(11))
                                     .foregroundStyle(.secondary)
@@ -786,6 +787,7 @@ private struct SavedMealChip: View {
                 Text(meal.mealName)
                     .font(SanaTheme.Font.caption(12))
                     .lineLimit(1)
+                    .minimumScaleFactor(0.75)
                     .foregroundStyle(.primary)
             }
             Text("\(meal.calories) kcal")

@@ -142,6 +142,7 @@ struct MacroDetailView: View {
                                         Text(meal.mealName)
                                             .font(SanaTheme.Font.body(14))
                                             .lineLimit(1)
+                                            .minimumScaleFactor(0.75)
                                         Text(meal.mealType.localizedName)
                                             .font(SanaTheme.Font.caption(11))
                                             .foregroundStyle(.secondary)

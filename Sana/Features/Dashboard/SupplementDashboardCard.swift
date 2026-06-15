@@ -58,6 +58,7 @@ struct SupplementDashboardCard: View {
                             Text(supp.name.components(separatedBy: " ").first ?? supp.name)
                                 .font(SanaTheme.Font.caption(12))
                                 .lineLimit(1)
+                                .minimumScaleFactor(0.75)
                         }
                         .padding(.horizontal, 8).padding(.vertical, 5)
                         .background((Color(hex: supp.color) ?? SanaTheme.Color.primary).opacity(supp.isLoggedToday ? 0.15 : 0.06))
