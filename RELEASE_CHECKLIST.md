@@ -24,7 +24,7 @@ The committed sources hold **empty placeholders** by design — a clean checkout
 
 ## 3. App Store Connect — ⛔ blockers (portal work)
 - ⛔ Create the app record at appstoreconnect.apple.com (bundle id `com.cagri.Sana`).
-- ⛔ Create auto-renewable subscription products: `com.sana.premium.monthly` and `com.sana.premium.yearly` (+ a subscription group, localized display names, prices, and a 7-day free-trial intro offer). Until these exist the paywall shows no prices.
+- ⛔ Create auto-renewable subscription products: `com.sana.premium.monthly` ($4.99/mo) and `com.sana.premium.yearly` ($39.99/yr, ~33% off) (+ a subscription group, localized display names, prices, and a 7-day free-trial intro offer). Until these exist the paywall shows no prices. The local `Sana.storekit` file mirrors this exact setup — match it in App Store Connect.
 - ⛔ Fill App Privacy ("Nutrition Disclosure" / data types: Health, Identifiers, etc.).
 - ⛔ Age rating, category (Health & Fitness), pricing/availability.
 
@@ -39,7 +39,7 @@ The committed sources hold **empty placeholders** by design — a clean checkout
 
 ## 6. Store listing assets — ⛔ blockers
 - ⛔ **Screenshots** — automated: see `SanaUITests/ScreenshotTests.swift` and the "Generating screenshots" section below. Required sizes: 6.9" (iPhone 16 Pro Max) and 13" (iPad Pro) at minimum; capture per locale.
-- ⛔ App description, keywords, promo text, "What's New" — per locale (6 languages).
+- ⛔ App description, keywords, promo text, "What's New" — per locale (6 languages). **Drafted and length-checked in `AppStore/store-listing.md`** — paste into App Store Connect.
 - ⛔ Privacy policy URL + Support URL — hosted and reachable (privacy HTML is in `AppStore/privacy.html`).
 
 ## 7. Real-device pass — ⛔ before submit (can't be done in CI/sim)
@@ -78,6 +78,8 @@ xcrun xcresulttool export attachments --path "$RESULT" --output-path ./shots
 Repeat per language (`en`/`de`/`es`/`fr`/`pt-BR`/`tr`) and per device size.
 
 **Caveat:** the Paywall's price cards are blank in the simulator because StoreKit
-has no products. To screenshot real prices, add a StoreKit Configuration file
-(`.storekit`) with the two product IDs and select it in the scheme's Test action
-(Options → StoreKit Configuration) before running.
+has no products by default. A ready-made config exists at `Sana.storekit` (the two
+product IDs, $4.99/mo + $39.99/yr, 7-day free trial). To use it: add `Sana.storekit`
+to the project once (drag into the navigator, no target membership needed), then
+Edit Scheme → Run **and** Test → Options → StoreKit Configuration → select it.
+The paywall will then show real prices in the simulator and in screenshots.
