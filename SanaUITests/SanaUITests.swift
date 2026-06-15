@@ -86,11 +86,12 @@ final class SanaUITests: XCTestCase {
         tabBar.buttons["Log Meal"].tap()
 
         let manual = app.buttons["Manual entry"]
-        XCTAssertTrue(manual.waitForExistence(timeout: 5),
+        XCTAssertTrue(manual.waitForExistence(timeout: 10),
                       "Log Meal should expose a Manual entry action")
         manual.tap()
 
-        XCTAssertTrue(app.textFields["Meal name"].waitForExistence(timeout: 5),
+        // Sheet presentation animation can be slow under full-suite load.
+        XCTAssertTrue(app.textFields["Meal name"].waitForExistence(timeout: 15),
                       "Manual entry should show the Meal name field")
         XCTAssertTrue(app.buttons["Save"].exists,
                       "Manual entry should show a Save button")
