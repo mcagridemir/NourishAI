@@ -11,7 +11,7 @@
 // ships in the client binary at all.
 import Foundation
 
-enum APIKeyStore {
+nonisolated enum APIKeyStore {
 
     // MARK: - Claude
 

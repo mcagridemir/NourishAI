@@ -4,7 +4,7 @@
 
 import Foundation
 
-enum BackendConfig {
+nonisolated enum BackendConfig {
 
     // MARK: - Proxy
 

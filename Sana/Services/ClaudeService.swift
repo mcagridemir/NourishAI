@@ -4,7 +4,7 @@ internal import UIKit
 
 // MARK: - API domain types
 
-struct NutritionAnalysis: Codable {
+nonisolated struct NutritionAnalysis: Codable {
     let mealName: String
     let calories: Int
     let protein: Double
@@ -22,7 +22,7 @@ struct NutritionAnalysis: Codable {
     let confidence: Double
 }
 
-struct RecipeResult: Codable {
+nonisolated struct RecipeResult: Codable {
     let name: String
     let description: String
     let servings: Int
@@ -39,7 +39,7 @@ struct RecipeResult: Codable {
     let tips: [String]
 }
 
-struct MealSuggestion: Codable {
+nonisolated struct MealSuggestion: Codable {
     let name: String
     let description: String
     let prepTime: Int
@@ -51,11 +51,11 @@ struct MealSuggestion: Codable {
     let recipe: String
 }
 
-struct MealPlanResponse: Codable {
+nonisolated struct MealPlanResponse: Codable {
     let days: [MealPlanDayResponse]
 }
 
-struct MealPlanDayResponse: Codable {
+nonisolated struct MealPlanDayResponse: Codable {
     let dayIndex: Int
     let breakfast: MealSuggestion
     let lunch: MealSuggestion
@@ -64,7 +64,7 @@ struct MealPlanDayResponse: Codable {
     let totalCalories: Int
 }
 
-struct WeeklyStats {
+nonisolated struct WeeklyStats {
     let avgCalories: Int
     let avgProtein: Int
     let avgCarbs: Int
@@ -75,7 +75,7 @@ struct WeeklyStats {
     let waterGoalHitDays: Int
 }
 
-struct WeeklyReport: Codable {
+nonisolated struct WeeklyReport: Codable {
     let headline: String
     let overallScore: Int
     let highlights: [String]
@@ -84,7 +84,7 @@ struct WeeklyReport: Codable {
     let nextWeekChallenge: String
 }
 
-struct UserNutritionContext {
+nonisolated struct UserNutritionContext {
     let profileDescription: String
     let recentNutritionSummary: String
     let detectedDeficiencies: [String]
@@ -531,12 +531,12 @@ actor ClaudeService {
 
 // MARK: - Private response types
 
-private struct ClaudeResponse: Codable, Sendable {
+private nonisolated struct ClaudeResponse: Codable, Sendable {
     let content: [ContentBlock]
     struct ContentBlock: Codable, Sendable { let text: String? }
 }
 
-private struct StreamDelta: Codable, Sendable {
+private nonisolated struct StreamDelta: Codable, Sendable {
     let delta: DeltaContent?
     struct DeltaContent: Codable, Sendable { let text: String? }
 }

@@ -2,7 +2,7 @@
 // Shared between app target and widget extension target.
 import Foundation
 
-struct SanaWidgetData: Codable {
+nonisolated struct SanaWidgetData: Codable {
     var calories: Int
     var calorieTarget: Int
     var waterMl: Int

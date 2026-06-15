@@ -106,9 +106,9 @@ struct FastingTrackerView: View {
             let second = Int(elapsed) % 60
             if isActive && second == 0 {
                 if isDone {
-                    Task { await FastingLiveActivityService.shared.complete() }
+                    Task { FastingLiveActivityService.shared.complete() }
                 } else {
-                    Task { await FastingLiveActivityService.shared.update(zone: zoneLabel) }
+                    Task { FastingLiveActivityService.shared.update(zone: zoneLabel) }
                 }
             }
         }
@@ -152,7 +152,7 @@ struct FastingTrackerView: View {
         if isActive {
             isActive = false
             NotificationService.shared.cancelFastingNotification()
-            Task { await FastingLiveActivityService.shared.end() }
+            Task { FastingLiveActivityService.shared.end() }
         } else {
             let now = Date()
             startDateRef = now.timeIntervalSinceReferenceDate
@@ -162,7 +162,7 @@ struct FastingTrackerView: View {
                 targetHours: Int(targetHours)
             )
             Task {
-                await FastingLiveActivityService.shared.start(
+                FastingLiveActivityService.shared.start(
                     startDate: now,
                     targetSeconds: targetHours * 3600,
                     zone: "Digesting"

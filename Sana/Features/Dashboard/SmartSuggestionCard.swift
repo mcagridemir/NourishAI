@@ -126,7 +126,6 @@ struct LocalSuggestion {
                           || user.country.localizedCaseInsensitiveContains("türkiye")
         let hasDiabetes    = user.healthConditions.contains { $0.localizedCaseInsensitiveContains("diabetes") }
         let hasCeliac      = user.healthConditions.contains { $0.localizedCaseInsensitiveContains("celiac") }
-        let isLactoseFree  = user.healthConditions.contains { $0.localizedCaseInsensitiveContains("lactose") }
         let avoidRedMeat   = isVegetarian || user.healthConditions.contains { $0.localizedCaseInsensitiveContains("gout") }
 
         // MARK: Breakfast

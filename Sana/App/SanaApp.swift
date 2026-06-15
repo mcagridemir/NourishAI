@@ -181,10 +181,13 @@ struct SanaApp: App {
             }
         }
         .backgroundTask(.appRefresh(bgTaskID)) {
-            // Re-save widget data so the home screen widget stays current overnight
-            let context = ModelContext(AppContainer.shared.modelContainer)
-            if let user = try? context.fetch(FetchDescriptor<User>()).first {
-                WidgetDataStore.save(user.widgetData)
+            // Re-save widget data so the home screen widget stays current overnight.
+            // AppContainer + SwiftData are main-actor isolated, so hop there.
+            await MainActor.run {
+                let context = ModelContext(AppContainer.shared.modelContainer)
+                if let user = try? context.fetch(FetchDescriptor<User>()).first {
+                    WidgetDataStore.save(user.widgetData)
+                }
             }
             scheduleBackgroundRefresh()
         }
@@ -204,7 +207,7 @@ struct SanaApp: App {
     }
 
     /// Schedule next background refresh ~15 min from now (system may delay it).
-    func scheduleBackgroundRefresh() {
+    nonisolated func scheduleBackgroundRefresh() {
         let request = BGAppRefreshTaskRequest(identifier: bgTaskID)
         request.earliestBeginDate = Date(timeIntervalSinceNow: 15 * 60)
         try? BGTaskScheduler.shared.submit(request)

@@ -3,7 +3,7 @@
 import Foundation
 import WidgetKit
 
-struct WidgetDataStore {
+nonisolated struct WidgetDataStore {
 
     static let appGroupID = "group.com.cagri.Sana"
     private static let key = "nourishWidgetData"

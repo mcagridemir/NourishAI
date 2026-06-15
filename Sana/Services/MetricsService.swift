@@ -6,9 +6,9 @@
 import MetricKit
 import OSLog
 
-private let log = Logger(subsystem: "com.cagri.Sana", category: "Metrics")
+private nonisolated let log = Logger(subsystem: "com.cagri.Sana", category: "Metrics")
 
-final class MetricsService: NSObject {
+nonisolated final class MetricsService: NSObject, MXMetricManagerSubscriber {
 
     static let shared = MetricsService()
 
@@ -60,9 +60,9 @@ final class MetricsService: NSObject {
 
 // MARK: - MXMetricManagerSubscriber
 
-extension MetricsService: MXMetricManagerSubscriber {
+extension MetricsService {
 
-    func didReceive(_ payloads: [MXMetricPayload]) {
+    nonisolated func didReceive(_ payloads: [MXMetricPayload]) {
         for payload in payloads {
             let version = payload.metaData?.applicationBuildVersion ?? ""
             let entry: [String: Any] = [
@@ -78,7 +78,7 @@ extension MetricsService: MXMetricManagerSubscriber {
         }
     }
 
-    func didReceive(_ payloads: [MXDiagnosticPayload]) {
+    nonisolated func didReceive(_ payloads: [MXDiagnosticPayload]) {
         for payload in payloads {
             let date = ISO8601DateFormatter().string(from: payload.timeStampEnd)
 

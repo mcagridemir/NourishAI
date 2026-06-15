@@ -1,7 +1,7 @@
 // Sana — GroceryModels.swift
 import Foundation
 
-struct GrocerySection: Codable, Sendable {
+nonisolated struct GrocerySection: Codable, Sendable {
     var category: String
     var items: [GroceryItem]
 
@@ -18,7 +18,7 @@ struct GrocerySection: Codable, Sendable {
     }
 }
 
-struct GroceryItem: Codable, Sendable {
+nonisolated struct GroceryItem: Codable, Sendable {
     var id: UUID
     var name: String
     var quantity: Double
