@@ -58,13 +58,14 @@ The committed sources hold **empty placeholders** by design — a clean checkout
 hook that bypasses auth/onboarding and seeds a populated user), then captures the
 Dashboard, Insights, Meal Plan, Coach, and Paywall.
 
-Run one locale + device:
+The test loops over all 6 locales in a single session (relaunching the app per
+locale via `-AppleLanguages`/`-AppleLocale`), so one run per device captures
+everything. Run on the 6.9" device:
 
 ```sh
 xcodebuild test -scheme Sana \
   -destination 'platform=iOS Simulator,name=iPhone 16 Pro Max' \
-  -only-testing:SanaUITests/ScreenshotTests \
-  -testLanguage de -testRegion DE
+  -only-testing:SanaUITests/ScreenshotTests
 ```
 
 Export the captured PNGs from the result bundle:
@@ -72,10 +73,11 @@ Export the captured PNGs from the result bundle:
 ```sh
 RESULT=$(ls -dt ~/Library/Developer/Xcode/DerivedData/Sana-*/Logs/Test/*.xcresult | head -1)
 xcrun xcresulttool export attachments --path "$RESULT" --output-path ./shots
-# names map via shots/manifest.json (01-Dashboard … 05-Paywall)
+# attachment names are "<locale>-01-Dashboard" … "<locale>-05-Paywall" (see manifest.json)
 ```
 
-Repeat per language (`en`/`de`/`es`/`fr`/`pt-BR`/`tr`) and per device size.
+Repeat per device size (6.9", 13" iPad). The exported PNGs are gitignored
+(regenerable); the latest organized set lives under `AppStore/screenshots/`.
 
 **Caveat:** the Paywall's price cards are blank in the simulator because StoreKit
 has no products by default. A ready-made config exists at `Sana.storekit` (the two
