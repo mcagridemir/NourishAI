@@ -21,15 +21,17 @@ struct WeightGoalCard: View {
     private var weeklyChangeLbs: Double {
         user.projectedWeeklyWeightChangeKg * 2.20462
     }
-    private var weeklyChangeDisplay: String {
+    private var weeklyChangeDisplay: LocalizedStringKey {
         let change = user.unitSystem == .metric
             ? user.projectedWeeklyWeightChangeKg
             : weeklyChangeLbs
         let unit = user.weightUnit
-        let abs = Swift.abs(change)
-        guard abs > 0.01 else { return "maintaining" }
-        let dir = change > 0 ? "losing" : "gaining"
-        return "\(dir) ~\(String(format: "%.2f", abs)) \(unit)/wk"
+        let absChange = Swift.abs(change)
+        guard absChange > 0.01 else { return "maintaining" }
+        let valueStr = String(format: "%.2f", absChange)
+        return change > 0
+            ? "losing ~\(valueStr) \(unit)/wk"
+            : "gaining ~\(valueStr) \(unit)/wk"
     }
 
     private var weeksToGoal: Int? {
@@ -83,7 +85,7 @@ struct WeightGoalCard: View {
         let color: Color  = isDeficit ? SanaTheme.Color.primary : .orange
         let icon: String  = isDeficit ? "arrow.down.circle.fill" : "arrow.up.circle.fill"
         let sign: String  = isDeficit ? "−" : "+"
-        let label: String = isDeficit ? "Calorie deficit" : "Calorie surplus"
+        let label: LocalizedStringKey = isDeficit ? "Calorie deficit" : "Calorie surplus"
 
         return HStack(spacing: 12) {
             Image(systemName: icon)

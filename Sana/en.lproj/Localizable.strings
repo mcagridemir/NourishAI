@@ -645,9 +645,9 @@
 "Calorie deficit" = "Calorie deficit";
 "Calorie surplus" = "Calorie surplus";
 "maintaining" = "maintaining";
-"losing ~%@ kg/wk" = "losing ~%@ kg/wk";
-"gaining ~%@ kg/wk" = "gaining ~%@ kg/wk";
-"~%d wk to go" = "~%d wk to go";
+"losing ~%@ %@/wk" = "losing ~%@ %@/wk";
+"gaining ~%@ %@/wk" = "gaining ~%@ %@/wk";
+"~%lld wk to go" = "~%lld wk to go";
 
 // MARK: - Weekly Report
 "Weekly Report" = "Weekly Report";

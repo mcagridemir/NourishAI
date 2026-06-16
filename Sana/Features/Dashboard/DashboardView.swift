@@ -126,6 +126,7 @@ struct DashboardView: View {
                         )
                 }
                 .accessibilityLabel("Open profile")
+                .accessibilityIdentifier("openProfile")
             }
         }
         .padding(.horizontal, SanaTheme.Spacing.lg)
@@ -619,7 +620,7 @@ struct DashboardView: View {
 // MARK: - Hero sub-views
 
 private struct HeroStatRow: View {
-    let label: String
+    let label: LocalizedStringKey
     let value: String
     let unit: String
     let dotColor: Color
@@ -646,7 +647,7 @@ private struct HeroStatRow: View {
             }
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(label): \(value) \(unit)")
+        .accessibilityLabel(Text(label) + Text(verbatim: ": \(value) \(unit)"))
     }
 }
 
@@ -861,7 +862,7 @@ private struct MealRowView: View {
                 .overlay(Image(systemName: meal.mealType.icon).foregroundStyle(SanaTheme.Color.primary).font(.system(size: 22)))
             VStack(alignment: .leading, spacing: 3) {
                 HStack(spacing: 4) {
-                    Text(meal.mealType.rawValue.uppercased() + " · " + meal.loggedAt.formatted(.dateTime.hour().minute()))
+                    Text(meal.mealType.localizedName.uppercased() + " · " + meal.loggedAt.formatted(.dateTime.hour().minute()))
                         .font(.system(size: 10, weight: .semibold))
                         .foregroundStyle(.secondary)
                         .kerning(0.4)

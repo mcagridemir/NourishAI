@@ -29,6 +29,9 @@ fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
 
+# Generated App Store screenshots (regenerate via SanaUITests/ScreenshotTests)
+AppStore/screenshots/
+
 # Secrets / config
 *.xcconfig
 !Sana/Debug.xcconfig

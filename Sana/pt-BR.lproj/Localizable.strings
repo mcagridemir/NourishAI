@@ -634,9 +634,9 @@
 "Calorie deficit" = "Déficit calórico";
 "Calorie surplus" = "Superávit calórico";
 "maintaining" = "mantendo";
-"losing ~%@ kg/wk" = "perdendo ~%@ kg/sem";
-"gaining ~%@ kg/wk" = "ganhando ~%@ kg/sem";
-"~%d wk to go" = "~%d sem restantes";
+"losing ~%@ %@/wk" = "perdendo ~%@ %@/sem";
+"gaining ~%@ %@/wk" = "ganhando ~%@ %@/sem";
+"~%lld wk to go" = "~%lld sem restantes";
 "Weekly Report" = "Relatório semanal";
 "This week's wins" = "Conquistas da semana";
 "Room to improve" = "Espaço para melhorar";

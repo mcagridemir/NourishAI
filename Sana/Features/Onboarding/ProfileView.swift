@@ -223,6 +223,7 @@ struct ProfileView: View {
                     .stroke(SanaTheme.Color.primary.opacity(0.2), lineWidth: 1)
             )
         }
+        .accessibilityIdentifier("upgradeToPremium")
         .buttonStyle(.plain)
     }
 
@@ -360,8 +361,9 @@ struct ProfileView: View {
 
     // MARK: - Reusable row builders
 
-    private func sectionLabel(_ title: String) -> some View {
-        Text(title.uppercased())
+    private func sectionLabel(_ title: LocalizedStringKey) -> some View {
+        Text(title)
+            .textCase(.uppercase)
             .font(SanaTheme.Font.caption(11))
             .foregroundStyle(.secondary)
             .frame(maxWidth: .infinity, alignment: .leading)

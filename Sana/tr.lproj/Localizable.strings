@@ -647,9 +647,9 @@
 "Calorie deficit" = "Kalori Açığı";
 "Calorie surplus" = "Kalori Fazlası";
 "maintaining" = "idame";
-"losing ~%@ kg/wk" = "~%@ kg/hf kayıp";
-"gaining ~%@ kg/wk" = "~%@ kg/hf kazanım";
-"~%d wk to go" = "~%d hafta kaldı";
+"losing ~%@ %@/wk" = "~%@ %@/hf kayıp";
+"gaining ~%@ %@/wk" = "~%@ %@/hf kazanım";
+"~%lld wk to go" = "~%lld hafta kaldı";
 
 // MARK: - Haftalık Rapor (ek)
 "Weekly Report" = "Haftalık Rapor";
