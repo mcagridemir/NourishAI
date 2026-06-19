@@ -28,10 +28,10 @@ struct SanaEmptyView: View {
 
             // Text
             VStack(spacing: SanaTheme.Spacing.sm) {
-                Text(title)
+                Text(LocalizedStringKey(title))
                     .font(SanaTheme.Font.headline(20))
                     .multilineTextAlignment(.center)
-                Text(subtitle)
+                Text(LocalizedStringKey(subtitle))
                     .font(SanaTheme.Font.body(15))
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
@@ -130,11 +130,11 @@ struct SanaLoadingView: View {
                     .scaleEffect(1.4)
             }
             VStack(spacing: SanaTheme.Spacing.xs) {
-                Text(message)
+                Text(LocalizedStringKey(message))
                     .font(SanaTheme.Font.headline())
                     .foregroundStyle(SanaTheme.Color.primary)
                 if let subtitle {
-                    Text(subtitle)
+                    Text(LocalizedStringKey(subtitle))
                         .font(SanaTheme.Font.body(14))
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)

@@ -237,7 +237,7 @@ struct InsightsView: View {
         HStack(spacing: 4) {
             Circle().fill(color).frame(width: 8, height: 8)
                 .accessibilityHidden(true)
-            Text(label).font(SanaTheme.Font.caption(11))
+            Text(LocalizedStringKey(label)).font(SanaTheme.Font.caption(11))
         }
         .accessibilityElement(children: .combine)
     }
@@ -498,7 +498,7 @@ private struct StatCard: View {
                     Text(unit).font(SanaTheme.Font.caption(11)).foregroundStyle(.secondary)
                 }
             }
-            Text(label)
+            Text(LocalizedStringKey(label))
                 .font(SanaTheme.Font.caption(11))
                 .foregroundStyle(.secondary)
                 .lineLimit(2)
@@ -506,6 +506,6 @@ private struct StatCard: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .nourishCard()
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(label): \(value)\(unit.isEmpty ? "" : " \(unit)")")
+        .accessibilityLabel("\(String(localized: String.LocalizationValue(label))): \(value)\(unit.isEmpty ? "" : " \(unit)")")
     }
 }

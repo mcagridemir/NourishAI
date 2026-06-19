@@ -184,7 +184,7 @@ struct ManualMealEntryView: View {
 
     private func macroRow(label: String, value: Binding<String>, unit: String, keyboard: UIKeyboardType) -> some View {
         HStack {
-            Text(label)
+            Text(LocalizedStringKey(label))
                 .font(SanaTheme.Font.body())
             Spacer()
             TextField("0", text: value)

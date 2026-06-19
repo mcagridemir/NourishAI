@@ -146,8 +146,8 @@ struct WeeklyReportView: View {
             Text(value)
                 .font(SanaTheme.Font.numeric)
                 .foregroundStyle(color)
-            Text(unit).font(SanaTheme.Font.caption(11)).foregroundStyle(.secondary)
-            Text(label).font(SanaTheme.Font.caption()).foregroundStyle(.secondary)
+            Text(LocalizedStringKey(unit)).font(SanaTheme.Font.caption(11)).foregroundStyle(.secondary)
+            Text(LocalizedStringKey(label)).font(SanaTheme.Font.caption()).foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()

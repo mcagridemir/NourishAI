@@ -24,10 +24,14 @@ enum UITestSupport {
     /// populated one so marketing screenshots aren't empty.
     @MainActor
     static func seedIfNeeded(context: ModelContext, existing: [User]) {
-        guard isActive, existing.isEmpty else { return }
+        guard isActive else { return }
         if seedsDemoData {
+            // Reseed fresh on every launch: the screenshot test relaunches the
+            // app per locale against the same store, so a stale user would pin
+            // the first locale's units/data onto all the others.
+            for user in existing { context.delete(user) }
             seedDemoUser(into: context)
-        } else {
+        } else if existing.isEmpty {
             context.insert(User(name: "Test User"))
         }
     }
@@ -38,6 +42,12 @@ enum UITestSupport {
                         heightCm: 178, weightKg: 74,
                         country: "United States",
                         targetWeightKg: 70)
+        // Screenshot runs pass "-demo-units metric|imperial" so each locale's
+        // shots use the right units regardless of the simulator's setting.
+        let args = ProcessInfo.processInfo.arguments
+        if let i = args.firstIndex(of: "-demo-units"), i + 1 < args.count {
+            user.unitSystem = args[i + 1] == "imperial" ? .imperial : .metric
+        }
         let meals = [
             MealEntry(manual: "Greek yogurt & berries", calories: 320, protein: 24, carbs: 38, fat: 8,  mealType: .breakfast),
             MealEntry(manual: "Grilled chicken salad",  calories: 480, protein: 42, carbs: 26, fat: 21, mealType: .lunch),

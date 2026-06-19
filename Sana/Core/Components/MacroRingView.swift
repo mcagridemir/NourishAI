@@ -62,7 +62,7 @@ private struct MacroPill: View {
             Text("\(Int(value))g")
                 .font(SanaTheme.Font.headline(14))
                 .foregroundStyle(color)
-            Text(label)
+            Text(LocalizedStringKey(label))
                 .font(SanaTheme.Font.caption(11))
                 .foregroundStyle(.secondary)
         }

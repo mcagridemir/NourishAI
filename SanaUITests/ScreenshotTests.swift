@@ -23,14 +23,14 @@ import XCTest
 
 final class ScreenshotTests: XCTestCase {
 
-    /// (folder suffix, AppleLanguages value, AppleLocale value)
-    private let locales: [(String, String, String)] = [
-        ("en",   "en",    "en_US"),
-        ("de",   "de",    "de_DE"),
-        ("es",   "es",    "es_ES"),
-        ("fr",   "fr",    "fr_FR"),
-        ("ptBR", "pt-BR", "pt_BR"),
-        ("tr",   "tr",    "tr_TR"),
+    /// (folder suffix, AppleLanguages value, AppleLocale value, demo units)
+    private let locales: [(String, String, String, String)] = [
+        ("en",   "en",    "en_US", "imperial"),
+        ("de",   "de",    "de_DE", "metric"),
+        ("es",   "es",    "es_ES", "metric"),
+        ("fr",   "fr",    "fr_FR", "metric"),
+        ("ptBR", "pt-BR", "pt_BR", "metric"),
+        ("tr",   "tr",    "tr_TR", "metric"),
     ]
 
     // Tab order in MainTabView: 0 Dashboard, 1 Log, 2 Coach, 3 Meal Plan, 4 Insights.
@@ -42,10 +42,11 @@ final class ScreenshotTests: XCTestCase {
 
     @MainActor
     func testCaptureKeyScreens() throws {
-        for (suffix, language, locale) in locales {
+        for (suffix, language, locale, units) in locales {
             let app = XCUIApplication()
             app.launchArguments = [
                 "-uitest-demo",
+                "-demo-units", units,
                 "-AppleLanguages", "(\(language))",
                 "-AppleLocale", locale,
             ]
@@ -56,17 +57,17 @@ final class ScreenshotTests: XCTestCase {
 
             capture(app, "\(suffix)-01-Dashboard")
 
-            tabBar.buttons.element(boundBy: Tab.insights).tap();  settle()
+            selectTab(tabBar, Tab.insights)
             capture(app, "\(suffix)-02-Insights")
 
-            tabBar.buttons.element(boundBy: Tab.mealPlan).tap();  settle()
+            selectTab(tabBar, Tab.mealPlan)
             capture(app, "\(suffix)-03-MealPlan")
 
-            tabBar.buttons.element(boundBy: Tab.coach).tap();     settle()
+            selectTab(tabBar, Tab.coach)
             capture(app, "\(suffix)-04-Coach")
 
             // Paywall — located by stable identifiers, so locale doesn't matter.
-            tabBar.buttons.element(boundBy: Tab.dashboard).tap()
+            selectTab(tabBar, Tab.dashboard)
             let openProfile = app.buttons["openProfile"]
             if openProfile.waitForExistence(timeout: 5) {
                 openProfile.tap()
@@ -84,6 +85,21 @@ final class ScreenshotTests: XCTestCase {
     // MARK: - Helpers
 
     private func settle() { Thread.sleep(forTimeInterval: 1.0) }
+
+    /// Tap a tab and wait until it is actually selected. The first tap right
+    /// after a relaunch can be swallowed while the dashboard reloads its data,
+    /// which previously left a duplicate dashboard in place of the next screen.
+    private func selectTab(_ tabBar: XCUIElement, _ index: Int) {
+        let button = tabBar.buttons.element(boundBy: index)
+        guard button.waitForExistence(timeout: 10) else { return }
+        var attempts = 0
+        repeat {
+            button.tap()
+            Thread.sleep(forTimeInterval: 0.6)
+            attempts += 1
+        } while !button.isSelected && attempts < 5
+        settle()
+    }
 
     private func capture(_ app: XCUIApplication, _ name: String) {
         let attachment = XCTAttachment(screenshot: app.screenshot())

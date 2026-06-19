@@ -767,3 +767,7 @@
 "e.g. 2 köfte, 1 glass of ayran, salad" = "p. ex. 2 köfte, 1 verre d'ayran, salade";
 "e.g. Take with food" = "p. ex. Prendre avec un repas";
 "e.g. Vitamin D3" = "p. ex. Vitamine D3";
+
+// Insights stat units
+"meals" = "repas";
+"/ day" = "/ jour";

@@ -812,3 +812,7 @@
 "e.g. 2 köfte, 1 glass of ayran, salad" = "örn. 2 köfte, 1 bardak ayran, salata";
 "e.g. Take with food" = "örn. Yemekle birlikte al";
 "e.g. Vitamin D3" = "örn. D3 Vitamini";
+
+// Insights stat units
+"meals" = "öğün";
+"/ day" = "/ gün";
