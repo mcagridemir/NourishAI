@@ -470,10 +470,17 @@ enum UnitSystem: String, Codable {
     case metric   // kg, cm, ml
     case imperial // lbs, ft+in, fl oz
 
+    /// Pure mapping from a measurement system to a unit system — only the US
+    /// system implies imperial (UK and metric both default to metric). Split out
+    /// so it can be unit-tested without depending on the process locale.
+    nonisolated static func `default`(for system: Locale.MeasurementSystem) -> UnitSystem {
+        system == .us ? .imperial : .metric
+    }
+
     /// Auto-detect from the device's Measurement System setting (Settings →
     /// General → Language & Region). This respects an explicit user choice and
-    /// falls back to the locale's region; only the US system implies imperial.
+    /// falls back to the locale's region.
     static var deviceDefault: UnitSystem {
-        Locale.current.measurementSystem == .us ? .imperial : .metric
+        `default`(for: Locale.current.measurementSystem)
     }
 }
