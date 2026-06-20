@@ -710,10 +710,10 @@ private struct QuickActionCard: View {
                     .overlay(Image(systemName: icon).font(.system(size: 20, weight: .semibold)).foregroundStyle(.white))
                     .shadow(color: color.opacity(0.4), radius: 8, y: 4)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(label)
+                    Text(LocalizedStringKey(label))
                         .font(.system(size: 14, weight: .bold, design: .rounded))
                         .foregroundStyle(.primary)
-                    Text(sub)
+                    Text(LocalizedStringKey(sub))
                         .font(SanaTheme.Font.caption(11))
                         .foregroundStyle(.secondary)
                 }
@@ -726,8 +726,8 @@ private struct QuickActionCard: View {
             .overlay(RoundedRectangle(cornerRadius: SanaTheme.Radius.lg).stroke(Color.primary.opacity(0.06), lineWidth: 0.5))
         }
         .buttonStyle(.plain)
-        .accessibilityLabel(label)
-        .accessibilityHint(sub)
+        .accessibilityLabel(Text(LocalizedStringKey(label)))
+        .accessibilityHint(Text(LocalizedStringKey(sub)))
     }
 }
 

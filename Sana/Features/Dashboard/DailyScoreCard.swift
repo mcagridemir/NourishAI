@@ -208,9 +208,11 @@ struct DailyScoreCard: View {
                 .font(.system(size: 11))
                 .foregroundStyle(p.color)
                 .frame(width: 14)
-            Text(p.label)
+            Text(LocalizedStringKey(p.label))
                 .font(SanaTheme.Font.caption(11))
                 .foregroundStyle(.secondary)
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
                 .frame(width: 64, alignment: .leading)
             GeometryReader { geo in
                 ZStack(alignment: .leading) {
