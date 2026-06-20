@@ -47,7 +47,7 @@ struct SanaEmptyView: View {
                                 .font(.system(size: 15))
                                 .foregroundStyle(iconColor)
                                 .accessibilityHidden(true)
-                            Text(feature)
+                            Text(LocalizedStringKey(feature))
                                 .font(SanaTheme.Font.body(14))
                                 .foregroundStyle(.secondary)
                         }
@@ -60,7 +60,7 @@ struct SanaEmptyView: View {
 
             // CTA button
             if let label = actionLabel, let action {
-                Button(label, action: action)
+                Button(LocalizedStringKey(label), action: action)
                     .buttonStyle(NourishButtonStyle())
                     .padding(.horizontal, SanaTheme.Spacing.xl)
             }
@@ -102,7 +102,7 @@ struct SanaErrorView: View {
             }
 
             if let retry {
-                Button(retryLabel, action: retry)
+                Button(LocalizedStringKey(retryLabel), action: retry)
                     .buttonStyle(NourishButtonStyle())
                     .padding(.horizontal, SanaTheme.Spacing.xl)
             }

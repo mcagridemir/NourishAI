@@ -814,3 +814,11 @@
 // Insights stat units
 "meals" = "meals";
 "/ day" = "/ day";
+
+// Insights timing/sleep labels
+"7-day avg cal" = "7-day avg cal";
+"Today cal" = "Today cal";
+"7-day avg" = "7-day avg";
+"First meal" = "First meal";
+"Last meal" = "Last meal";
+"Window" = "Window";

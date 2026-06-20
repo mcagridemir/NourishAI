@@ -122,7 +122,7 @@ struct HydrationTrendView: View {
             Text(value)
                 .font(SanaTheme.Font.headline(15))
                 .foregroundStyle(color)
-            Text(label)
+            Text(LocalizedStringKey(label))
                 .font(SanaTheme.Font.caption(10))
                 .foregroundStyle(.secondary)
         }

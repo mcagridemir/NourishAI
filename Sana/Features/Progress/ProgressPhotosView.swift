@@ -222,7 +222,7 @@ struct ProgressPhotosView: View {
             Text(value)
                 .font(.system(size: 18, weight: .bold, design: .rounded))
                 .foregroundStyle(valueColor)
-            Text(label)
+            Text(LocalizedStringKey(label))
                 .font(.system(size: 10))
                 .foregroundStyle(.secondary)
         }
@@ -408,7 +408,7 @@ struct PhotoComparisonView: View {
                 .clipped()
 
             VStack(spacing: 2) {
-                Text(label)
+                Text(LocalizedStringKey(label))
                     .font(.system(size: 12, weight: .bold))
                     .foregroundStyle(.white)
                 Text(photo.takenAt, style: .date)
@@ -451,7 +451,7 @@ struct PhotoComparisonView: View {
             Text(value)
                 .font(.system(size: 15, weight: .bold, design: .rounded))
                 .foregroundStyle(color)
-            Text(label)
+            Text(LocalizedStringKey(label))
                 .font(.system(size: 10))
                 .foregroundStyle(.secondary)
         }

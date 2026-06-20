@@ -112,7 +112,7 @@ struct SleepNutritionCard: View {
                 .foregroundStyle(color)
             Text(value)
                 .font(SanaTheme.Font.headline(14))
-            Text(label)
+            Text(LocalizedStringKey(label))
                 .font(SanaTheme.Font.caption(10))
                 .foregroundStyle(.secondary)
         }
@@ -121,7 +121,7 @@ struct SleepNutritionCard: View {
 
     private func comparisonBar(label: String, value: Int, max: Int, color: Color) -> some View {
         HStack(spacing: 8) {
-            Text(label)
+            Text(LocalizedStringKey(label))
                 .font(SanaTheme.Font.caption(11))
                 .foregroundStyle(.secondary)
                 .frame(width: 60, alignment: .leading)

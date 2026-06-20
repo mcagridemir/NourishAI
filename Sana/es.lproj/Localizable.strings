@@ -771,3 +771,11 @@
 // Insights stat units
 "meals" = "comidas";
 "/ day" = "/ día";
+
+// Insights timing/sleep labels
+"7-day avg cal" = "Prom. 7 días (kcal)";
+"Today cal" = "Hoy (kcal)";
+"7-day avg" = "Prom. 7 días";
+"First meal" = "Primera comida";
+"Last meal" = "Última comida";
+"Window" = "Ventana";

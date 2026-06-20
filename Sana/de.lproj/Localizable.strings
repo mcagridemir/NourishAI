@@ -771,3 +771,11 @@
 // Insights stat units
 "meals" = "Mahlzeiten";
 "/ day" = "/ Tag";
+
+// Insights timing/sleep labels
+"7-day avg cal" = "Ø 7 Tage (kcal)";
+"Today cal" = "Heute (kcal)";
+"7-day avg" = "Ø 7 Tage";
+"First meal" = "Erste Mahlzeit";
+"Last meal" = "Letzte Mahlzeit";
+"Window" = "Zeitfenster";

@@ -159,7 +159,7 @@ struct MealTimingView: View {
         VStack(spacing: 3) {
             Text(value)
                 .font(SanaTheme.Font.headline(13))
-            Text(label)
+            Text(LocalizedStringKey(label))
                 .font(SanaTheme.Font.caption(10))
                 .foregroundStyle(.secondary)
         }

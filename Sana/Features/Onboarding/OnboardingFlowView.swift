@@ -353,7 +353,7 @@ struct OnboardingStep<Content: View>: View {
                 }
                 content()
                 Spacer(minLength: 20)
-                Button(nextLabel, action: next)
+                Button(LocalizedStringKey(nextLabel), action: next)
                     .buttonStyle(NourishButtonStyle())
                     .disabled(!nextEnabled())
                     .padding(.bottom, 32)

@@ -816,3 +816,11 @@
 // Insights stat units
 "meals" = "öğün";
 "/ day" = "/ gün";
+
+// Insights timing/sleep labels
+"7-day avg cal" = "7 gün ort. (kcal)";
+"Today cal" = "Bugün (kcal)";
+"7-day avg" = "7 gün ort.";
+"First meal" = "İlk öğün";
+"Last meal" = "Son öğün";
+"Window" = "Aralık";

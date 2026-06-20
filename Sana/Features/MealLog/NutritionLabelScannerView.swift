@@ -226,7 +226,7 @@ struct NutritionLabelScannerView: View {
                 .font(.system(size: 14))
                 .foregroundStyle(SanaTheme.Color.primary)
                 .frame(width: 20)
-            Text(text)
+            Text(LocalizedStringKey(text))
                 .font(SanaTheme.Font.body(14))
                 .foregroundStyle(.secondary)
         }

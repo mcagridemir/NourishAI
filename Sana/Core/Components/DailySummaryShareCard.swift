@@ -109,7 +109,7 @@ struct DailySummaryShareCard: View {
     private func statLine(label: String, value: String, color: Color) -> some View {
         HStack(spacing: 6) {
             Circle().fill(color).frame(width: 5, height: 5)
-            Text(label).font(.system(size: 11)).foregroundStyle(.white.opacity(0.5))
+            Text(LocalizedStringKey(label)).font(.system(size: 11)).foregroundStyle(.white.opacity(0.5))
             Spacer()
             Text(value).font(.system(size: 12, weight: .semibold)).foregroundStyle(color)
         }
@@ -131,7 +131,7 @@ struct DailySummaryShareCard: View {
     private func macroCell(label: String, value: Double, target: Double, color: Color) -> some View {
         let pct = min(1, value / max(1, target))
         return VStack(spacing: 6) {
-            Text(label)
+            Text(LocalizedStringKey(label))
                 .font(.system(size: 10, weight: .medium))
                 .foregroundStyle(.white.opacity(0.5))
                 .textCase(.uppercase)
