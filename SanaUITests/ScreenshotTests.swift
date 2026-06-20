@@ -8,9 +8,13 @@
 //  separate `xcodebuild test` per language. Launches with "-uitest-demo" (see
 //  UITestSupport) so the dashboard is populated.
 //
-//  Run on the 6.9" device:
+//  Device-aware: navigates via the tab bar on iPhone and the
+//  NavigationSplitView sidebar on iPad. Run once per required device size:
 //    xcodebuild test -scheme Sana \
 //      -destination 'platform=iOS Simulator,name=iPhone 16 Pro Max' \
+//      -only-testing:SanaUITests/ScreenshotTests
+//    xcodebuild test -scheme Sana \
+//      -destination 'platform=iOS Simulator,name=iPad Pro 13-inch (M4)' \
 //      -only-testing:SanaUITests/ScreenshotTests
 //
 //  Export the screenshots from the result bundle:
@@ -52,22 +56,27 @@ final class ScreenshotTests: XCTestCase {
             ]
             app.launch()
 
+            // iPhone shows a tab bar; iPad (regular width) shows a sidebar.
             let tabBar = app.tabBars.firstMatch
-            XCTAssertTrue(tabBar.waitForExistence(timeout: 20), "[\(suffix)] tab bar")
+            let isPhone = tabBar.waitForExistence(timeout: 20)
+            if !isPhone {
+                XCTAssertTrue(app.collectionViews.firstMatch.waitForExistence(timeout: 20),
+                              "[\(suffix)] sidebar")
+            }
 
             capture(app, "\(suffix)-01-Dashboard")
 
-            selectTab(tabBar, Tab.insights)
+            navigate(app, isPhone: isPhone, tabBar: tabBar, to: Tab.insights)
             capture(app, "\(suffix)-02-Insights")
 
-            selectTab(tabBar, Tab.mealPlan)
+            navigate(app, isPhone: isPhone, tabBar: tabBar, to: Tab.mealPlan)
             capture(app, "\(suffix)-03-MealPlan")
 
-            selectTab(tabBar, Tab.coach)
+            navigate(app, isPhone: isPhone, tabBar: tabBar, to: Tab.coach)
             capture(app, "\(suffix)-04-Coach")
 
             // Paywall — located by stable identifiers, so locale doesn't matter.
-            selectTab(tabBar, Tab.dashboard)
+            navigate(app, isPhone: isPhone, tabBar: tabBar, to: Tab.dashboard)
             let openProfile = app.buttons["openProfile"]
             if openProfile.waitForExistence(timeout: 5) {
                 openProfile.tap()
@@ -86,11 +95,14 @@ final class ScreenshotTests: XCTestCase {
 
     private func settle() { Thread.sleep(forTimeInterval: 1.0) }
 
-    /// Tap a tab and wait until it is actually selected. The first tap right
-    /// after a relaunch can be swallowed while the dashboard reloads its data,
-    /// which previously left a duplicate dashboard in place of the next screen.
-    private func selectTab(_ tabBar: XCUIElement, _ index: Int) {
-        let button = tabBar.buttons.element(boundBy: index)
+    /// Navigate to a screen by index — via the tab bar (iPhone) or the
+    /// NavigationSplitView sidebar (iPad). Both follow Tab.allCases order.
+    /// Taps and waits until selected: the first tap after a relaunch can be
+    /// swallowed while the dashboard reloads, duplicating the dashboard.
+    private func navigate(_ app: XCUIApplication, isPhone: Bool, tabBar: XCUIElement, to index: Int) {
+        let button = isPhone
+            ? tabBar.buttons.element(boundBy: index)
+            : app.collectionViews.firstMatch.cells.element(boundBy: index)
         guard button.waitForExistence(timeout: 10) else { return }
         var attempts = 0
         repeat {
