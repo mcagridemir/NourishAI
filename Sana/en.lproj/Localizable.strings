@@ -822,3 +822,6 @@
 "First meal" = "First meal";
 "Last meal" = "Last meal";
 "Window" = "Window";
+
+// Demo/screenshot canned insight (DEBUG only)
+"You're off to a strong start — great protein intake and consistent logging. Keep the momentum going! 💪" = "You're off to a strong start — great protein intake and consistent logging. Keep the momentum going! 💪";

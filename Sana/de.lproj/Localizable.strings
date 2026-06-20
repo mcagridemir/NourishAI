@@ -779,3 +779,6 @@
 "First meal" = "Erste Mahlzeit";
 "Last meal" = "Letzte Mahlzeit";
 "Window" = "Zeitfenster";
+
+// Demo/screenshot canned insight (DEBUG only)
+"You're off to a strong start — great protein intake and consistent logging. Keep the momentum going! 💪" = "Starker Wochenstart — super Proteinzufuhr und konstantes Tracking. Bleib dran! 💪";

@@ -779,3 +779,6 @@
 "First meal" = "Primeira refeição";
 "Last meal" = "Última refeição";
 "Window" = "Janela";
+
+// Demo/screenshot canned insight (DEBUG only)
+"You're off to a strong start — great protein intake and consistent logging. Keep the momentum going! 💪" = "Semana começando forte — ótima ingestão de proteína e registro constante. Continue assim! 💪";

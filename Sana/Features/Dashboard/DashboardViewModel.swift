@@ -51,6 +51,14 @@ final class DashboardViewModel: ObservableObject {
         guard weeklyInsight == nil else { return }
         // Show insights when user has logged any meals ever (not just today)
         guard !(user.mealEntries ?? []).isEmpty else { return }
+        #if DEBUG
+        // Screenshot/UI-test runs have no backend; seed a canned insight so the
+        // dashboard looks populated instead of showing a network-error banner.
+        if UITestSupport.isActive {
+            weeklyInsight = String(localized: "You're off to a strong start — great protein intake and consistent logging. Keep the momentum going! 💪")
+            return
+        }
+        #endif
         isLoadingInsights = true
         insightError = nil
         defer { isLoadingInsights = false }
