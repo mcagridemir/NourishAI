@@ -835,3 +835,7 @@
 "Log 5 different meal types in one week" = "Erfasse 5 verschiedene Mahlzeitarten in einer Woche";
 "Analyse 10 meals via photo" = "Analysiere 10 Mahlzeiten per Foto";
 "Hit calories, protein & water goals in one day" = "Erreiche Kalorien-, Protein- & Wasserziele an einem Tag";
+
+// Edit profile interpolated labels
+"Weight: %@" = "Gewicht: %@";
+"Target: %@" = "Ziel: %@";

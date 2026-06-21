@@ -880,3 +880,7 @@
 "Log 5 different meal types in one week" = "Bir haftada 5 farklı öğün türü kaydet";
 "Analyse 10 meals via photo" = "Fotoğrafla 10 öğün analiz et";
 "Hit calories, protein & water goals in one day" = "Bir günde kalori, protein ve su hedeflerine ulaş";
+
+// Edit profile interpolated labels
+"Weight: %@" = "Kilo: %@";
+"Target: %@" = "Hedef: %@";

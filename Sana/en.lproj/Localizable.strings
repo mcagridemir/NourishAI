@@ -878,3 +878,7 @@
 "Log 5 different meal types in one week" = "Log 5 different meal types in one week";
 "Analyse 10 meals via photo" = "Analyse 10 meals via photo";
 "Hit calories, protein & water goals in one day" = "Hit calories, protein & water goals in one day";
+
+// Edit profile interpolated labels
+"Weight: %@" = "Weight: %@";
+"Target: %@" = "Target: %@";
