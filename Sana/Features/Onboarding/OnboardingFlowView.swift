@@ -342,11 +342,11 @@ struct OnboardingStep<Content: View>: View {
                     }
                     .shadow(color: iconColor.opacity(0.18), radius: 14, y: 6)
                     .padding(.top, 24)
-                    Text(title)
+                    Text(LocalizedStringKey(title))
                         .font(.system(size: 26, weight: .bold, design: .rounded))
                         .multilineTextAlignment(.center)
                         .kerning(-0.5)
-                    Text(subtitle)
+                    Text(LocalizedStringKey(subtitle))
                         .font(SanaTheme.Font.body())
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
