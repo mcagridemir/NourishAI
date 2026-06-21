@@ -212,7 +212,7 @@ struct BodyMetricsView: View {
                     Text(String(format: "%.1f", bmi))
                         .font(SanaTheme.Font.numeric)
                         .foregroundStyle(bmiCategory.color)
-                    Text(bmiCategory.label)
+                    Text(LocalizedStringKey(bmiCategory.label))
                         .font(SanaTheme.Font.caption(11))
                         .foregroundStyle(bmiCategory.color)
                 }
@@ -278,7 +278,7 @@ private struct MetricCard: View {
                 Text(value).font(SanaTheme.Font.numeric).foregroundStyle(.primary)
                 Text(unit).font(SanaTheme.Font.caption(11)).foregroundStyle(.secondary)
             }
-            Text(label).font(SanaTheme.Font.caption(11)).foregroundStyle(.secondary)
+            Text(LocalizedStringKey(label)).font(SanaTheme.Font.caption(11)).foregroundStyle(.secondary)
             Text(note).font(SanaTheme.Font.caption(10)).foregroundStyle(.secondary.opacity(0.7))
         }
         .frame(maxWidth: .infinity, alignment: .leading)

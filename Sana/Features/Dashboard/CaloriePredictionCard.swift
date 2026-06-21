@@ -180,7 +180,7 @@ struct CaloriePredictionCard: View {
             : isOverBudget
                 ? ("Over budget", .orange)
                 : ("Under budget", .blue)
-        return Text(label)
+        return Text(LocalizedStringKey(label))
             .font(SanaTheme.Font.caption(11))
             .foregroundStyle(color)
             .padding(.horizontal, 8).padding(.vertical, 3)
@@ -209,7 +209,7 @@ struct CaloriePredictionCard: View {
                 Text(value).font(SanaTheme.Font.headline(16)).foregroundStyle(color)
                 Text(unit).font(SanaTheme.Font.caption(10)).foregroundStyle(.secondary)
             }
-            Text(label).font(SanaTheme.Font.caption(10)).foregroundStyle(.secondary)
+            Text(LocalizedStringKey(label)).font(SanaTheme.Font.caption(10)).foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity)
     }

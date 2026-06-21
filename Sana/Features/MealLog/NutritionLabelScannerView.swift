@@ -488,7 +488,7 @@ private struct ResultView: View {
                 Text(value).font(SanaTheme.Font.headline(18)).foregroundStyle(color)
                 Text(unit).font(SanaTheme.Font.caption(11)).foregroundStyle(.secondary)
             }
-            Text(label).font(SanaTheme.Font.caption(11)).foregroundStyle(.secondary)
+            Text(LocalizedStringKey(label)).font(SanaTheme.Font.caption(11)).foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(10)

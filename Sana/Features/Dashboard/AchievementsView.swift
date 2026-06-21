@@ -216,7 +216,7 @@ struct AchievementsView: View {
 
     private func achievementSection(title: String, badges: [Achievement], isUnlocked: Bool) -> some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text(title).font(SanaTheme.Font.headline())
+            Text(LocalizedStringKey(title)).font(SanaTheme.Font.headline())
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], spacing: 14) {
                 ForEach(badges) { badge in
                     BadgeCell(badge: badge, isUnlocked: isUnlocked)
@@ -244,12 +244,12 @@ private struct BadgeCell: View {
                     .font(.system(size: 22))
                     .foregroundStyle(isUnlocked ? badge.color : Color(.systemGray3))
             }
-            Text(badge.title)
+            Text(LocalizedStringKey(badge.title))
                 .font(SanaTheme.Font.caption(11))
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
                 .foregroundStyle(isUnlocked ? .primary : .secondary)
-            Text(badge.description)
+            Text(LocalizedStringKey(badge.description))
                 .font(SanaTheme.Font.caption(9))
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)

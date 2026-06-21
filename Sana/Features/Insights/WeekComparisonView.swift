@@ -96,7 +96,7 @@ struct WeekComparisonView: View {
                     .font(.system(size: 12))
                     .foregroundStyle(m.color)
                     .frame(width: 16)
-                Text(m.label)
+                Text(LocalizedStringKey(m.label))
                     .font(SanaTheme.Font.caption(13))
                 Spacer()
                 // Delta badge
@@ -141,7 +141,7 @@ struct WeekComparisonView: View {
     private func legendDot(color: Color, label: String) -> some View {
         HStack(spacing: 4) {
             Circle().fill(color).frame(width: 8, height: 8)
-            Text(label).font(SanaTheme.Font.caption(11)).foregroundStyle(.secondary)
+            Text(LocalizedStringKey(label)).font(SanaTheme.Font.caption(11)).foregroundStyle(.secondary)
         }
     }
 }

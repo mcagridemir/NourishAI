@@ -616,7 +616,7 @@ struct AnalysisResultView: View {
                 .padding(6)
                 .background(Color.secondary.opacity(0.1))
                 .clipShape(RoundedRectangle(cornerRadius: 6))
-            Text("\(label)\n(\(unit))")
+            (Text(LocalizedStringKey(label)) + Text("\n(\(unit))"))
                 .font(SanaTheme.Font.caption(10))
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
@@ -630,7 +630,7 @@ private struct NutrientRow: View {
     var body: some View {
         VStack(spacing: 2) {
             Text(value).font(SanaTheme.Font.headline(14))
-            Text(label).font(SanaTheme.Font.caption(11)).foregroundStyle(.secondary)
+            Text(LocalizedStringKey(label)).font(SanaTheme.Font.caption(11)).foregroundStyle(.secondary)
         }
     }
 }

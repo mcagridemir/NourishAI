@@ -135,8 +135,8 @@ struct PaywallView: View {
                             .font(.system(size: 16, weight: .semibold))
                     }
                     VStack(alignment: .leading, spacing: 2) {
-                        Text(feature.0).font(SanaTheme.Font.headline(14))
-                        Text(feature.2).font(SanaTheme.Font.caption()).foregroundStyle(.secondary)
+                        Text(LocalizedStringKey(feature.0)).font(SanaTheme.Font.headline(14))
+                        Text(LocalizedStringKey(feature.2)).font(SanaTheme.Font.caption()).foregroundStyle(.secondary)
                     }
                     Spacer()
                     Image(systemName: "checkmark.circle.fill")
@@ -275,7 +275,7 @@ private struct SocialProofCell: View {
                 .font(.system(size: 18, weight: .bold, design: .rounded))
                 .foregroundStyle(.primary)
                 .kerning(-0.3)
-            Text(sub)
+            Text(LocalizedStringKey(sub))
                 .font(.system(size: 10))
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
@@ -295,7 +295,7 @@ private struct PricingCard: View {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
                     HStack(spacing: 6) {
-                        Text(title).font(SanaTheme.Font.headline())
+                        Text(LocalizedStringKey(title)).font(SanaTheme.Font.headline())
                         if let badge {
                             Text(badge)
                                 .font(SanaTheme.Font.caption(10))
@@ -305,7 +305,7 @@ private struct PricingCard: View {
                                 .clipShape(Capsule())
                         }
                     }
-                    Text(subtitle).font(SanaTheme.Font.caption()).foregroundStyle(.secondary)
+                    Text(LocalizedStringKey(subtitle)).font(SanaTheme.Font.caption()).foregroundStyle(.secondary)
                 }
                 Spacer()
                 Text(price)

@@ -354,7 +354,7 @@ struct RecipeGeneratorView: View {
         VStack(spacing: 3) {
             Image(systemName: icon).font(.system(size: 14)).foregroundStyle(SanaTheme.Color.primary)
             Text(value).font(SanaTheme.Font.headline(13))
-            Text(label).font(SanaTheme.Font.caption(11)).foregroundStyle(.secondary)
+            Text(LocalizedStringKey(label)).font(SanaTheme.Font.caption(11)).foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 10)

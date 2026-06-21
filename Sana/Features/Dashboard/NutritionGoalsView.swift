@@ -103,11 +103,11 @@ struct NutritionGoalsView: View {
     private var calorieStatusText: String {
         let remaining = user.dailyCalorieTarget - cal
         if remaining > 0 {
-            return "\(remaining) kcal remaining"
+            return String(format: NSLocalizedString("%d kcal remaining", comment: ""), remaining)
         } else if remaining == 0 {
-            return "Daily goal reached! 🎉"
+            return NSLocalizedString("Daily goal reached! 🎉", comment: "")
         } else {
-            return "\(abs(remaining)) kcal over goal"
+            return String(format: NSLocalizedString("%d kcal over goal", comment: ""), abs(remaining))
         }
     }
 
@@ -126,7 +126,7 @@ private struct GoalSection<Content: View>: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
-            Label(title, systemImage: icon)
+            Label(LocalizedStringKey(title), systemImage: icon)
                 .font(SanaTheme.Font.headline())
             content
         }
@@ -150,7 +150,7 @@ private struct GoalRow: View {
     var body: some View {
         VStack(spacing: 6) {
             HStack {
-                Text(label)
+                Text(LocalizedStringKey(label))
                     .font(SanaTheme.Font.body(14))
                 Spacer()
                 HStack(alignment: .firstTextBaseline, spacing: 3) {
@@ -192,7 +192,7 @@ private struct InfoChip: View {
         VStack(spacing: 4) {
             Text(value)
                 .font(SanaTheme.Font.headline(15))
-            Text(label)
+            Text(LocalizedStringKey(label))
                 .font(SanaTheme.Font.caption(11))
                 .foregroundStyle(.secondary)
         }

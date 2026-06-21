@@ -782,3 +782,56 @@
 
 // Demo/screenshot canned insight (DEBUG only)
 "You're off to a strong start — great protein intake and consistent logging. Keep the momentum going! 💪" = "Belle semaine qui démarre — excellent apport en protéines et suivi régulier. Continuez ! 💪";
+
+// Secondary-screen labels (paywall/achievements/goals/etc.)
+"Grocery list generation" = "Génération de liste de courses";
+"Smart shopping lists from your plan" = "Listes de courses intelligentes à partir de votre plan";
+"Deficiency alerts" = "Alertes de carences";
+"Get notified about nutritional gaps" = "Soyez informé des carences nutritionnelles";
+"HealthKit deep sync" = "Synchronisation poussée HealthKit";
+"Full integration with Apple Health" = "Intégration complète avec Apple Santé";
+"Advanced insights" = "Analyses avancées";
+"Weekly nutrition trends & reports" = "Tendances et rapports nutritionnels hebdomadaires";
+"2.1k ratings" = "2,1 k avis";
+"Hit weekly\nprotein goals" = "Atteignent leurs objectifs\nde protéines hebdomadaires";
+"More likely\nto stick with it" = "Plus susceptibles\nde persévérer";
+"Macronutrients" = "Macronutriments";
+"Carbohydrates" = "Glucides";
+"Zone" = "Zone";
+"%d kcal remaining" = "%d kcal restantes";
+"Daily goal reached! 🎉" = "Objectif quotidien atteint ! 🎉";
+"%d kcal over goal" = "%d kcal au-dessus de l'objectif";
+"Unlocked 🏆" = "Débloqués 🏆";
+"Locked 🔒" = "Verrouillés 🔒";
+"Avg carbs" = "Glucides moy.";
+"Avg fat" = "Lipides moy.";
+"First bite" = "Première bouchée";
+"Week warrior" = "Guerrier de la semaine";
+"Monthly master" = "Maître du mois";
+"Half century" = "Demi-siècle";
+"Century club" = "Club des cent";
+"Hydration hero" = "Héros de l'hydratation";
+"Protein power" = "Puissance protéinée";
+"Health star" = "Star de la santé";
+"Label reader" = "Lecteur d'étiquettes";
+"Fasting champion" = "Champion du jeûne";
+"Goal crusher" = "Briseur d'objectifs";
+"Planner" = "Planificateur";
+"Foodie" = "Gourmet";
+"Snap & track" = "Photographier & suivre";
+"Perfect day" = "Journée parfaite";
+"Log your very first meal" = "Enregistrez votre tout premier repas";
+"Maintain a 7-day logging streak" = "Maintenez une série de 7 jours";
+"Maintain a 30-day logging streak" = "Maintenez une série de 30 jours";
+"Log 50 meals total" = "Enregistrez 50 repas au total";
+"Log 100 meals total" = "Enregistrez 100 repas au total";
+"Hit your water goal 7 days in a row" = "Atteignez votre objectif d'eau 7 jours d'affilée";
+"Hit your protein goal 5 days in a row" = "Atteignez votre objectif de protéines 5 jours d'affilée";
+"Achieve an average health score of 80+" = "Obtenez un score santé moyen de 80+";
+"Scan 5 food barcodes" = "Scannez 5 codes-barres d'aliments";
+"Complete a 16h+ fast" = "Terminez un jeûne de 16 h ou plus";
+"Stay within calorie goal 7 days in a row" = "Restez dans votre objectif calorique 7 jours d'affilée";
+"Log all meals from a meal plan day" = "Enregistrez tous les repas d'une journée du plan";
+"Log 5 different meal types in one week" = "Enregistrez 5 types de repas différents en une semaine";
+"Analyse 10 meals via photo" = "Analysez 10 repas par photo";
+"Hit calories, protein & water goals in one day" = "Atteignez vos objectifs de calories, protéines et eau en une journée";

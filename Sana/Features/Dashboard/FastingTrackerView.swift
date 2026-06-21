@@ -132,7 +132,7 @@ struct FastingTrackerView: View {
                 .foregroundStyle(accent ? SanaTheme.Color.accent : SanaTheme.Color.primary)
                 .frame(width: 16)
             VStack(alignment: .leading, spacing: 1) {
-                Text(label)
+                Text(LocalizedStringKey(label))
                     .font(SanaTheme.Font.caption(10))
                     .foregroundStyle(.secondary)
                 Text(value)

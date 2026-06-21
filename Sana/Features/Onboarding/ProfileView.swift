@@ -382,7 +382,7 @@ struct ProfileView: View {
                 RoundedRectangle(cornerRadius: 8).fill(color.opacity(0.12)).frame(width: 32, height: 32)
                 Image(systemName: icon).font(.system(size: 13, weight: .semibold)).foregroundStyle(color)
             }
-            Text(label).font(SanaTheme.Font.body(15)).foregroundStyle(.primary)
+            Text(LocalizedStringKey(label)).font(SanaTheme.Font.body(15)).foregroundStyle(.primary)
             Spacer()
             Text(value).font(SanaTheme.Font.body(14)).foregroundStyle(.secondary)
                 .multilineTextAlignment(.trailing)

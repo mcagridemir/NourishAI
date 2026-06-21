@@ -827,3 +827,56 @@
 
 // Demo/screenshot canned insight (DEBUG only)
 "You're off to a strong start — great protein intake and consistent logging. Keep the momentum going! 💪" = "Haftaya güçlü başladın — harika protein alımı ve düzenli kayıt. Böyle devam! 💪";
+
+// Secondary-screen labels (paywall/achievements/goals/etc.)
+"Grocery list generation" = "Alışveriş listesi oluşturma";
+"Smart shopping lists from your plan" = "Planından akıllı alışveriş listeleri";
+"Deficiency alerts" = "Eksiklik uyarıları";
+"Get notified about nutritional gaps" = "Besin eksiklikleri hakkında bilgi al";
+"HealthKit deep sync" = "HealthKit derin senkronizasyon";
+"Full integration with Apple Health" = "Apple Sağlık ile tam entegrasyon";
+"Advanced insights" = "Gelişmiş içgörüler";
+"Weekly nutrition trends & reports" = "Haftalık beslenme trendleri ve raporları";
+"2.1k ratings" = "2,1 bin değerlendirme";
+"Hit weekly\nprotein goals" = "Haftalık protein\nhedeflerine ulaşıyor";
+"More likely\nto stick with it" = "Devam etme\nolasılığı daha yüksek";
+"Macronutrients" = "Makro besinler";
+"Carbohydrates" = "Karbonhidratlar";
+"Zone" = "Bölge";
+"%d kcal remaining" = "%d kcal kaldı";
+"Daily goal reached! 🎉" = "Günlük hedefe ulaşıldı! 🎉";
+"%d kcal over goal" = "hedefin %d kcal üzerinde";
+"Unlocked 🏆" = "Açıldı 🏆";
+"Locked 🔒" = "Kilitli 🔒";
+"Avg carbs" = "Ort. karbonhidrat";
+"Avg fat" = "Ort. yağ";
+"First bite" = "İlk lokma";
+"Week warrior" = "Hafta savaşçısı";
+"Monthly master" = "Ay ustası";
+"Half century" = "Yarım asır";
+"Century club" = "Yüzler kulübü";
+"Hydration hero" = "Hidrasyon kahramanı";
+"Protein power" = "Protein gücü";
+"Health star" = "Sağlık yıldızı";
+"Label reader" = "Etiket okuyucu";
+"Fasting champion" = "Oruç şampiyonu";
+"Goal crusher" = "Hedef ezici";
+"Planner" = "Planlayıcı";
+"Foodie" = "Yemek tutkunu";
+"Snap & track" = "Fotoğrafla ve takip et";
+"Perfect day" = "Mükemmel gün";
+"Log your very first meal" = "İlk öğününü kaydet";
+"Maintain a 7-day logging streak" = "7 günlük seriyi sürdür";
+"Maintain a 30-day logging streak" = "30 günlük seriyi sürdür";
+"Log 50 meals total" = "Toplam 50 öğün kaydet";
+"Log 100 meals total" = "Toplam 100 öğün kaydet";
+"Hit your water goal 7 days in a row" = "Su hedefine 7 gün üst üste ulaş";
+"Hit your protein goal 5 days in a row" = "Protein hedefine 5 gün üst üste ulaş";
+"Achieve an average health score of 80+" = "80+ ortalama sağlık puanına ulaş";
+"Scan 5 food barcodes" = "5 gıda barkodu tara";
+"Complete a 16h+ fast" = "16 saat+ oruç tamamla";
+"Stay within calorie goal 7 days in a row" = "7 gün üst üste kalori hedefinde kal";
+"Log all meals from a meal plan day" = "Bir plan gününün tüm öğünlerini kaydet";
+"Log 5 different meal types in one week" = "Bir haftada 5 farklı öğün türü kaydet";
+"Analyse 10 meals via photo" = "Fotoğrafla 10 öğün analiz et";
+"Hit calories, protein & water goals in one day" = "Bir günde kalori, protein ve su hedeflerine ulaş";

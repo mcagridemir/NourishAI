@@ -168,10 +168,10 @@ private struct AuthFeatureRow: View {
                     .foregroundStyle(color)
             }
             VStack(alignment: .leading, spacing: 2) {
-                Text(title)
+                Text(LocalizedStringKey(title))
                     .font(SanaTheme.Font.headline(14))
                     .foregroundStyle(.primary)
-                Text(sub)
+                Text(LocalizedStringKey(sub))
                     .font(SanaTheme.Font.caption(12))
                     .foregroundStyle(.secondary)
             }

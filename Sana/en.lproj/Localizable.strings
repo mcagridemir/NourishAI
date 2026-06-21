@@ -825,3 +825,56 @@
 
 // Demo/screenshot canned insight (DEBUG only)
 "You're off to a strong start — great protein intake and consistent logging. Keep the momentum going! 💪" = "You're off to a strong start — great protein intake and consistent logging. Keep the momentum going! 💪";
+
+// Secondary-screen labels (paywall/achievements/goals/etc.)
+"Grocery list generation" = "Grocery list generation";
+"Smart shopping lists from your plan" = "Smart shopping lists from your plan";
+"Deficiency alerts" = "Deficiency alerts";
+"Get notified about nutritional gaps" = "Get notified about nutritional gaps";
+"HealthKit deep sync" = "HealthKit deep sync";
+"Full integration with Apple Health" = "Full integration with Apple Health";
+"Advanced insights" = "Advanced insights";
+"Weekly nutrition trends & reports" = "Weekly nutrition trends & reports";
+"2.1k ratings" = "2.1k ratings";
+"Hit weekly\nprotein goals" = "Hit weekly\nprotein goals";
+"More likely\nto stick with it" = "More likely\nto stick with it";
+"Macronutrients" = "Macronutrients";
+"Carbohydrates" = "Carbohydrates";
+"Zone" = "Zone";
+"%d kcal remaining" = "%d kcal remaining";
+"Daily goal reached! 🎉" = "Daily goal reached! 🎉";
+"%d kcal over goal" = "%d kcal over goal";
+"Unlocked 🏆" = "Unlocked 🏆";
+"Locked 🔒" = "Locked 🔒";
+"Avg carbs" = "Avg carbs";
+"Avg fat" = "Avg fat";
+"First bite" = "First bite";
+"Week warrior" = "Week warrior";
+"Monthly master" = "Monthly master";
+"Half century" = "Half century";
+"Century club" = "Century club";
+"Hydration hero" = "Hydration hero";
+"Protein power" = "Protein power";
+"Health star" = "Health star";
+"Label reader" = "Label reader";
+"Fasting champion" = "Fasting champion";
+"Goal crusher" = "Goal crusher";
+"Planner" = "Planner";
+"Foodie" = "Foodie";
+"Snap & track" = "Snap & track";
+"Perfect day" = "Perfect day";
+"Log your very first meal" = "Log your very first meal";
+"Maintain a 7-day logging streak" = "Maintain a 7-day logging streak";
+"Maintain a 30-day logging streak" = "Maintain a 30-day logging streak";
+"Log 50 meals total" = "Log 50 meals total";
+"Log 100 meals total" = "Log 100 meals total";
+"Hit your water goal 7 days in a row" = "Hit your water goal 7 days in a row";
+"Hit your protein goal 5 days in a row" = "Hit your protein goal 5 days in a row";
+"Achieve an average health score of 80+" = "Achieve an average health score of 80+";
+"Scan 5 food barcodes" = "Scan 5 food barcodes";
+"Complete a 16h+ fast" = "Complete a 16h+ fast";
+"Stay within calorie goal 7 days in a row" = "Stay within calorie goal 7 days in a row";
+"Log all meals from a meal plan day" = "Log all meals from a meal plan day";
+"Log 5 different meal types in one week" = "Log 5 different meal types in one week";
+"Analyse 10 meals via photo" = "Analyse 10 meals via photo";
+"Hit calories, protein & water goals in one day" = "Hit calories, protein & water goals in one day";

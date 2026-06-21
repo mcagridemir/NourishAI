@@ -66,7 +66,7 @@ struct NutritionShareCard: View {
                     Text(unit).font(.system(size: 11)).foregroundStyle(.secondary)
                 }
             }
-            Text(label).font(.system(size: 10)).foregroundStyle(.secondary)
+            Text(LocalizedStringKey(label)).font(.system(size: 10)).foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity)
     }
