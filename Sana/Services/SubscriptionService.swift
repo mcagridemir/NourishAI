@@ -49,8 +49,10 @@ final class SubscriptionService: ObservableObject {
         switch result {
         case .success(let verification):
             let transaction = try checkVerified(verification)
-            await updatePremiumStatus(transaction)
             await transaction.finish()
+            // Re-derive premium from the authoritative current entitlements
+            // rather than judging from this single transaction.
+            await checkCurrentEntitlement()
         case .userCancelled:
             break
         case .pending:
@@ -108,17 +110,12 @@ final class SubscriptionService: ObservableObject {
     private func listenForTransactions() async {
         for await result in Transaction.updates {
             if let transaction = try? checkVerified(result) {
-                await updatePremiumStatus(transaction)
                 await transaction.finish()
+                // Renewals, revocations and expirations all change entitlement
+                // state — re-derive from the source of truth.
+                await checkCurrentEntitlement()
             }
         }
-    }
-
-    private func updatePremiumStatus(_ transaction: Transaction) async {
-        let active = [monthlyProductId, yearlyProductId].contains(transaction.productID)
-                     && transaction.revocationDate == nil
-        isPremium = active
-        activeTransactionID = active ? String(transaction.originalID) : nil
     }
 
     private func checkVerified<T>(_ result: VerificationResult<T>) throws -> T {
