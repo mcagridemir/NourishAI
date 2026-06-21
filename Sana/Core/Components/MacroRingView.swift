@@ -102,7 +102,7 @@ struct HealthScoreBadge: View {
                     .foregroundStyle(color)
             }
             .frame(width: size, height: size)
-            Text(label)
+            Text(LocalizedStringKey(label))
                 .font(SanaTheme.Font.caption(10))
                 .foregroundStyle(color)
         }

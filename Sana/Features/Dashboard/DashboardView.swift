@@ -662,7 +662,7 @@ private struct DarkMacroBar: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(label)
+            Text(LocalizedStringKey(label))
                 .font(.system(size: 10, weight: .medium))
                 .foregroundStyle(Color.white.opacity(0.6))
                 .textCase(.uppercase)
@@ -812,7 +812,7 @@ private struct HealthMetricCell: View {
 
     var body: some View {
         VStack(alignment: .center, spacing: 4) {
-            Text(label)
+            Text(LocalizedStringKey(label))
                 .font(.system(size: 11, weight: .semibold))
                 .foregroundStyle(.secondary)
                 .textCase(.uppercase)

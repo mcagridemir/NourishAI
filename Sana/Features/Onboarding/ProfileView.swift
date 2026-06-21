@@ -399,7 +399,7 @@ struct ProfileView: View {
                 RoundedRectangle(cornerRadius: 8).fill(color.opacity(0.12)).frame(width: 32, height: 32)
                 Image(systemName: icon).font(.system(size: 13, weight: .semibold)).foregroundStyle(color)
             }
-            Text(title).font(SanaTheme.Font.body(15)).foregroundStyle(.primary)
+            Text(LocalizedStringKey(title)).font(SanaTheme.Font.body(15)).foregroundStyle(.primary)
             Spacer()
             trailing()
             Image(systemName: "chevron.right")
@@ -431,7 +431,7 @@ private struct MiniStatCell: View {
                 .font(.system(size: 17, weight: .bold, design: .rounded))
                 .foregroundStyle(.primary)
                 .minimumScaleFactor(0.75).lineLimit(2)
-            Text(label)
+            Text(LocalizedStringKey(label))
                 .font(SanaTheme.Font.caption(11))
                 .foregroundStyle(.secondary)
         }

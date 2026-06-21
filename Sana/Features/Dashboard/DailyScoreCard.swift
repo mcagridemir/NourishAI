@@ -132,7 +132,7 @@ struct DailyScoreCard: View {
                         .background(badgeColor.opacity(0.10))
                         .clipShape(Capsule())
                 } else {
-                    Text(scoreGrade)
+                    Text(LocalizedStringKey(scoreGrade))
                         .font(SanaTheme.Font.caption(12))
                         .foregroundStyle(scoreColor)
                         .padding(.horizontal, 8).padding(.vertical, 3)

@@ -200,7 +200,7 @@ struct DailySummaryShareCard: View {
                 }
                 VStack(alignment: .leading, spacing: 1) {
                     Text("Daily score").font(.system(size: 10, weight: .medium)).foregroundStyle(.white.opacity(0.6))
-                    Text(scoreGrade).font(.system(size: 11, weight: .bold)).foregroundStyle(scoreColor)
+                    Text(LocalizedStringKey(scoreGrade)).font(.system(size: 11, weight: .bold)).foregroundStyle(scoreColor)
                 }
             }
             Spacer()

@@ -349,7 +349,7 @@ struct EditProfileView: View {
     private func macroSlider(label: String, value: Binding<Double>, range: ClosedRange<Double>, unit: String) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
-                Text(label).font(SanaTheme.Font.caption()).foregroundStyle(.secondary)
+                Text(LocalizedStringKey(label)).font(SanaTheme.Font.caption()).foregroundStyle(.secondary)
                 Spacer()
                 Text("\(Int(value.wrappedValue))\(unit)")
                     .font(SanaTheme.Font.caption())

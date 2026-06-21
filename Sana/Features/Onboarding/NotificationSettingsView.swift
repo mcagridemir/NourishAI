@@ -224,7 +224,7 @@ struct NotificationSettingsView: View {
                 RoundedRectangle(cornerRadius: 8).fill(color.opacity(0.12)).frame(width: 32, height: 32)
                 Image(systemName: image).font(.system(size: 13, weight: .semibold)).foregroundStyle(color)
             }
-            Text(label).font(SanaTheme.Font.body())
+            Text(LocalizedStringKey(label)).font(SanaTheme.Font.body())
             Spacer()
             DatePicker("", selection: date, displayedComponents: .hourAndMinute)
                 .labelsHidden()
@@ -237,7 +237,7 @@ struct NotificationSettingsView: View {
             Text(time)
                 .font(.system(size: 13, weight: .semibold, design: .rounded))
                 .foregroundStyle(color)
-            Text(label)
+            Text(LocalizedStringKey(label))
                 .font(SanaTheme.Font.caption(10))
                 .foregroundStyle(.secondary)
         }
