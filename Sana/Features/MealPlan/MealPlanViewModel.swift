@@ -56,7 +56,9 @@ final class MealPlanViewModel: ObservableObject {
             showPaywall = true
         } catch {
             self.error = error.localizedDescription
+            #if DEBUG
             print("❌ Meal plan error: \(error)")
+            #endif
         }
     }
 

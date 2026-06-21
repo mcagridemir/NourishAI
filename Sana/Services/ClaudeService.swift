@@ -302,7 +302,9 @@ actor ClaudeService {
         let data = try await post(body: body)
         let raw = try decoder.decode(ClaudeResponse.self, from: data)
         let jsonText = raw.content.first?.text ?? "{}"
+        #if DEBUG
         print("📦 Raw meal plan JSON: \(jsonText.prefix(300))")
+        #endif
         return try parseJSON(MealPlanResponse.self, from: jsonText)
     }
 
@@ -522,8 +524,10 @@ actor ClaudeService {
         do {
             return try decoder.decode(T.self, from: data)
         } catch {
+            #if DEBUG
             print("❌ JSON decode error: \(error)")
             print("❌ Attempted to decode: \(clean.prefix(300))")
+            #endif
             throw ClaudeError.decodingFailed(error.localizedDescription)
         }
     }

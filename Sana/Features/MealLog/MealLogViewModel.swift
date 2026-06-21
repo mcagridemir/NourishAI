@@ -69,6 +69,10 @@ final class MealLogViewModel: ObservableObject {
         do {
             let analysis = try await ClaudeService.shared.analyzeMeal(
                 image: image, mealType: selectedMealType, context: user.nutritionContext)
+            // Count the analysis itself (mirrors the server-side quota, which
+            // bills each AI call) so the "N free analyses remaining" UI is
+            // accurate whether or not the user saves the result.
+            user.dailyAnalysisCount += 1
             state = .result(analysis)
         } catch ClaudeError.quotaExceeded {
             state = .idle
@@ -87,7 +91,6 @@ final class MealLogViewModel: ObservableObject {
         HapticService.notification(.success)
         let entry = MealEntry(from: analysis, mealType: selectedMealType, photoData: capturedImage?.jpegData(compressionQuality: 0.6))
         entry.user = user
-        user.dailyAnalysisCount += 1
         Task { try? await HealthKitService.shared.logMeal(entry) }
         scheduleDeficiencyAlertsIfNeeded()
         refreshWidget()

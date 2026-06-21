@@ -96,7 +96,9 @@ final class CoachViewModel: ObservableObject {
             pendingPlanResponse = response
         } catch {
             // Silent — the chat text response is what matters; plan generation is bonus
+            #if DEBUG
             print("⚠️ Background plan generation failed: \(error)")
+            #endif
         }
     }
 
