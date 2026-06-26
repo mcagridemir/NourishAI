@@ -371,7 +371,7 @@ struct SelectionRow: View {
             action()
         } label: {
             HStack {
-                Text(label).font(SanaTheme.Font.body()).foregroundStyle(.primary)
+                Text(LocalizedStringKey(label)).font(SanaTheme.Font.body()).foregroundStyle(.primary)
                 Spacer()
                 Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
                     .foregroundStyle(isSelected ? SanaTheme.Color.primary : .secondary)
@@ -392,7 +392,7 @@ struct SelectionTile: View {
             HapticService.selection()
             action()
         } label: {
-            Text(label).font(SanaTheme.Font.body(14)).foregroundStyle(isSelected ? SanaTheme.Color.primary : .primary)
+            Text(LocalizedStringKey(label)).font(SanaTheme.Font.body(14)).foregroundStyle(isSelected ? SanaTheme.Color.primary : .primary)
                 .frame(maxWidth: .infinity).padding(.vertical, 14)
                 .background(isSelected ? SanaTheme.Color.primaryLight : SanaTheme.Color.surface)
                 .clipShape(RoundedRectangle(cornerRadius: SanaTheme.Radius.md))

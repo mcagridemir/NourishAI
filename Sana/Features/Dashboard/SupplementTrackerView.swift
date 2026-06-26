@@ -142,10 +142,10 @@ struct SupplementTrackerView: View {
     }
 
     private var headerMessage: String {
-        guard !active.isEmpty else { return "All caught up!" }
-        if todayDoneCount == active.count { return "All taken today 🎉" }
-        if todayDoneCount == 0 { return "Time to take your supplements" }
-        return "\(active.count - todayDoneCount) remaining today"
+        guard !active.isEmpty else { return NSLocalizedString("All caught up!", comment: "") }
+        if todayDoneCount == active.count { return NSLocalizedString("All taken today 🎉", comment: "") }
+        if todayDoneCount == 0 { return NSLocalizedString("Time to take your supplements", comment: "") }
+        return String(format: NSLocalizedString("%d remaining today", comment: ""), active.count - todayDoneCount)
     }
 
     // MARK: - Supplement row
@@ -300,7 +300,7 @@ struct AddSupplementSheet: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 8) {
                             ForEach(commonSupps, id: \.self) { s in
-                                Button(s) { name = s }
+                                Button(LocalizedStringKey(s)) { name = s }
                                     .font(SanaTheme.Font.caption(12))
                                     .padding(.horizontal, 10)
                                     .padding(.vertical, 5)

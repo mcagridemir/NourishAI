@@ -190,17 +190,15 @@ struct CaloriePredictionCard: View {
 
     private var forecastMessage: String {
         if todayMeals.isEmpty {
-            return "Log your first meal to enable daily forecasting based on your eating history."
+            return NSLocalizedString("Log your first meal to enable daily forecasting based on your eating history.", comment: "")
         }
         if isOnTrack {
-            return "You're trending within 100 kcal of your goal — keep it up!"
+            return NSLocalizedString("You're trending within 100 kcal of your goal — keep it up!", comment: "")
         }
         if isOverBudget {
-            let over = delta
-            return "Based on your usual pattern, you may exceed your goal by \(over) kcal. Consider a lighter dinner or skipping an extra snack."
+            return String(format: NSLocalizedString("Based on your usual pattern, you may exceed your goal by %d kcal. Consider a lighter dinner or skipping an extra snack.", comment: ""), delta)
         }
-        let under = abs(delta)
-        return "You're on track to end \(under) kcal under your goal. You have room for a nutritious snack."
+        return String(format: NSLocalizedString("You're on track to end %d kcal under your goal. You have room for a nutritious snack.", comment: ""), abs(delta))
     }
 
     private func predStat(label: String, value: String, unit: String, color: Color) -> some View {
