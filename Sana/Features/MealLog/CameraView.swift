@@ -28,6 +28,7 @@ struct CameraView: UIViewControllerRepresentable {
 
 struct ManualMealEntryView: View {
     let mealType: MealType
+    let user: User
     var prefillName: String = ""
     var nutritionContext: UserNutritionContext? = nil
     let onSave: (String, Int, Double, Double, Double) -> Void
@@ -162,11 +163,15 @@ struct ManualMealEntryView: View {
 
     private func estimateNutrition() async {
         guard let ctx = nutritionContext, !quickDescription.isEmpty else { return }
+        // Same free-analysis quota as photo analysis — gate before the call and
+        // count the analysis so the "N remaining" UI stays accurate.
+        guard user.canAnalyzeMeal else { showPaywall = true; return }
         isEstimating = true
         estimateError = nil
         do {
             let analysis = try await ClaudeService.shared.analyzeTextMeal(
                 description: quickDescription, context: ctx)
+            user.dailyAnalysisCount += 1
             name        = analysis.mealName
             caloriesStr = "\(analysis.calories)"
             proteinStr  = String(format: "%.1f", analysis.protein)

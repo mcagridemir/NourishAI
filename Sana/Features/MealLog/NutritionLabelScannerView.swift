@@ -102,6 +102,7 @@ struct IngredientHealthEngine {
 
 struct NutritionLabelScannerView: View {
     let mealType: MealType
+    let user: User
     let onSave: (LabelScanResult) -> Void
 
     @Environment(\.dismiss) private var dismiss
@@ -274,6 +275,8 @@ struct NutritionLabelScannerView: View {
     // MARK: - Analysis
 
     private func analyze(image: UIImage) async {
+        // Counts against the same free-analysis quota as photo/text analysis.
+        guard user.canAnalyzeMeal else { showPaywall = true; return }
         state = .analyzing
         guard let data = image.jpegData(compressionQuality: 0.8),
               data.count < 5_000_000 else {
@@ -354,6 +357,7 @@ struct NutritionLabelScannerView: View {
                 confidence: label.confidence,
                 ingredients: label.ingredients ?? []
             )
+            user.dailyAnalysisCount += 1
             state = .result(result)
         } catch ClaudeError.quotaExceeded {
             showPaywall = true

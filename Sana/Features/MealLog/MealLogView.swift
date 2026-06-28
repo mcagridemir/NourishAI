@@ -72,6 +72,7 @@ struct MealLogView: View {
             .sheet(isPresented: $vm.showingManualEntry) {
                 ManualMealEntryView(
                     mealType: vm.selectedMealType,
+                    user: user,
                     prefillName: vm.voicePrefill,
                     nutritionContext: user.nutritionContext
                 ) { name, cal, prot, carbs, fat in
@@ -108,7 +109,7 @@ struct MealLogView: View {
                 }
             }
             .sheet(isPresented: $vm.showingLabelScanner) {
-                NutritionLabelScannerView(mealType: vm.selectedMealType) { result in
+                NutritionLabelScannerView(mealType: vm.selectedMealType, user: user) { result in
                     vm.saveLabelMeal(result)
                     dismiss()
                 }
