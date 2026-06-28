@@ -130,7 +130,7 @@ struct OnboardingFlowView: View {
         OnboardingStep(title: "About you", subtitle: "This helps us personalise your calorie and nutrition targets.", icon: "person.fill", iconColor: .blue) {
             VStack(spacing: 20) {
                 Picker("Sex", selection: $sex) {
-                    ForEach(BiologicalSex.allCases, id: \.self) { Text($0.rawValue).tag($0) }
+                    ForEach(BiologicalSex.allCases, id: \.self) { Text(LocalizedStringKey($0.rawValue)).tag($0) }
                 }
                 .pickerStyle(.segmented)
 

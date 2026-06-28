@@ -21,6 +21,10 @@
 		<string>com.cagri.Sana.widgetRefresh</string>
 		<string>com.cagri.Sana.nutritionSync</string>
 	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+	</array>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

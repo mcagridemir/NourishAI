@@ -929,3 +929,14 @@
 "You're on track to end %d kcal under your goal. You have room for a nutritious snack." = "Hedefinin %d kcal altında bitirme yolundasın. Besleyici bir ara öğüne yerin var.";
 "All caught up!" = "Hepsi tamam!";
 "%d remaining today" = "Bugün %d kaldı";
+
+// Auth/quota error messages + biological sex
+"An account with this email already exists. Try signing in." = "Bu e-posta ile zaten bir hesap var. Giriş yapmayı deneyin.";
+"Email or password is incorrect." = "E-posta veya şifre yanlış.";
+"Enter a valid email address." = "Geçerli bir e-posta adresi girin.";
+"Password must be at least 8 characters." = "Şifre en az 8 karakter olmalıdır.";
+"You've reached your daily limit. Upgrade to Premium for unlimited access." = "Günlük sınırına ulaştın. Sınırsız erişim için Premium'a geç.";
+"Male" = "Erkek";
+"Female" = "Kadın";
+"Prefer not to say" = "Belirtmek istemiyorum";
+"Tap to edit goals" = "Hedefleri düzenlemek için dokun";

@@ -170,7 +170,10 @@ struct DashboardView: View {
         .buttonStyle(.plain)
         .padding(.horizontal, SanaTheme.Spacing.lg)
         .padding(.bottom, SanaTheme.Spacing.lg)
-        .accessibilityLabel("Daily calorie summary. Tap to edit goals.")
+        // Combine the (localized) child text so VoiceOver actually announces the
+        // calories-remaining and macro values, not just a static summary phrase.
+        .accessibilityElement(children: .combine)
+        .accessibilityHint(Text("Tap to edit goals"))
     }
 
     private var calorieRing: some View {

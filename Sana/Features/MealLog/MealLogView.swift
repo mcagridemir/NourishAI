@@ -388,7 +388,7 @@ struct AnalyzingView: View {
                                     .frame(width: 8, height: 8)
                             }
                         }
-                        Text(step)
+                        Text(LocalizedStringKey(step))
                             .font(SanaTheme.Font.body(14))
                             .fontWeight(i == stepIndex ? .semibold : .regular)
                             .foregroundStyle(i <= stepIndex ? .primary : .tertiary)

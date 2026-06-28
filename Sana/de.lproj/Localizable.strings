@@ -884,3 +884,14 @@
 "You're on track to end %d kcal under your goal. You have room for a nutritious snack." = "Du wirst dein Ziel voraussichtlich um %d kcal unterschreiten. Du hast Platz für einen nahrhaften Snack.";
 "All caught up!" = "Alles erledigt!";
 "%d remaining today" = "Noch %d heute";
+
+// Auth/quota error messages + biological sex
+"An account with this email already exists. Try signing in." = "Ein Konto mit dieser E-Mail existiert bereits. Versuche dich anzumelden.";
+"Email or password is incorrect." = "E-Mail oder Passwort ist falsch.";
+"Enter a valid email address." = "Gib eine gültige E-Mail-Adresse ein.";
+"Password must be at least 8 characters." = "Das Passwort muss mindestens 8 Zeichen lang sein.";
+"You've reached your daily limit. Upgrade to Premium for unlimited access." = "Du hast dein Tageslimit erreicht. Upgrade auf Premium für unbegrenzten Zugriff.";
+"Male" = "Männlich";
+"Female" = "Weiblich";
+"Prefer not to say" = "Keine Angabe";
+"Tap to edit goals" = "Zum Bearbeiten der Ziele tippen";
