@@ -360,10 +360,11 @@ struct PhotoDetailView: View {
     }
 
     private func deletePhoto() {
-        if let url = photo.imageURL {
-            try? FileManager.default.removeItem(at: url)
-        }
+        // Delete the record first, then the file: if interrupted, an orphan file
+        // is harmless, whereas an orphan record would point at a missing image.
+        let url = photo.imageURL
         context.delete(photo)
+        if let url { try? FileManager.default.removeItem(at: url) }
         HapticService.impact(.medium)
         dismiss()
     }

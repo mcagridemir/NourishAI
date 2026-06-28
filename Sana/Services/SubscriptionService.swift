@@ -72,18 +72,18 @@ final class SubscriptionService: ObservableObject {
     // MARK: - Entitlement check
 
     func checkCurrentEntitlement() async {
+        // Scan ALL current entitlements rather than returning on the first match:
+        // a revoked entitlement could otherwise be read first and incorrectly
+        // mark a still-active subscriber as non-premium.
+        var foundTxnID: String?
         for await result in Transaction.currentEntitlements {
-            if let transaction = try? checkVerified(result) {
-                if [monthlyProductId, yearlyProductId].contains(transaction.productID) {
-                    let active = transaction.revocationDate == nil
-                    isPremium = active
-                    activeTransactionID = active ? String(transaction.originalID) : nil
-                    return
-                }
-            }
+            guard let transaction = try? checkVerified(result),
+                  [monthlyProductId, yearlyProductId].contains(transaction.productID),
+                  transaction.revocationDate == nil else { continue }
+            foundTxnID = String(transaction.originalID)
         }
-        isPremium = false
-        activeTransactionID = nil
+        isPremium = foundTxnID != nil
+        activeTransactionID = foundTxnID
     }
 
     var monthlyProduct: Product? { products.first { $0.id == monthlyProductId } }
