@@ -44,6 +44,8 @@ final class GroceryListViewModel: ObservableObject {
 
     func generate() async {
         guard let plan = user.mealPlans?.first(where: { $0.isActive }) else { return }
+        // Grocery list generation is a Premium feature.
+        guard user.subscriptionTier == .premium else { showPaywall = true; return }
         isGenerating = true
         defer { isGenerating = false }
         do {

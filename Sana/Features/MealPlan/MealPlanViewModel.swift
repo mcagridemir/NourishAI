@@ -26,6 +26,8 @@ final class MealPlanViewModel: ObservableObject {
     }
 
     func generatePlan() async {
+        // AI meal planner is a Premium feature.
+        guard user.subscriptionTier == .premium else { showPaywall = true; return }
         isGenerating = true
         error = nil
         defer { isGenerating = false }
@@ -64,6 +66,7 @@ final class MealPlanViewModel: ObservableObject {
 
     /// Replace a specific planned meal using Claude.
     func replaceMeal(_ meal: PlannedMeal, preference: String = "") async {
+        guard user.subscriptionTier == .premium else { showPaywall = true; return }
         isReplacingMeal = true
         error = nil
         defer { isReplacingMeal = false }

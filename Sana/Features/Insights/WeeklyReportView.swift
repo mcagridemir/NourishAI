@@ -174,6 +174,8 @@ struct WeeklyReportView: View {
     // MARK: - Generate
 
     private func generate() async {
+        // Full weekly report is a Premium feature.
+        guard user.subscriptionTier == .premium else { showPaywall = true; return }
         isLoading = true
         errorMessage = nil
         do {

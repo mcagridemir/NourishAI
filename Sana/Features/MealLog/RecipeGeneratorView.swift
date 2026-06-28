@@ -375,6 +375,8 @@ struct RecipeGeneratorView: View {
 
     private func generate() async {
         guard !ingredients.isEmpty else { return }
+        // Recipe creator is a Premium feature.
+        guard user.subscriptionTier == .premium else { showPaywall = true; return }
         inputFocused = false
         isGenerating = true
         errorMessage = nil

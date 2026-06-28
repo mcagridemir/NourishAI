@@ -59,6 +59,9 @@ final class DashboardViewModel: ObservableObject {
             return
         }
         #endif
+        // Deep weekly insight is a Premium feature — free users simply don't get
+        // the auto-fetch (no paywall pop on every dashboard load).
+        guard user.subscriptionTier == .premium else { return }
         isLoadingInsights = true
         insightError = nil
         defer { isLoadingInsights = false }

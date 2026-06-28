@@ -45,6 +45,8 @@ final class CoachViewModel: ObservableObject {
             if isStreaming { streamTask?.cancel() }
             return
         }
+        // AI coach is a Premium feature.
+        guard user.subscriptionTier == .premium else { showPaywall = true; return }
         let text = inputText.trimmingCharacters(in: .whitespacesAndNewlines)
         inputText = ""
         HapticService.selection()
