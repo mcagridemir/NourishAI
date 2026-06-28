@@ -494,6 +494,7 @@ private struct WelcomeBubble: View {
                     .clipShape(RoundedRectangle(cornerRadius: SanaTheme.Radius.md))
                     .overlay(RoundedRectangle(cornerRadius: SanaTheme.Radius.md).stroke(Color.primary.opacity(0.06), lineWidth: 0.5))
                     .onTapGesture { HapticService.selection(); onSelectSuggestion(s) }
+                    .accessibilityAddTraits(.isButton)
                 }
             }
         }

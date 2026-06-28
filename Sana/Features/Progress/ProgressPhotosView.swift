@@ -349,6 +349,7 @@ struct PhotoDetailView: View {
                         Image(systemName: "trash")
                             .foregroundStyle(.red)
                     }
+                    .accessibilityLabel(Text("Delete photo"))
                 }
             }
             .confirmationDialog("Delete this photo?", isPresented: $showDeleteConfirm, titleVisibility: .visible) {

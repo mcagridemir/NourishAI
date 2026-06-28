@@ -131,6 +131,7 @@ struct RecipeGeneratorView: View {
                                              ? SanaTheme.Color.primary.opacity(0.25)
                                              : SanaTheme.Color.primary)
                     }
+                    .accessibilityLabel(Text("Add ingredient"))
                     .disabled(ingredientInput.trimmingCharacters(in: .whitespaces).isEmpty)
                 }
 

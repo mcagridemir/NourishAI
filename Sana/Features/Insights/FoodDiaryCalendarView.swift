@@ -112,6 +112,7 @@ struct FoodDiaryCalendarView: View {
                         HapticService.selection()
                         withAnimation(SanaTheme.Animation.snappy) { selectedDate = day }
                     }
+                    .accessibilityAddTraits(.isButton)
                 }
             }
         }
