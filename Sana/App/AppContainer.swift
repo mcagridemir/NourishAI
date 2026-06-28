@@ -98,13 +98,24 @@ final class AppContainer {
         print("  ⚠️ All pass individually — must be a combination issue")
     }
 
+    /// Move the incompatible store aside (not delete) so a failed migration is
+    /// recoverable rather than silently destroying the user's data. Keeps a
+    /// single quarantine copy per file, overwriting any previous one.
     private static func wipeSQLiteStore() {
-        guard let support = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else { return }
-        let files = (try? FileManager.default.contentsOfDirectory(at: support, includingPropertiesForKeys: nil)) ?? []
+        let fm = FileManager.default
+        guard let support = fm.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else { return }
+        let files = (try? fm.contentsOfDirectory(at: support, includingPropertiesForKeys: nil)) ?? []
         for url in files where url.pathExtension == "sqlite"
             || url.lastPathComponent.hasSuffix("-shm")
             || url.lastPathComponent.hasSuffix("-wal") {
-            try? FileManager.default.removeItem(at: url)
+            let quarantine = url.appendingPathExtension("quarantine")
+            try? fm.removeItem(at: quarantine)
+            do {
+                try fm.moveItem(at: url, to: quarantine)
+            } catch {
+                // If the move fails, fall back to removal so the app can still recover.
+                try? fm.removeItem(at: url)
+            }
         }
     }
 
