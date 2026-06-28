@@ -162,8 +162,16 @@ async function handleAppStoreWebhook(request, env) {
           subtype: subtype ?? null,
           updatedAt: Date.now(),
         });
-        // 90-day TTL — covers even the longest billing grace + retry period
-        await env.RATE_KV.put(`sub:${tid}`, record, { expirationTtl: 90 * 86_400 });
+        // TTL must outlive the subscription period, otherwise a yearly subscriber
+        // (renews every ~365 days) would have this record expire after 90 days and
+        // silently drop to the free quota for the rest of their paid year. Keep it
+        // until the subscription's own expiry + 30-day grace, with a 90-day floor.
+        let ttl = 90 * 86_400;
+        if (expiresDate) {
+          const untilExpiry = Math.floor((expiresDate - Date.now()) / 1000) + 30 * 86_400;
+          if (untilExpiry > ttl) ttl = untilExpiry;
+        }
+        await env.RATE_KV.put(`sub:${tid}`, record, { expirationTtl: ttl });
       }
     }
   } catch {
